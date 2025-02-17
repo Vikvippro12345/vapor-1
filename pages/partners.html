@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vapor</title>
+    <title>VAPOR</title>
     <style>
       body,
       html {
@@ -14,7 +14,7 @@
       }
       .partner-grid {
         display: grid;
-        grid-template-columns: repeat(4, 300px);
+        grid-template-columns: repeat(3, 300px);
         gap: 15px;
         justify-content: center;
         padding: 20px;
@@ -41,7 +41,7 @@
         height: 100%;
         background: rgba(0, 0, 0, 0.647);
         backdrop-filter: blur(5px);
-        disvisit: flex;
+        display: flex;
         flex-direction: column;
         justify-content: space-between;
         padding: 15px;
@@ -56,7 +56,7 @@
         bottom: 40px;
         right: 40px;
         padding: 12px 22px;
-        background: #2a7a3b;
+        background: #2b304d;
         color: white;
         text-decoration: none;
         border-radius: 50px;
@@ -65,7 +65,7 @@
         font-size: 19px;
       }
       .visit-button:hover {
-        background: #368747;
+        background: #49517c;
       }
 
       p {
@@ -114,7 +114,7 @@
             title.textContent = partner.name;
 
             const visitButton = document.createElement("a");
-            visitButton.textContent = "visit";
+            visitButton.textContent = "VISIT";
             visitButton.classList.add("visit-button");
 
             overlay.appendChild(title);
@@ -126,7 +126,7 @@
           rowIndex++;
         }
       }
-      // loadpartners();
+      loadpartners();
     </script>
   </body>
 </html>
