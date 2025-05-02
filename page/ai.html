@@ -266,7 +266,7 @@
       </div>
     </div>
     <script>
-      const endpoint = "/request-ai";
+      const endpoint = "https://api.groq.com/openai/v1/chat/completions";
       let model = "gemma2-9b-it"; // DEFAULT
       const messagesContainer = document.querySelector(".messages");
       const input = document.getElementById("message-input");
@@ -415,6 +415,7 @@
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              "Authorization": "Bearer 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",
             },
             body: JSON.stringify({
               model,
