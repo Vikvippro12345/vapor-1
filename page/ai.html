@@ -265,6 +265,7 @@
         </button>
       </div>
     </div>
+    <script src="/scripts/secrets.js"></script>
     <script>
       const endpoint = "https://api.groq.com/openai/v1/chat/completions";
       let model = "gemma2-9b-it"; // DEFAULT
@@ -415,7 +416,7 @@
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              "Authorization": "Bearer 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",
+              "Authorization": `Bearer ${token}`,
             },
             body: JSON.stringify({
               model,
