@@ -21,32 +21,32 @@ const scramjet = new ScramjetServiceWorker();
 async function handleRequest(event) {
 	await scramjet.loadConfig();
 	if (scramjet.route(event)) {
-	  const response = await scramjet.fetch(event);
-  
-	  const contentType = response.headers.get("content-type") || "";
-	  if (contentType.includes("text/html")) {
-		const originalText = await response.text();
-		const modifiedHtml = originalText.replace(
-		  /<head[^>]*>/i,
-		  (match) =>
-			`${match}<script>(function () { var script = document.createElement('script'); script.src="https://cdn.jsdelivr.net/npm/eruda"; document.body.append(script); script.onload = function () { eruda.init(); } })();</script>`
-		);
-  
-		const newHeaders = new Headers(response.headers);
-		newHeaders.set("content-length", modifiedHtml.length.toString());
-  
-		return new Response(modifiedHtml, {
-		  status: response.status,
-		  statusText: response.statusText,
-		  headers: newHeaders,
-		});
-	  }
-  
-	  return response;
+		const response = await scramjet.fetch(event);
+
+		const contentType = response.headers.get("content-type") || "";
+		if (contentType.includes("text/html")) {
+			const originalText = await response.text();
+			const modifiedHtml = originalText.replace(
+				/<head[^>]*>/i,
+				(match) =>
+					`${match}<!-- pr0x1ed by vapor's static sj -->`
+			);
+
+			const newHeaders = new Headers(response.headers);
+			newHeaders.set("content-length", modifiedHtml.length.toString());
+
+			return new Response(modifiedHtml, {
+				status: response.status,
+				statusText: response.statusText,
+				headers: newHeaders,
+			});
+		}
+
+		return response;
 	}
-  
+
 	return fetch(event.request);
-  }
+}
 
 self.addEventListener("fetch", (event) => {
 	event.respondWith(handleRequest(event));
