@@ -30,3 +30,36 @@ body {
   font-family: "Inter", sans-serif;
   overflow: hidden;
 }
+
+img {
+  pointer-events: none;
+}
+
+::-moz-selection {
+  color: var(--bg);
+  background: var(--text-color);
+}
+
+::selection {
+  color: var(--bg);
+  background: var(--text-color);
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  padding: 2px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background: var(--third-bg);
+  transition: 0.3s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary);
+}
