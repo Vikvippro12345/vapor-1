@@ -546,8 +546,8 @@
         </div>
 
         <script>
-            const socket = io('/chat', {
-                path: '/chat/socket.io/'
+            const socket = io({
+              path: '/chat/socket.io/'
             });
             let currentUsername = "";
             let lastMessageUser = "";
