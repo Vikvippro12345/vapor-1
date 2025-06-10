@@ -181,6 +181,63 @@
       .input-container button:hover {
         background-color: #4caf50;
       }
+
+      .custom-server-container {
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .custom-server-container h3 {
+        margin: 0 0 10px;
+        font-size: 16px;
+        color: #ffffff;
+      }
+
+      .custom-server-container p {
+        margin: 0 0 10px;
+        font-size: 14px;
+        color: #9ca3af;
+      }
+
+      .custom-server-input {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .custom-server-input input {
+        flex: 1;
+        padding: 10px;
+        border-radius: 14px;
+        background-color: var(--secondary-bg);
+        color: #ffffff;
+        border: none;
+        outline: none;
+        font-size: 14px;
+      }
+
+      .custom-server-input button {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 14px;
+        background-color: #4caf50;
+        color: #ffffff;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        font-size: 14px;
+      }
+
+      .custom-server-input button:hover {
+        background-color: #45a049;
+      }
+
+      .error-message {
+        color: #ff6b6b;
+        font-size: 12px;
+        margin-top: 5px;
+        display: none;
+      }
     </style>
   </head>
   <body>
@@ -228,13 +285,25 @@
             <i class="fa-regular fa-server"></i>
             Default Server
           </div>
-          <div class="option" data-wisp="wss://learn.latinliturgy.com/w/">
+          <div class="option" data-wisp="wss://wisp.rhw.one">
             <i class="fa-regular fa-server"></i>
-            Alternate 1
+            RHW's Wisp
           </div>
-          <div class="option" data-wisp="wss://nauka.politechnika-nova.edu.pl/wisp/">
+          <div class="option" data-wisp="wss://aluu.xyz/wisp/">
             <i class="fa-regular fa-server"></i>
-            Alternate 2
+            Aluu (unreliable)
+          </div>
+          
+          <div class="custom-server-container">
+            <h3>Custom Server</h3>
+            <p>Enter your own Wisp server URL (wss)</p>
+            <div class="custom-server-input">
+              <input type="text" id="customServerInput" placeholder="wss://anura.pro/" />
+              <button id="setCustomServer">Set Server</button>
+            </div>
+            <div class="error-message" id="customServerError">
+              Please enter a valid WSS URL (must start with wss://)
+            </div>
           </div>
         </div>
         <div class="card">
@@ -303,6 +372,10 @@
       const closePreventStatus = document.getElementById("closePreventStatus");
       const closePreventIcon = document.getElementById("closePreventIcon");
 
+      const customServerInput = document.getElementById("customServerInput");
+      const setCustomServerButton = document.getElementById("setCustomServer");
+      const customServerError = document.getElementById("customServerError");
+
       const proxGame = localStorage.getItem("proxGame");
       prxGamesStatus.textContent =
         proxGame === "true" ? "Enabled" : "Disabled";
@@ -353,6 +426,53 @@
         const cloakUrl = cloakUrlInput.value;
         localStorage.setItem("abCloakUrl", cloakUrl);
         alert("ABCloak URL saved as " + cloakUrl);
+      });
+
+      function validateWisp(url) {
+        if (!url.startsWith("wss://")) {
+          return null;
+        }
+        
+        if (!url.endsWith("/")) {
+          url += "/";
+        }
+        
+        return url;
+      }
+
+      setCustomServerButton.addEventListener("click", () => {
+        const inputUrl = customServerInput.value.trim();
+        const validatedUrl = validateWisp(inputUrl);
+        
+        if (!validatedUrl) {
+          customServerError.style.display = "block";
+          return;
+        }
+        
+        customServerError.style.display = "none";
+        
+        options.forEach((opt) => (opt.style.backgroundColor = ""));
+        
+        localStorage.setItem("proxServer", validatedUrl);
+        
+        serverNotification.textContent = `Custom server set: ${validatedUrl}`;
+        serverNotification.classList.add("show");
+        setTimeout(() => {
+          serverNotification.classList.remove("show");
+          serverNotification.textContent = "If server settings do not apply, try running CTRL+SHIFT+R.";
+        }, 5000);
+        
+        customServerInput.value = "";
+      });
+
+      customServerInput.addEventListener("input", () => {
+        customServerError.style.display = "none";
+      });
+
+      customServerInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          setCustomServerButton.click();
+        }
       });
 
       menuItems.forEach((item) => {
