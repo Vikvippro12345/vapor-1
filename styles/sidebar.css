@@ -79,7 +79,7 @@
 }
 
 .nav-text {
-  margin-left: 15px;
+  /*margin-left: 15px;*/
   opacity: 0;
   transition: all 0.27s ease, filter 0.27s ease;
 }
