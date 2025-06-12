@@ -18,7 +18,7 @@
         align-items: center;
         height: 100vh;
       }
-      .div {
+      .error-container {
         width: 65%;
         height: 80%;
         display: flex;
@@ -27,28 +27,39 @@
         padding: 20px;
         text-align: left;
       }
-      h1 {
+
+      .error-title {
         font-weight: 1000;
         font-size: 5rem;
+        color: var(--text-color);
       }
-      .body {
+
+      .error-body {
         font-weight: 500;
         font-size: 1.5rem;
+        color: var(--text-color);
       }
-      small {
+
+      .error-footer {
         color: rgba(255, 255, 255, 0.5);
+      }
+
+      a {
+        color: var(--text-color);
       }
     </style>
   </head>
-  <body>
-    <div class="div">
+  <body class="container centered">
+    <div class="error-container">
       <div class="text-div">
-        <h1>Error 404</h1>
-        <div class="body">
-          That page does not exist or was removed.
+        <h1 class="error-title">Error 404</h1>
+        <div class="error-body">
+          That page does not exist or was removed.<br /><a href="/"
+            >Go back to home</a
+          >
         </div>
       </div>
-      <small><i>VAPOR v3 - technonyte</i></small>
+      <small class="error-footer"><i>VAPOR v3 - technonyte</i></small>
     </div>
   </body>
 </html>
