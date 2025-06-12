@@ -5,6 +5,7 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 @import url("/_a/fa/css/all.min.css");
+@import url("global.css");
 
 :root {
   --bg: #0a111d;
@@ -14,6 +15,8 @@
   --primary: #a4b8db;
   --secondary: #7d93ba;
   --text-color: #d5dce8;
+  --button-bg: #2b384d;
+  --button-hover: #3c4a5d;
 }
 
 * {

@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/styles/defaults.css" />
+    <script src="/scripts/opt.js"></script>
     <style>
       * {
         box-sizing: border-box;
@@ -137,24 +138,58 @@
         opacity: 1;
       }
 
-      .dropdown {
+      .toggle-container {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 10px 15px;
-        background-color: var(--secondary-bg);
-        border-radius: 14px;
-        color: #ffffff;
-        cursor: pointer;
-        border: none;
-        width: 100%;
         margin-top: 10px;
+      }
+
+      .toggle {
+        position: relative;
+        width: 50px;
+        height: 26px;
+        background-color: #374151;
+        border-radius: 13px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .toggle.active {
+        background-color: #4caf50;
+      }
+
+      .toggle-slider {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 22px;
+        height: 22px;
+        background-color: white;
+        border-radius: 50%;
+        transition: transform 0.3s ease;
+      }
+
+      .toggle.active .toggle-slider {
+        transform: translateX(24px);
       }
 
       .input-container {
         display: flex;
-        align-items: center;
+        flex-direction: column;
         margin-top: 10px;
+      }
+
+      .input-container label {
+        font-size: 12px;
+        color: #9ca3af;
+        margin-bottom: 5px;
+        align-self: flex-start;
+      }
+
+      .input-container .input-row {
+        display: flex;
+        align-items: center;
       }
 
       .input-container input {
@@ -180,6 +215,16 @@
 
       .input-container button:hover {
         background-color: #4caf50;
+      }
+
+      select {
+        flex: 1;
+        padding: 10px;
+        border-radius: 14px;
+        background-color: var(--secondary-bg);
+        color: #ffffff;
+        border: none;
+        outline: none;
       }
 
       .custom-server-container {
@@ -260,15 +305,19 @@
       <div class="content about active">
         <div class="card">
           <h2>About VAPOR</h2>
-          <p>where games, privacy, and more come together in a clean and effortless experience.
-            <br><br>technonyte0 - creator
-            <br>mercuryworkshop - ultraviolet + wisp
-            <br>3kh0 - most of the games
-            <br>hyperbeam - chromium vm
-            <br>vidsrc - most movies
-            <br>google - gemini ai
-            <br>emulatorjs - emulator
-            <br>javascript - being annoying
+          <p>
+            where games, privacy, and more come together in a clean and
+            effortless experience. <br /><br />
+            technonyte0 - creator
+            <br />
+            evicly - developer
+            <br />
+            mercuryworkshop - ultraviolet + wisp
+            <br />
+            3kh0 - most of the games
+            <br />hyperbeam - chromium vm <br />vidsrc - most movies
+            <br />google - gemini ai <br />emulatorjs - emulator
+            <br />javascript - being annoying
           </p>
         </div>
       </div>
@@ -293,12 +342,15 @@
             <i class="fa-regular fa-server"></i>
             Aluu (unreliable)
           </div>
-          
+
           <div class="custom-server-container">
             <h3>Custom Server</h3>
             <p>Enter your own Wisp server URL (wss)</p>
             <div class="custom-server-input">
-              <input type="text" id="customServerInput" placeholder="wss://anura.pro/" />
+              <input
+                type="text"
+                id="customServerInput"
+                placeholder="wss://anura.pro/" />
               <button id="setCustomServer">Set Server</button>
             </div>
             <div class="error-message" id="customServerError">
@@ -309,38 +361,86 @@
         <div class="card">
           <h2>Prøxy Games</h2>
           <p>If certain games are blocked by your filter, try enabling this!</p>
-          <div class="dropdown" id="prxGamesToggle">
-            <span id="prxGamesStatus">Disabled</span>
-            <i class="fa-regular fa-times" id="prxGamesIcon"></i>
+          <div class="toggle-container">
+            <span>Enable Prøxy Games</span>
+            <div class="toggle" id="prxGamesToggle">
+              <div class="toggle-slider"></div>
+            </div>
           </div>
         </div>
       </div>
 
       <div class="content cloak">
         <div class="card">
-          <h2>about:blank Cloaking</h2>
+          <h2>about:blank (AB) Cloaking</h2>
           <p>
             Immediately open a "fake" browser tab with VAPOR in it. This causes
             VAPOR to not be shown in your history, and is practically
-            undetectable.<br /><br />
+            undetectable. Make sure you allow popups in your browser!<br /><br />
           </p>
-          <div class="dropdown" id="cloakToggle">
-            <span id="cloakStatus">Disabled</span>
-            <i class="fa-regular fa-times" id="cloakIcon"></i>
+          <div class="toggle-container">
+            <span>Enable AB Cloaking</span>
+            <div class="toggle" id="cloakToggle">
+              <div class="toggle-slider"></div>
+            </div>
           </div>
+
           <div class="input-container">
-            <input type="text" id="cloakUrl" value="https://google.com" />
-            <button id="saveCloakUrl">
-              <i class="fa-regular fa-check"></i>
-            </button>
+            <label for="cloakUrl">Redirect URL:</label>
+            <div class="input-row">
+              <input type="text" id="cloakUrl" value="https://google.com" />
+              <button id="saveCloakUrl">
+                <i class="fa-regular fa-check"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h2>Tab Cloaking</h2>
+          <p>Change the icon and title of the tab to a different site.</p>
+          <div class="input-container">
+            <label for="tabCloakPreset">Site:</label>
+            <div class="input-row">
+              <select id="tabCloakPreset" value="vapor">
+                <option value="vapor" selected>Vapor (Default)</option>
+
+                <option disabled>━━━ Google Services ━━━</option>
+                <option value="google">Google</option>
+                <option value="gmail">Gmail</option>
+                <option value="google-docs">Google Docs</option>
+                <option value="google-sheets">Google Sheets</option>
+                <option value="google-slides">Google Slides</option>
+                <option value="google-drive">Google Drive</option>
+                <option value="google-classroom">Google Classroom</option>
+                <option value="youtube">YouTube</option>
+
+                <option disabled>━━━ Educational Platforms ━━━</option>
+                <option value="schoology">Schoology</option>
+                <option value="canvas">Canvas</option>
+                <option value="canva">Canva</option>
+                <option value="clever">Clever</option>
+                <option value="khan-academy">Khan Academy</option>
+                <option value="kahoot">Kahoot</option>
+                <option value="gimkit">Gimkit</option>
+                <option value="blooket">Blooket</option>
+
+                <option disabled>━━━ Common Sites ━━━</option>
+                <option value="github">GitHub</option>
+                <option value="wikipedia">Wikipedia</option>
+                <option value="stack-overflow">Stack Overflow</option>
+                <option value="microsoft">Microsoft</option>
+              </select>
+            </div>
           </div>
         </div>
         <div class="card">
           <h2>Close Prevention</h2>
           <p>Prevent the browser from closing VAPOR tabs.</p>
-          <div class="dropdown" id="closePreventToggle">
-            <span id="closePreventStatus">Disabled</span>
-            <i class="fa-regular fa-times" id="closePreventIcon"></i>
+          <div class="toggle-container">
+            <span>Enable Close Prevention</span>
+            <div class="toggle" id="closePreventToggle">
+              <div class="toggle-slider"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -360,66 +460,108 @@
       const options = document.querySelectorAll(".option");
       const serverNotification = document.getElementById("serverNotification");
       const cloakToggle = document.getElementById("cloakToggle");
-      const cloakStatus = document.getElementById("cloakStatus");
-      const cloakIcon = document.getElementById("cloakIcon");
       const cloakUrlInput = document.getElementById("cloakUrl");
       const saveCloakUrlButton = document.getElementById("saveCloakUrl");
       const prxGamesToggle = document.getElementById("prxGamesToggle");
-      const prxGamesStatus = document.getElementById("prxGamesStatus");
-      const prxGamesIcon = document.getElementById("prxGamesIcon");
-
       const closePreventToggle = document.getElementById("closePreventToggle");
-      const closePreventStatus = document.getElementById("closePreventStatus");
-      const closePreventIcon = document.getElementById("closePreventIcon");
 
       const customServerInput = document.getElementById("customServerInput");
       const setCustomServerButton = document.getElementById("setCustomServer");
       const customServerError = document.getElementById("customServerError");
+      const tabCloakPreset = document.getElementById("tabCloakPreset");
 
-      const proxGame = localStorage.getItem("proxGame");
-      prxGamesStatus.textContent =
-        proxGame === "true" ? "Enabled" : "Disabled";
-      prxGamesIcon.className =
-        proxGame === "true" ? "fa-regular fa-check" : "fa-regular fa-times";
+      function applyTabCloak(presetKey) {
+        const targetWindow = window.parent !== window ? window.parent : window;
+        const targetDocument = targetWindow.document;
 
-      prxGamesToggle.addEventListener("click", () => {
-        const isEnabled = prxGamesStatus.textContent === "Enabled";
-        prxGamesStatus.textContent = isEnabled ? "Disabled" : "Enabled";
-        prxGamesIcon.className = isEnabled
-          ? "fa-regular fa-times"
-          : "fa-regular fa-check";
-        localStorage.setItem("proxGame", !isEnabled);
+        if (!window.cloakPresets) {
+          console.error("cloakPresets not loaded yet");
+          return;
+        }
+
+        const preset = window.cloakPresets[presetKey];
+
+        if (presetKey === "vapor") {
+          targetDocument.title = "VAPOR";
+
+          const existingFavicon =
+            targetDocument.querySelector("link[rel*='icon']");
+          if (existingFavicon) {
+            existingFavicon.remove();
+          }
+
+          const defaultFavicon = targetDocument.createElement("link");
+          defaultFavicon.rel = "icon";
+          defaultFavicon.href = "/icon-192.png";
+          targetDocument.head.appendChild(defaultFavicon);
+          return;
+        }
+
+        if (!preset) {
+          return;
+        }
+
+        if (preset.title) {
+          targetDocument.title = preset.title;
+        }
+
+        if (preset.favicon) {
+          const existingFavicon =
+            targetDocument.querySelector("link[rel*='icon']");
+          if (existingFavicon) {
+            existingFavicon.remove();
+          }
+
+          const newFavicon = targetDocument.createElement("link");
+          newFavicon.rel = "icon";
+          newFavicon.href = preset.favicon;
+          targetDocument.head.appendChild(newFavicon);
+        }
+      }
+
+      setTimeout(() => {
+        const savedTabCloak = localStorage.getItem("tabCloak") || "vapor";
+        tabCloakPreset.value = savedTabCloak;
+
+        applyTabCloak(savedTabCloak);
+      }, 100);
+
+      tabCloakPreset.addEventListener("change", () => {
+        const selectedPreset = tabCloakPreset.value;
+        localStorage.setItem("tabCloak", selectedPreset);
+        applyTabCloak(selectedPreset);
       });
 
-      cloakStatus.textContent =
-        localStorage.getItem("abCloak") === "true" ? "Enabled" : "Disabled";
-      cloakIcon.className =
-        localStorage.getItem("abCloak") === "true"
-          ? "fa-regular fa-check"
-          : "fa-regular fa-times";
+      const proxGame = localStorage.getItem("proxGame");
+      if (proxGame === "true") {
+        prxGamesToggle.classList.add("active");
+      }
+
+      prxGamesToggle.addEventListener("click", () => {
+        prxGamesToggle.classList.toggle("active");
+        const isEnabled = prxGamesToggle.classList.contains("active");
+        localStorage.setItem("proxGame", isEnabled);
+      });
+
+      if (localStorage.getItem("abCloak") === "true") {
+        cloakToggle.classList.add("active");
+      }
 
       cloakToggle.addEventListener("click", () => {
-        const isEnabled = cloakStatus.textContent === "Enabled";
-        cloakStatus.textContent = isEnabled ? "Disabled" : "Enabled";
-        cloakIcon.className = isEnabled
-          ? "fa-regular fa-times"
-          : "fa-regular fa-check";
-        localStorage.setItem("abCloak", !isEnabled);
+        cloakToggle.classList.toggle("active");
+        const isEnabled = cloakToggle.classList.contains("active");
+        localStorage.setItem("abCloak", isEnabled);
       });
 
       const closePrevent = localStorage.getItem("closePrevent");
-      closePreventStatus.textContent =
-        closePrevent === "true" ? "Enabled" : "Disabled";
-      closePreventIcon.className =
-        closePrevent === "true" ? "fa-regular fa-check" : "fa-regular fa-times";
+      if (closePrevent === "true") {
+        closePreventToggle.classList.add("active");
+      }
 
       closePreventToggle.addEventListener("click", () => {
-        const isEnabled = closePreventStatus.textContent === "Enabled";
-        closePreventStatus.textContent = isEnabled ? "Disabled" : "Enabled";
-        closePreventIcon.className = isEnabled
-          ? "fa-regular fa-times"
-          : "fa-regular fa-check";
-        localStorage.setItem("closePrevent", !isEnabled);
+        closePreventToggle.classList.toggle("active");
+        const isEnabled = closePreventToggle.classList.contains("active");
+        localStorage.setItem("closePrevent", isEnabled);
       });
 
       saveCloakUrlButton.addEventListener("click", () => {
@@ -432,36 +574,37 @@
         if (!url.startsWith("wss://")) {
           return null;
         }
-        
+
         if (!url.endsWith("/")) {
           url += "/";
         }
-        
+
         return url;
       }
 
       setCustomServerButton.addEventListener("click", () => {
         const inputUrl = customServerInput.value.trim();
         const validatedUrl = validateWisp(inputUrl);
-        
+
         if (!validatedUrl) {
           customServerError.style.display = "block";
           return;
         }
-        
+
         customServerError.style.display = "none";
-        
+
         options.forEach((opt) => (opt.style.backgroundColor = ""));
-        
+
         localStorage.setItem("proxServer", validatedUrl);
-        
+
         serverNotification.textContent = `Custom server set: ${validatedUrl}`;
         serverNotification.classList.add("show");
         setTimeout(() => {
           serverNotification.classList.remove("show");
-          serverNotification.textContent = "If server settings do not apply, try running CTRL+SHIFT+R.";
+          serverNotification.textContent =
+            "If server settings do not apply, try running CTRL+SHIFT+R.";
         }, 5000);
-        
+
         customServerInput.value = "";
       });
 

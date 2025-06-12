@@ -1,5 +1,11 @@
 [
   {
+    "id": "vortex",
+    "name": "Vortex",
+    "url": "https://vortexos.net/",
+    "img": "https://vortexos.net/img/cover.png"
+  },
+  {
     "id": "ubyis",
     "name": "UBYIS",
     "url": "https://ubyis.org/",
@@ -40,12 +46,6 @@
     "name": "Sunny's Gym",
     "url": "https://sunnysgym.shop/",
     "img": "https://benrogo.net/partners/logos/sunnys_gym_240x240.webp"
-  },
-  {
-    "id": "vortex",
-    "name": "Vortex",
-    "url": "https://vortexos.net/",
-    "img": "https://vortexos.net/img/vortex.png"
   },
   {
     "id": "catto",
