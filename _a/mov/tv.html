@@ -178,7 +178,7 @@
             </select>
         </div>
         <video id="player">
-            Your browser does not support the video tag.
+            ur browser is ass ong
         </video>
         <div class="progress-container">
             <div class="progress-hitbox"></div>
@@ -224,7 +224,6 @@
                 
                 streams = data.streams;
                 
-                // Setup quality options
                 const qualities = ['480p', '720p', '1080p'];
                 qualitySelect.innerHTML = '<option value="" disabled>Select Quality</option>';
                 
@@ -237,7 +236,6 @@
                     }
                 });
 
-                // Select default quality (1080p if available)
                 let defaultQuality = 2;
                 if (!streams[defaultQuality]) {
                     defaultQuality = streams.length > 1 ? 1 : 0;
@@ -260,7 +258,6 @@
                 const data = await response.json();
                 document.title = `${data.name} - VAPOR TV Player`;
                 
-                // Setup seasons
                 seasonSelect.innerHTML = '<option value="" disabled selected>Select Season</option>';
                 for (let i = 1; i <= data.number_of_seasons; i++) {
                     const option = document.createElement('option');
@@ -286,7 +283,6 @@
                 const response = await fetch(`https://api.themoviedb.org/3/tv/${showId}/season/${season}?api_key=${movSec}`);
                 const data = await response.json();
                 
-                // Setup episodes
                 data.episodes.forEach((episode) => {
                     const option = document.createElement('option');
                     option.value = episode.episode_number;
@@ -380,7 +376,7 @@
             }
         });
 
-        // Initial load
+        // Init
         loadShowInfo();
     </script>
 </body>

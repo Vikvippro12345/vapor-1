@@ -156,7 +156,7 @@
     <div class="loading" id="loading">Loading...</div>
     <div class="video-container">
         <video id="player" autoplay>
-            Your browser does not support the video tag.
+            ur browser is ass ong
         </video>
         <div class="top-controls">
             <select id="quality">
@@ -197,7 +197,6 @@
         const movieId = urlParams.get('id');
         let streams = [];
 
-        // Custom controls
         playPauseBtn.addEventListener('click', togglePlay);
         progressBar.addEventListener('click', handleProgressBarClick);
         player.addEventListener('timeupdate', updateProgress);
@@ -262,7 +261,6 @@
                 const data = await response.json();
                 streams = data.streams;
                 
-                // Setup quality options
                 const qualities = ['480p', '720p', '1080p'];
                 qualities.forEach((quality, index) => {
                     if (streams[index]) {
@@ -273,8 +271,7 @@
                     }
                 });
 
-                // Select default quality (1080p if available)
-                let defaultQuality = 2; // Index for 1080p
+                let defaultQuality = 2; // 1080p
                 if (!streams[defaultQuality]) {
                     defaultQuality = streams.length > 1 ? 1 : 0;
                 }
