@@ -11,13 +11,12 @@
   width: 65px;
   background: #1a1e26;
   padding: 10px 0;
-  transition: 0.27s ease;
+  transition: 0.24s ease;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   z-index: 99;
-  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
 }
 
 .sidebar:hover {
@@ -160,4 +159,83 @@
   opacity: 1;
   visibility: visible;
   pointer-events: none;
+}
+
+.nav-category-wrapper {
+  position: relative;
+  width: 100%;
+  transition: all 0.13s ease-in-out;
+}
+
+.nav-category {
+  cursor: pointer;
+}
+
+.chevron-icon {
+  transition: transform 0.09s ease-in-out, opacity 0.09s;
+  font-size: 16px;
+  margin-left: 0px;
+  vertical-align: middle;
+}
+
+.nav-category-wrapper.expanded .chevron-icon {
+  transform: rotate(180deg);
+}
+
+.nav-nested-list {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.11s ease-in-out, opacity 0.08s ease-in-out;
+  margin-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav-nested-list.fade-in {
+  animation: fadeInNavNested 0.08s ease-in-out;
+}
+
+@keyframes fadeInNavNested {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.nav-category-wrapper.expanded .nav-nested-list {
+  opacity: 1;
+}
+
+.nav-nested-item {
+  background: none !important;
+  margin-left: 0;
+  padding-left: 32px !important;
+  font-size: 0.98em;
+  border-radius: 8px;
+  transition: background 0.09s, color 0.09s, padding 0.09s ease-in-out;
+  opacity: 0;
+  animation: fadeInNavNested 0.08s ease-in-out forwards;
+  animation-delay: 0.02s;
+}
+
+.nav-nested-list .nav-nested-item {
+  opacity: 1;
+}
+
+.nav-nested-item:hover {
+  background: rgba(255,255,255,0.07) !important;
+  color: #fff;
+}
+
+.nav-divider {
+  height: 1.5px;
+  background: rgba(255, 255, 255, 0.15);
+  margin: 8px 18px;
+  transition: 0.24s ease;
+  width: 235px;
+}
+
+.sidebar:not(:hover) .nav-divider {
+  width: 30px;
+  margin: 8px 18px;
 }

@@ -3,11 +3,14 @@
  */
 
 const navItems = [
-  { title: "Home", icon: "fa-home", url: "page/home.html" },
-  { title: "Games", icon: "fa-gamepad-modern", url: "page/games.html" },
-  { title: "VM", icon: "fa-desktop", url: "page/vm-priv.html" },
-  { title: "Chat", icon: "fa-comments-alt", url: "/chat.html" }, // AHHGG
-  { title: "Browser", icon: "fa-search", url: "/scram.html" },
-  { title: "Apps", icon: "fa-grid", url: "page/apps.html" },
-  { title: "Movies", icon: "fa-clapperboard", url: "page/mov.html" },
+  { title: "Home", icon: "fa-home", url: "page/home.html", type: "item" },
+  { title: "VM", icon: "fa-desktop", url: "page/vm-priv.html", type: "item" },
+  { title: "Chat", icon: "fa-comments-alt", url: "/chat.html", type: "item" },
+  { type: "divider" },
+  { title: "Games", icon: "fa-gamepad", url: "page/games.html", type: "item" },
+  { title: "Emulators", icon: "fa-cube", url: "/page/apps/emu.html", type: "item" },
+  { type: "divider" },
+  { title: "Movies", icon: "fa-film", url: "page/mov.html", type: "item" },
+  { title: "TV Shows", icon: "fa-tv", url: "page/tv.html", type: "item" },
+  { title: "Music", icon: "fa-music", url: "page/apps/music.html", type: "item" },
 ];
