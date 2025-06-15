@@ -1146,7 +1146,22 @@
         });
       }
 
-      messageElement.innerHTML = processedMessage;
+      messageElement.textContent = data.message;
+      const mentionRegex = /@(\w+)/g;
+      if (data.message.match(mentionRegex)) {
+        messageElement.innerHTML = '';
+        const parts = data.message.split(mentionRegex);
+        for (let i = 0; i < parts.length; i++) {
+          if (i % 2 === 0) {
+            messageElement.appendChild(document.createTextNode(parts[i]));
+          } else {
+            const mention = document.createElement('span');
+            mention.className = 'mention';
+            mention.textContent = '@' + parts[i];
+            messageElement.appendChild(mention);
+          }
+        }
+      }
       currentGroup.appendChild(messageElement);
       lastMessageTime = messageTime;
 
