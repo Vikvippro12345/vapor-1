@@ -3,4 +3,4 @@ let _CONFIG = {
   bareurl: "https://aluu.xyz/bare/",
 };
 
-// Scramjet Configurationahahaajsasajsjsjdsjdj
+// SCRAMMMMM JETTTT Configurationahahaajsasajsjsjdsjdj
