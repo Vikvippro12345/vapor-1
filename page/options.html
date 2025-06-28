@@ -151,10 +151,71 @@
         margin-top: 10px;
       }
 
-      .input-container {
+      .toggle-slider {
         display: flex;
         align-items: center;
+        justify-content: space-between;
         margin-top: 10px;
+        width: 100%;
+      }
+
+      .slider {
+        position: relative;
+        width: 50px;
+        height: 24px;
+        background-color: #374151;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .slider.active {
+        background-color: #10b981;
+      }
+
+      .slider-knob {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 20px;
+        height: 20px;
+        background-color: white;
+        border-radius: 50%;
+        transition: transform 0.3s;
+      }
+
+      .slider.active .slider-knob {
+        transform: translateX(26px);
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slideOut {
+        from {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        to {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+      }
+
+      .content {
+        animation: slideIn 0.5s ease-out;
+      }
+
+      .content.exit {
+        animation: slideOut 0.5s ease-out;
       }
 
       .input-container input {
@@ -205,6 +266,7 @@
           <h2>About VAPOR</h2>
           <p>where games, privacy, and more come together in a clean and effortless experience.
             <br><br>technonyte0 - creator
+            <br>Evicly - developer
             <br>mercuryworkshop - ultraviolet + wisp
             <br>3kh0 - most of the games
             <br>hyperbeam - chromium vm
@@ -240,9 +302,11 @@
         <div class="card">
           <h2>Prøxy Games</h2>
           <p>If certain games are blocked by your filter, try enabling this!</p>
-          <div class="dropdown" id="prxGamesToggle">
-            <span id="prxGamesStatus">Disabled</span>
-            <i class="fa-regular fa-times" id="prxGamesIcon"></i>
+          <div class="toggle-slider">
+            <span>Enable Prøxy Games</span>
+            <div class="slider" id="prxGamesSlider">
+              <div class="slider-knob"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -253,11 +317,13 @@
           <p>
             Immediately open a "fake" browser tab with VAPOR in it. This causes
             VAPOR to not be shown in your history, and is practically
-            undetectable.<br /><br />
+            undetectable. Make sure you allow popups in your browser.<br /><br />
           </p>
-          <div class="dropdown" id="cloakToggle">
-            <span id="cloakStatus">Disabled</span>
-            <i class="fa-regular fa-times" id="cloakIcon"></i>
+          <div class="toggle-slider">
+            <span>Enable Cloaking</span>
+            <div class="slider" id="cloakSlider">
+              <div class="slider-knob"></div>
+            </div>
           </div>
           <div class="input-container">
             <input type="text" id="cloakUrl" value="https://google.com" />
@@ -269,9 +335,11 @@
         <div class="card">
           <h2>Close Prevention</h2>
           <p>Prevent the browser from closing VAPOR tabs.</p>
-          <div class="dropdown" id="closePreventToggle">
-            <span id="closePreventStatus">Disabled</span>
-            <i class="fa-regular fa-times" id="closePreventIcon"></i>
+          <div class="toggle-slider">
+            <span>Enable Close Prevention</span>
+            <div class="slider" id="closePreventSlider">
+              <div class="slider-knob"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -290,62 +358,54 @@
       const contentDivs = document.querySelectorAll(".content");
       const options = document.querySelectorAll(".option");
       const serverNotification = document.getElementById("serverNotification");
-      const cloakToggle = document.getElementById("cloakToggle");
-      const cloakStatus = document.getElementById("cloakStatus");
-      const cloakIcon = document.getElementById("cloakIcon");
+      const cloakSlider = document.getElementById("cloakSlider");
       const cloakUrlInput = document.getElementById("cloakUrl");
       const saveCloakUrlButton = document.getElementById("saveCloakUrl");
-      const prxGamesToggle = document.getElementById("prxGamesToggle");
-      const prxGamesStatus = document.getElementById("prxGamesStatus");
-      const prxGamesIcon = document.getElementById("prxGamesIcon");
+      const prxGamesSlider = document.getElementById("prxGamesSlider");
 
-      const closePreventToggle = document.getElementById("closePreventToggle");
-      const closePreventStatus = document.getElementById("closePreventStatus");
-      const closePreventIcon = document.getElementById("closePreventIcon");
+      const closePreventSlider = document.getElementById("closePreventSlider");
 
       const proxGame = localStorage.getItem("proxGame");
-      prxGamesStatus.textContent =
-        proxGame === "true" ? "Enabled" : "Disabled";
-      prxGamesIcon.className =
-        proxGame === "true" ? "fa-regular fa-check" : "fa-regular fa-times";
+      if (proxGame === "true") {
+        prxGamesSlider.classList.add("active");
+      }
 
-      prxGamesToggle.addEventListener("click", () => {
-        const isEnabled = prxGamesStatus.textContent === "Enabled";
-        prxGamesStatus.textContent = isEnabled ? "Disabled" : "Enabled";
-        prxGamesIcon.className = isEnabled
-          ? "fa-regular fa-times"
-          : "fa-regular fa-check";
+      prxGamesSlider.addEventListener("click", () => {
+        const isEnabled = prxGamesSlider.classList.contains("active");
+        if (isEnabled) {
+          prxGamesSlider.classList.remove("active");
+        } else {
+          prxGamesSlider.classList.add("active");
+        }
         localStorage.setItem("proxGame", !isEnabled);
       });
 
-      cloakStatus.textContent =
-        localStorage.getItem("abCloak") === "true" ? "Enabled" : "Disabled";
-      cloakIcon.className =
-        localStorage.getItem("abCloak") === "true"
-          ? "fa-regular fa-check"
-          : "fa-regular fa-times";
+      if (localStorage.getItem("abCloak") === "true") {
+        cloakSlider.classList.add("active");
+      }
 
-      cloakToggle.addEventListener("click", () => {
-        const isEnabled = cloakStatus.textContent === "Enabled";
-        cloakStatus.textContent = isEnabled ? "Disabled" : "Enabled";
-        cloakIcon.className = isEnabled
-          ? "fa-regular fa-times"
-          : "fa-regular fa-check";
+      cloakSlider.addEventListener("click", () => {
+        const isEnabled = cloakSlider.classList.contains("active");
+        if (isEnabled) {
+          cloakSlider.classList.remove("active");
+        } else {
+          cloakSlider.classList.add("active");
+        }
         localStorage.setItem("abCloak", !isEnabled);
       });
 
       const closePrevent = localStorage.getItem("closePrevent");
-      closePreventStatus.textContent =
-        closePrevent === "true" ? "Enabled" : "Disabled";
-      closePreventIcon.className =
-        closePrevent === "true" ? "fa-regular fa-check" : "fa-regular fa-times";
+      if (closePrevent === "true") {
+        closePreventSlider.classList.add("active");
+      }
 
-      closePreventToggle.addEventListener("click", () => {
-        const isEnabled = closePreventStatus.textContent === "Enabled";
-        closePreventStatus.textContent = isEnabled ? "Disabled" : "Enabled";
-        closePreventIcon.className = isEnabled
-          ? "fa-regular fa-times"
-          : "fa-regular fa-check";
+      closePreventSlider.addEventListener("click", () => {
+        const isEnabled = closePreventSlider.classList.contains("active");
+        if (isEnabled) {
+          closePreventSlider.classList.remove("active");
+        } else {
+          closePreventSlider.classList.add("active");
+        }
         localStorage.setItem("closePrevent", !isEnabled);
       });
 
