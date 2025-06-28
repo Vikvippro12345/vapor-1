@@ -348,7 +348,7 @@
     <div id="connectionStatus" class="connection-status"></div>
 
     <script type="module">
-      // im sigma, this is almost ALL domain-side >:)
+      // no external cdns L
       import Hyperbeam from "/v0/vm/index.js";
 
       const createSessionBtn = document.getElementById("createSession");
@@ -368,6 +368,21 @@
       let isTerminating = false;
       let hyperbeamInstance = null;
       let adminToken = null;
+      let csrfToken = null;
+
+      async function getCSRFToken() {
+        try {
+          const response = await fetch(`${API_URL}/v0/vm/csrf-token`);
+          const data = await response.json();
+          csrfToken = data.csrfToken;
+          return csrfToken;
+        } catch (error) {
+          console.error('Failed to get CSRF token:', error);
+          throw error;
+        }
+      }
+
+      getCSRFToken();
 
       function updateCountdownDisplay(seconds) {
         const minutes = Math.floor(seconds / 60);
@@ -389,7 +404,6 @@
           status.style.display = "block";
         }
 
-
         if (hyperbeamInstance) {
           try {
             await hyperbeamInstance.destroy();
@@ -403,10 +417,15 @@
           const controller = new AbortController();
           const timeoutId = setTimeout(() => controller.abort(), 3000);
 
+          if (!csrfToken) {
+            await getCSRFToken();
+          }
+
           const response = await fetch(`${API_URL}/v0/vm/terminate`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              "x-csrf-token": csrfToken
             },
             body: JSON.stringify({
               sessionId: currentSessionId,
@@ -440,6 +459,8 @@
 
         resetSessionUI();
         isTerminating = false;
+        
+        getCSRFToken();
       }
 
       function resetSessionUI() {
@@ -461,17 +482,29 @@
       let isUnloading = false;
       
       window.addEventListener("beforeunload", (e) => {
-        if (currentSessionId && !isTerminating) {
+        if (currentSessionId && !isTerminating && csrfToken) {
           isUnloading = true;
-          const data = JSON.stringify({ sessionId: currentSessionId });
-          navigator.sendBeacon(`${API_URL}/v0/vm/terminate`, data);
+          const data = JSON.stringify({ 
+            sessionId: currentSessionId,
+            csrfToken: csrfToken 
+          });
+          
+          // meet "blob". he is a Blob with a type of application/json.
+          const blob = new Blob([data], { type: 'application/json' });
+          // he is important, not sure why, but, he is.
+          navigator.sendBeacon(`${API_URL}/v0/vm/terminate`, blob);
         }
       });
 
       window.addEventListener("unload", (e) => {
-        if (currentSessionId && !isUnloading) {
-          const data = JSON.stringify({ sessionId: currentSessionId });
-          navigator.sendBeacon(`${API_URL}/v0/vm/terminate`, data);
+        if (currentSessionId && !isUnloading && csrfToken) {
+          const data = JSON.stringify({ 
+            sessionId: currentSessionId,
+            csrfToken: csrfToken 
+          });
+          
+          const blob = new Blob([data], { type: 'application/json' });
+          navigator.sendBeacon(`${API_URL}/v0/vm/terminate`, blob);
         }
       });
 
@@ -512,10 +545,15 @@
         document.getElementById("introContainer").style.display = "none";
 
         try {
+          if (!csrfToken) {
+            await getCSRFToken();
+          }
+
           const response = await fetch(`${API_URL}/v0/vm/create`, {
             method: "POST",
             headers: {
-              "Content-Type": "application/json"
+              "Content-Type": "application/json",
+              "x-csrf-token": csrfToken
             },
             body: JSON.stringify({})
           });
@@ -529,6 +567,8 @@
             createSessionBtn.innerHTML = '<i class="fas fa-redo"></i> Try Again';
             document.getElementById("introContainer").style.display = "flex";
             
+            await getCSRFToken();
+            
             setTimeout(() => {
               status.style.display = "none";
             }, 5000);
@@ -537,7 +577,6 @@
 
           const embedUrl = data.embed_url;
           currentSessionId = data.session_id || embedUrl.split('/').pop();
-          
           
           // okay to the skids out there
           // the admin token is NOT confidential
@@ -556,12 +595,11 @@
           let timeLeft = 720;
           updateCountdownDisplay(timeLeft);
           
-          // yes ik its fake but who wants to see sum ugly a- screen
+//asdfasf          
           setTimeout(() => {
             loadingOverlay.style.display = "none";
           }, 800);
 
-          
           try {
             hyperbeamInstance = await Hyperbeam(hyperbeamContainer, embedUrl, {
               timeout: 720,
@@ -604,6 +642,8 @@
             document.getElementById("introContainer").style.display = "flex";
             vmSessionContainer.style.display = "none";
             
+            await getCSRFToken();
+            
             setTimeout(() => {
               status.style.display = "none";
             }, 5000);
@@ -631,6 +671,8 @@
           createSessionBtn.disabled = false;
           createSessionBtn.innerHTML = '<i class="fas fa-desktop"></i> Start Session';
           document.getElementById("introContainer").style.display = "flex";
+          
+          await getCSRFToken();
           
           setTimeout(() => {
             status.style.display = "none";
