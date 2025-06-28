@@ -5,7 +5,7 @@
  */
 
 const cloakPresets = {
-  vapor: null,
+  vapor: null, // null.
 
   google: { title: "Google", favicon: "https://www.google.com/favicon.ico" },
   gmail: {

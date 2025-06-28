@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VAPOR Chat v2</title>
   <script src="/chat/socket.io/socket.io.js"></script>
-  <link rel="stylesheet" href="https://vapor.my/_a/fa/css/all.min.css" />
+  <link rel="stylesheet" href="/_a/fa/css/all.min.css" />
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 
@@ -1146,7 +1146,15 @@
         });
       }
 
-      messageElement.innerHTML = processedMessage;
+      messageElement.textContent = data.message;
+      if (data.message.includes('@')) {
+        const safeHtml = data.message
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/@(\w+)/g, '<span class="mention">@$1</span>');
+        messageElement.innerHTML = safeHtml;
+      }
       currentGroup.appendChild(messageElement);
       lastMessageTime = messageTime;
 
@@ -1185,7 +1193,14 @@
       messageElement.className = `message ${isOwnMessage ? "own" : "other"
         }`;
       messageElement.textContent = data.message;
-
+      if (data.message.includes('@')) {
+        const safeHtml = data.message
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/@(\w+)/g, '<span class="mention">@$1</span>');
+        messageElement.innerHTML = safeHtml;
+      }
       currentGroup.appendChild(messageElement);
       lastMessageTime = messageTime;
 
