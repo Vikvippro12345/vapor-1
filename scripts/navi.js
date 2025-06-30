@@ -1,5 +1,8 @@
 /**
  * these ARE the navigation items for the sidebar
+ * 
+ * Badges:
+ * <span class='badge'>Updated</span>
  */
 
 const navItems = [

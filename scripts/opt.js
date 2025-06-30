@@ -5,8 +5,7 @@
  */
 
 const cloakPresets = {
-  vapor: null, // null.
-
+  vapor: { title: "VAPOR v3", favicon: "/_a/logo.new.png" },
   google: { title: "Google", favicon: "https://www.google.com/favicon.ico" },
   gmail: {
     title: "Gmail",
@@ -107,7 +106,7 @@ window.cloakPresets = cloakPresets;
 function applyTabCloak(presetKey) {
   const preset = cloakPresets[presetKey];
 
-  if (!preset || presetKey === "vapor") {
+  if (!preset) {
     return;
   }
 
@@ -129,12 +128,31 @@ function applyTabCloak(presetKey) {
 }
 
 (function () {
+  const reducedMotion = localStorage.getItem("reducedMotion");
+
+  if (reducedMotion === "true") {
+    const style = document.createElement("style");
+    style.innerHTML = `
+      * {
+        animation: none !important;
+        transition: none !important;
+      }
+      @keyframes none {
+        from { opacity: 1; }
+        to { opacity: 1; }
+      }
+      *[style*="animation"] {
+        animation-duration: 0.001s !important;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
   if (window !== window.top) {
     return;
   }
-
   const savedTabCloak = localStorage.getItem("tabCloak");
-  if (savedTabCloak && savedTabCloak !== "vapor") {
+  if (savedTabCloak) {
     applyTabCloak(savedTabCloak);
   }
 
@@ -145,16 +163,19 @@ function applyTabCloak(presetKey) {
     const originalHostname = location.hostname;
 
     const newTab = window.open("about:blank", "_blank");
-    newTab.document.write(`
+    if (newTab) {
+      newTab.document.write(`
             <style>
               body { margin: 0; padding: 0; overflow: hidden; }
               iframe { width: 100vw; height: 100vh; border: none; }
             </style>
             <iframe src="https://${originalHostname}"></iframe>
       `);
-    newTab.document.close();
+      newTab.document.close();
 
-    window.location.href = cloakUrl;
+      window.location.href = cloakUrl;
+    }
+
   }
 
   const closePrevent = localStorage.getItem("closePrevent");

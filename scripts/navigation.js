@@ -2,6 +2,7 @@
  * this creates the navigation items in the sidebar
  */
 
+
 const navContainer = document.getElementById("nav-items");
 
 let openCategoryWrapper = null;
