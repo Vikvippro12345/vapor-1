@@ -9,7 +9,7 @@
   left: 0;
   height: 100vh;
   width: 65px;
-  background: #1a1e26;
+  background: var(--fourth-bg);
   padding: 10px 0;
   transition: 0.24s ease;
   overflow: hidden;
@@ -75,17 +75,22 @@
   font-size: 16.5px;
   color: rgba(255, 255, 255, 0.8);
   transition: 0.15s ease;
+  padding: 0;
 }
 
 .nav-text {
   /*margin-left: 15px;*/
   opacity: 0;
   transition: all 0.27s ease, filter 0.27s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .sidebar:hover .nav-text {
   opacity: 1;
   filter: blur(0px);
+  color: #fff;
 }
 
 .sidebar:hover .icon-container {
@@ -155,7 +160,7 @@
   z-index: 98;
 }
 
-.sidebar:hover + .overlay {
+.sidebar:hover+.overlay {
   opacity: 1;
   visibility: visible;
   pointer-events: none;
@@ -198,8 +203,15 @@
 }
 
 @keyframes fadeInNavNested {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .nav-category-wrapper.expanded .nav-nested-list {
@@ -223,7 +235,7 @@
 }
 
 .nav-nested-item:hover {
-  background: rgba(255,255,255,0.07) !important;
+  background: rgba(255, 255, 255, 0.07) !important;
   color: #fff;
 }
 

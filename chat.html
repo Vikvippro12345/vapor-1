@@ -7,6 +7,7 @@
   <title>VAPOR Chat v2</title>
   <script src="/chat/socket.io/socket.io.js"></script>
   <link rel="stylesheet" href="/_a/fa/css/all.min.css" />
+  <script src="/scripts/theme.js"></script>
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 
@@ -19,8 +20,8 @@
 
     body {
       font-family: "Inter", Roboto, sans-serif;
-      background-color: #0a111d;
-      color: rgba(255, 255, 255, 0.9);
+      background-color: var(--bg);
+      color: var(--secondary-text-color);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -32,7 +33,7 @@
       display: flex;
       width: 600px;
       height: 500px;
-      background-color: rgba(255, 255, 255, 0.08);
+      background-color: var(--fourth-bg);
       border-radius: 10px;
       overflow: hidden;
     }
