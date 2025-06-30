@@ -30,8 +30,28 @@
 
       .error-title {
         font-weight: 1000;
-        font-size: 5rem;
-        color: var(--text-color);
+        font-size: 10rem;
+        background: linear-gradient(
+          90deg,
+          transparent 0%,
+          transparent 20%,
+          #6366f1 85%,
+          #8fd7eb 100%
+        );
+        background-size: 200% 100%;
+        background-position: 0% 0;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: gradientSlide 2s ease-in-out forwards;
+      }
+
+      @keyframes gradientSlide {
+        0% {
+          background-position: 0% 0;
+        }
+        100% {
+          background-position: 165% 0;
+        }
       }
 
       .error-body {
@@ -52,9 +72,9 @@
   <body class="container centered">
     <div class="error-container">
       <div class="text-div">
-        <h1 class="error-title">Error 404</h1>
+        <h1 class="error-title">404</h1>
         <div class="error-body">
-          That page does not exist or was removed.<br /><a href="/"
+          That page does not exist or was removed.<br /><br><a href="/"
             >Go back to home</a
           >
         </div>
