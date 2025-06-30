@@ -4,9 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="/styles/defaults.css" />
-  <script src="/scripts/opt.js"></script>
-  <script src="/scripts/theme.js"></script>
+  <link rel="stylesheet" href="https://vapor.my/styles/defaults.css" />
+  <script src="https://vapor.my/scripts/opt.js"></script>
+  <script src="https://vapor.my/scripts/theme.js"></script>
   <style>
     .title,
     button {
@@ -40,13 +40,12 @@
 
     .content-container {
       display: flex;
+      flex-direction: row;
       justify-content: center;
       align-items: center;
       width: 100%;
-      max-width: 1200px;
       padding: 16px;
       gap: 25px;
-      flex-wrap: nowrap;
     }
 
     .left-container,
@@ -55,12 +54,12 @@
       display: flex;
       flex-direction: column;
       background: var(--fourth-bg);
-      width: calc(50% - 12.5px);
-      flex-shrink: 0;
+      width: 35%;
       border-radius: 12px;
       padding: 24px;
       text-align: left;
       justify-content: space-between;
+      height: 90%;
     }
 
     .button-container,
