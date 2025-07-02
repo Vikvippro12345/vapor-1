@@ -12,7 +12,7 @@
         padding: 0;
         height: 100%;
         font-family: "Inter", Arial, sans-serif;
-        background: transparent;
+        background: #0a111d;
         color: white;
       }
 
@@ -66,7 +66,7 @@
 
       .game-grid {
         display: grid;
-        grid-template-columns: repeat(3, 320px);
+        grid-template-columns: repeat(3, 300px);
         gap: 15px;
         justify-content: center;
         padding: 20px;
@@ -76,7 +76,7 @@
 
       .game {
         position: relative;
-        width: 320px;
+        width: 300px;
         aspect-ratio: 16 / 5;
         background-size: cover;
         background-position: center;
@@ -147,12 +147,12 @@
         font-size: 15px;
         color: rgba(255, 255, 255, 0.8);
       }
-      #ad {
-        position: fixed;
-        right: 20px;
-        top: 50%;
-        transform: translateY(-50%);
-        border-radius: 10px;
+      iframe {
+          position: fixed;
+          right: 10px;
+          top: 50%;
+          transform: translateY(-50%);
+          z-index: 10000;
       }
     </style>
     <style>
@@ -168,6 +168,16 @@
   </head>
   <body>
     <div id="particles-js"></div>
+    <script type="text/javascript">
+	atOptions = {
+		'key' : '49a60faba7ae77b3c94109cdd812b04d',
+		'format' : 'iframe',
+		'height' : 600,
+		'width' : 160,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//www.highperformanceformat.com/49a60faba7ae77b3c94109cdd812b04d/invoke.js"></script>
     <div class="content">
       <div class="filter-container">
         <input
@@ -178,10 +188,6 @@
           disabled
         />
       </div>
-      <small
-        >Gầme images are being added.<br />All gầmes should function
-        normally.</small
-      >
       <div class="progress-container" id="progressContainer">
         <div class="progress-bar">
           <div class="progress-bar-fill" id="progressBarFill"></div>
@@ -190,7 +196,6 @@
       </div>
       <div class="game-grid" id="gameGrid" style="opacity: 0"></div>
     </div>
-    <iframe id="ad" data-aa='2395310' src='//ad.a-ads.com/2395310?size=120x600' style='width:120px; height:600px; border:0px; padding:0; overflow:hidden; background-color: transparent;'></iframe>
     <script>
       let games = [];
       let activeFilters = [];
