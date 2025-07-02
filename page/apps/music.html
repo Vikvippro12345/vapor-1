@@ -425,10 +425,28 @@
       z-index: -1;
       filter: brightness(0.1);
     }
+    
+    iframe {
+        position: fixed;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 10000;
+    }
   </style>
 </head>
 
 <body>
+    <script type="text/javascript">
+	atOptions = {
+		'key' : '49a60faba7ae77b3c94109cdd812b04d',
+		'format' : 'iframe',
+		'height' : 600,
+		'width' : 160,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//www.highperformanceformat.com/49a60faba7ae77b3c94109cdd812b04d/invoke.js"></script>
   <div id="ambienceOverlay"
     style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: -1; filter: blur(75px); opacity: 0;"></div>
   <div class="search-container">
