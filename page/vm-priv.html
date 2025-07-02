@@ -4,9 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="https://vapor.my/styles/defaults.css" />
-  <script src="https://vapor.my/scripts/opt.js"></script>
-  <script src="https://vapor.my/scripts/theme.js"></script>
+  <link rel="stylesheet" href="/styles/defaults.css" />
+  <script src="/scripts/opt.js"></script>
+  <script src="/scripts/theme.js"></script>
   <style>
     .title,
     button {
@@ -59,7 +59,12 @@
       padding: 24px;
       text-align: left;
       justify-content: space-between;
-      height: 90%;
+      height: 80%;
+    }
+    
+    .right-container {
+        display: flex;
+        align-items: space-between;
     }
 
     .button-container,
@@ -307,14 +312,7 @@
       }
     }
 
-    #ad {
-      border-radius: 10px;
-    }
-
-    .ad-wrapper {
-      position: absolute;
-      bottom: 275px;
-    }
+    
 
     .connection-status {
       display: none !important;
@@ -372,15 +370,16 @@
           </div>
         </button>
       </div>
-      <!-- no ad ur welcome -->
-      <!-- <div class="ad-wrapper">
-          <iframe
-            id="ad"
-            data-aa="2395464"
-            src="//ad.a-ads.com/2395464?size=300x250"
-            style="width:300px; height:250px; border:0; padding:0; overflow:hidden; background-color:transparent;"
-          ></iframe>
-        </div> -->
+      <script type="text/javascript">
+	atOptions = {
+		'key' : '286a70d6a6da59128b6e3086dfaa5835',
+		'format' : 'iframe',
+		'height' : 250,
+		'width' : 300,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//www.highperformanceformat.com/286a70d6a6da59128b6e3086dfaa5835/invoke.js"></script>
     </div>
   </div>
 
