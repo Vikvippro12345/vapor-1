@@ -978,7 +978,14 @@
 
       if (onlineCountElement && onlineTooltipElement) {
         onlineCountElement.childNodes[0].textContent = `${onlineUsers.length} online`;
-        onlineTooltipElement.textContent = onlineUsers.join("\n");
+        const crownUsers = ['tech', 'techno', 'technonyte'];
+        const formattedUsers = onlineUsers.map(user => {
+          if (crownUsers.includes(user.toLowerCase())) {
+            return `👑 ${user}`;
+          }
+          return user;
+        });
+        onlineTooltipElement.textContent = formattedUsers.join("\n");
       }
     }
 
@@ -1063,7 +1070,12 @@
         dmBtnContent.className = "dm-btn-content";
 
         const usernameSpan = document.createElement("span");
-        usernameSpan.textContent = username;
+        const crownUsers = ['tech', 'techno', 'technonyte'];
+        if (crownUsers.includes(username.toLowerCase())) {
+          usernameSpan.innerHTML = `${username} <i class="fas fa-crown" style="color: #ffd700;"></i>`;
+        } else {
+          usernameSpan.textContent = username;
+        }
         dmBtnContent.appendChild(usernameSpan);
 
         const unreadCount = unreadCounts.get(username) || 0;
@@ -1123,7 +1135,12 @@
         if (!isOwnMessage) {
           const usernameLabel = document.createElement("div");
           usernameLabel.className = "username-label";
-          usernameLabel.textContent = data.username;
+          const crownUsers = ['tech', 'techno', 'technonyte'];
+          if (crownUsers.includes(data.username.toLowerCase())) {
+            usernameLabel.innerHTML = `${data.username} <i class="fas fa-crown" style="color: #ffd700;"></i>`;
+          } else {
+            usernameLabel.textContent = data.username;
+          }
           messageGroup.appendChild(usernameLabel);
         }
 
@@ -1180,7 +1197,12 @@
         if (!isOwnMessage) {
           const usernameLabel = document.createElement("div");
           usernameLabel.className = "username-label";
-          usernameLabel.textContent = data.from;
+          const crownUsers = ['tech', 'techno', 'technonyte'];
+          if (crownUsers.includes(data.from.toLowerCase())) {
+            usernameLabel.innerHTML = `${data.from} <i class="fas fa-crown" style="color: #ffd700;"></i>`;
+          } else {
+            usernameLabel.textContent = data.from;
+          }
           messageGroup.appendChild(usernameLabel);
         }
 
