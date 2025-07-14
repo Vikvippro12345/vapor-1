@@ -139,7 +139,7 @@ function loadPage(url, selectedItem) {
 }
 
 document.querySelector(".fa-discord").parentElement.onclick = () => {
-  window.location.href = "https://dsc.gg/vaporr";
+  window.location.href = "https://discord.gg/BHwm9rrK55";
 };
 
 document.querySelector(".fa-coins").parentElement.onclick = () => {
