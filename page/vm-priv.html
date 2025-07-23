@@ -95,6 +95,9 @@
 
     .button-container {
       width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
     }
 
     button {
@@ -160,12 +163,61 @@
       transform: scale(0.98);
     }
 
-
     #createSession:hover div {
       background: #26314300;
     }
 
     #createSession:hover span {
+      -webkit-text-fill-color: white;
+      color: white;
+    }
+
+    #joinSession {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 600;
+      padding: 5px;
+      background: linear-gradient(45deg, #34d399, #10b981, #34d399);
+      background-size: 400% 400%;
+      animation: gradientBg 3s linear infinite;
+      position: relative;
+      overflow: hidden;
+      background-clip: padding-box;
+      box-shadow: 0 0 10px rgba(52, 211, 153, 0.5), 0 0 20px rgba(16, 185, 129, 0.3);
+    }
+
+    #joinSession div {
+      background: #263143;
+      width: 100%;
+      height: 100%;
+      padding: 20px 36px;
+      border-radius: 5px;
+      transition: 0.3s;
+    }
+
+    #joinSession span {
+      background: linear-gradient(45deg, #34d399, #10b981, #34d399);
+      background-size: 400% 400%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientText 3s linear infinite;
+    }
+
+    #joinSession:hover {
+      box-shadow: 0 0 30px rgba(52, 211, 153, 0.5), 0 0 60px rgba(16, 185, 129, 0.3);
+      transform: scale(1.02);
+    }
+
+    #joinSession:active {
+      transform: scale(0.98);
+    }
+
+    #joinSession:hover div {
+      background: #26314300;
+    }
+
+    #joinSession:hover span {
       -webkit-text-fill-color: white;
       color: white;
     }
@@ -233,6 +285,8 @@
 
     .end-session-btn,
     .close-tabs-btn,
+    .share-btn,
+    .leave-session-btn,
     .timer {
       color: rgba(255, 255, 255, 0.9);
       background-color: rgba(255, 255, 255, 0.08);
@@ -246,7 +300,8 @@
       white-space: nowrap;
     }
 
-    .end-session-btn:hover {
+    .end-session-btn:hover,
+    .leave-session-btn:hover {
       background-color: rgba(255, 107, 107, 0.2);
     }
 
@@ -254,7 +309,16 @@
       background-color: rgba(255, 255, 255, 0.15);
     }
 
-    .timer {
+    .share-btn {
+      background-color: rgba(52, 211, 153, 0.1);
+    }
+
+    .share-btn:hover {
+      background-color: rgba(52, 211, 153, 0.2);
+    }
+
+    .timer,
+    .remote-session-indicator {
       cursor: default;
       font-weight: 500;
     }
@@ -262,6 +326,10 @@
     .countdown {
       font-weight: 700;
       color: #4c75f2;
+    }
+
+    .remote-session-indicator {
+      color: #34d399;
     }
 
     .status {
@@ -313,8 +381,6 @@
       }
     }
 
-    
-
     .connection-status {
       display: none !important;
     }
@@ -343,6 +409,146 @@
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
+
+    .share-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(8px);
+      display: block;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .share-modal {
+      background: var(--fourth-bg);
+      border-radius: 24px;
+      padding: 24px;
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      animation: scaleIn 0.3s ease-out;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .share-modal h3 {
+      color: var(--secondary-text-color);
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0 0 16px 0;
+      text-align: left;
+    }
+
+    .share-modal p {
+      color: var(--secondary-text-color);
+      font-size: 16px;
+      margin: 0 0 24px 0;
+      opacity: 0.8;
+      text-align: left;
+    }
+
+    .share-code-container {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 24px 0;
+      position: relative;
+      text-align: left;
+    }
+
+    .share-code {
+      font-family: 'Courier New', monospace;
+      font-size: 18px;
+      font-weight: 600;
+      color: #34d399;
+      word-break: break-all;
+      line-height: 1.4;
+    }
+
+    .copy-status {
+      position: absolute;
+      top: -8px;
+      right: 12px;
+      background: #34d399;
+      color: #000;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: all 0.2s ease;
+      display: none;
+    }
+
+    .copy-status.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .share-modal-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 24px;
+    }
+
+    .share-modal button {
+      padding: 16px 28px;
+      border: none;
+      border-radius: 14px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .copy-btn {
+      background: linear-gradient(45deg, #34d399, #10b981);
+      color: white;
+      width: auto;
+    }
+
+    .copy-btn:hover {
+      background: linear-gradient(45deg, #10b981, #059669);
+    }
+
+    .close-modal-btn {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--secondary-text-color);
+      width: auto;
+    }
+
+    .close-modal-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
   </style>
 </head>
 
@@ -370,6 +576,12 @@
               Start Session</span>
           </div>
         </button>
+        <button id="joinSession">
+          <div>
+            <span><i class="fa-solid fa-users" style="margin-right: 5px"></i>
+              Join Session</span>
+          </div>
+        </button>
       </div>
       <iframe 
   src="/ads/300x250.html" 
@@ -390,14 +602,23 @@
         <button id="endSessionBtn" class="end-session-btn">
           <i class="fa-regular fa-stop-circle"></i> End Session
         </button>
+        <button id="leaveSessionBtn" class="leave-session-btn" style="display: none;">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i> Leave Session
+        </button>
         <button id="closeTabsBtn" class="close-tabs-btn">
           <i class="fas fa-times"></i> Close All Tabs
+        </button>
+        <button id="shareBtn" class="share-btn" style="display: none;">
+          <i class="fa-solid fa-share"></i> Share
         </button>
       </div>
       <div class="vm-right-controls">
         <div id="timer" class="timer">
           <i class="fas fa-clock"></i> Time left:
           <span id="countdown" class="countdown">30</span>s
+        </div>
+        <div id="remoteSessionIndicator" class="remote-session-indicator" style="display: none;">
+          <i class="fa-solid fa-satellite-dish"></i> Remote Session
         </div>
       </div>
     </div>
@@ -408,20 +629,50 @@
   <div id="loadingOverlay" class="hyperbeam-overlay" style="display: none;"></div>
   <div id="connectionStatus" class="connection-status"></div>
 
+<!-- share modal -->
+  <div id="shareModalOverlay" class="share-modal-overlay">
+    <div class="share-modal">
+      <h3><i class="fa-solid fa-share" style="margin-right: 8px"></i>Share Session</h3>
+      <p>Give this code to your friend so they can collab on this VM:</p>
+      
+      <div class="share-code-container">
+        <div id="shareCode" class="share-code">--</div>
+        <div id="copyStatus" class="copy-status">Copied!</div>
+      </div>
+      
+      <div class="share-modal-buttons">
+        <button id="copyCodeBtn" class="copy-btn">
+          <i class="fa-solid fa-copy" style="margin-right: 6px"></i>Copy
+        </button>
+        <button id="closeModalBtn" class="close-modal-btn">
+          <i class="fa-solid fa-times" style="margin-right: 6px"></i>Close
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script type="module">
-    // no external cdns L
     import Hyperbeam from "/v0/vm/index.js";
 
     const createSessionBtn = document.getElementById("createSession");
+    const joinSessionBtn = document.getElementById("joinSession");
     const vmSessionContainer = document.getElementById("vmSessionContainer");
     const hyperbeamContainer = document.getElementById("hyperbeamContainer");
     const timer = document.getElementById("timer");
     const countdown = document.getElementById("countdown");
     const status = document.getElementById("status");
     const endSessionBtn = document.getElementById("endSessionBtn");
+    const leaveSessionBtn = document.getElementById("leaveSessionBtn");
     const closeTabsBtn = document.getElementById("closeTabsBtn");
+    const shareBtn = document.getElementById("shareBtn");
+    const remoteSessionIndicator = document.getElementById("remoteSessionIndicator");
     const connectionStatus = document.getElementById("connectionStatus");
     const loadingOverlay = document.getElementById("loadingOverlay");
+    const shareModalOverlay = document.getElementById("shareModalOverlay");
+    const shareCodeElement = document.getElementById("shareCode");
+    const copyCodeBtn = document.getElementById("copyCodeBtn");
+    const closeModalBtn = document.getElementById("closeModalBtn");
+    const copyStatus = document.getElementById("copyStatus");
     const API_URL = window.location.origin;
 
     let countdownInterval;
@@ -430,6 +681,8 @@
     let hyperbeamInstance = null;
     let adminToken = null;
     let csrfToken = null;
+    let isJoinedSession = false;
+    let currentEmbedUrl = null;
 
     async function getCSRFToken() {
       try {
@@ -438,7 +691,7 @@
         csrfToken = data.csrfToken;
         return csrfToken;
       } catch (error) {
-        console.error('Failed to get CSRF token:', error);
+        console.error('csrf token fetch fail ', error);
         throw error;
       }
     }
@@ -453,6 +706,26 @@
 
     function updateConnectionStatus(state) {
       console.log('connection status:', state);
+    }
+
+    function generateShareCode(embedUrl) {
+      // yes i asked chatgpt for the regex dont judge me
+      const urlParts = embedUrl.match(/https:\/\/([^.]+)\.hyperbeam\.com\/([^?]+)\?token=(.+)/);
+      if (urlParts && urlParts.length === 4) {
+        const part1 = urlParts[1];
+        const part2 = urlParts[2];
+        const part3 = urlParts[3];
+        return `${part1}|${part2}|${part3}`;
+      }
+      return null;
+    }
+
+    function reconstructEmbedUrl(shareCode) {
+      const parts = shareCode.split('|');
+      if (parts.length === 3) {
+        return `https://${parts[0]}.hyperbeam.com/${parts[1]}?token=${parts[2]}`;
+      }
+      return null;
     }
 
     async function endSession(showUI = true) {
@@ -478,9 +751,7 @@
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 3000);
 
-        if (!csrfToken) {
-          await getCSRFToken();
-        }
+        await getCSRFToken();
 
         const response = await fetch(`${API_URL}/v0/vm/terminate`, {
           method: "POST",
@@ -524,15 +795,39 @@
       getCSRFToken();
     }
 
+    async function leaveSession() {
+      if (hyperbeamInstance) {
+        try {
+          await hyperbeamInstance.destroy();
+          hyperbeamInstance = null;
+        } catch (error) {
+          console.error("Error destroying Hyperbeam instance:", error);
+        }
+      }
+      resetSessionUI();
+    }
+
     function resetSessionUI() {
       currentSessionId = null;
+      currentEmbedUrl = null;
+      isJoinedSession = false;
       hyperbeamContainer.innerHTML = '';
       vmSessionContainer.style.display = "none";
       createSessionBtn.style.display = "block";
       createSessionBtn.disabled = false;
-      createSessionBtn.innerHTML = '<i class="fas fa-desktop"></i> Start Session';
+      createSessionBtn.innerHTML = '<div><span><i class="fa-regular fa-desktop" style="margin-right: 5px"></i>Start Session</span></div>';
+      joinSessionBtn.disabled = false;
+      joinSessionBtn.innerHTML = '<div><span><i class="fa-solid fa-users" style="margin-right: 5px"></i>Join Session</span></div>';
       countdown.style.color = "#4C75F2";
       document.getElementById("introContainer").style.display = "flex";
+
+      // Reset button visibility
+      endSessionBtn.style.display = "block";
+      leaveSessionBtn.style.display = "none";
+      closeTabsBtn.style.display = "block";
+      shareBtn.style.display = "none";
+      timer.style.display = "block";
+      remoteSessionIndicator.style.display = "none";
 
       if (countdownInterval) {
         clearInterval(countdownInterval);
@@ -543,22 +838,20 @@
     let isUnloading = false;
 
     window.addEventListener("beforeunload", (e) => {
-      if (currentSessionId && !isTerminating && csrfToken) {
+      if (currentSessionId && !isTerminating && csrfToken && !isJoinedSession) {
         isUnloading = true;
         const data = JSON.stringify({
           sessionId: currentSessionId,
           csrfToken: csrfToken
         });
 
-        // meet "blob". he is a Blob with a type of application/json.
         const blob = new Blob([data], { type: 'application/json' });
-        // he is important, not sure why, but, he is.
         navigator.sendBeacon(`${API_URL}/v0/vm/terminate`, blob);
       }
     });
 
     window.addEventListener("unload", (e) => {
-      if (currentSessionId && !isUnloading && csrfToken) {
+      if (currentSessionId && !isUnloading && csrfToken && !isJoinedSession) {
         const data = JSON.stringify({
           sessionId: currentSessionId,
           csrfToken: csrfToken
@@ -579,14 +872,59 @@
       endSession(true);
     });
 
+    leaveSessionBtn.addEventListener("click", () => {
+      leaveSession();
+    });
+
+    shareBtn.addEventListener("click", async () => {
+      if (currentEmbedUrl) {
+        const shareCode = generateShareCode(currentEmbedUrl);
+        if (shareCode) {
+          shareCodeElement.textContent = shareCode;
+          shareModalOverlay.style.display = "flex";
+        } else {
+          alert("Share code couldn't be generated.");
+        }
+      }
+    });
+
+    copyCodeBtn.addEventListener("click", async () => {
+      const shareCode = shareCodeElement.textContent;
+      try {
+        await navigator.clipboard.writeText(shareCode);
+        showCopyStatus();
+      } catch (error) {
+        console.error("Failed to copy ", error);
+        const range = document.createRange();
+        range.selectNode(shareCodeElement);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+      }
+    });
+
+    closeModalBtn.addEventListener("click", () => {
+      shareModalOverlay.style.display = "none";
+    });
+
+    shareModalOverlay.addEventListener("click", (e) => {
+      if (e.target === shareModalOverlay) {
+        shareModalOverlay.style.display = "none";
+      }
+    });
+
+    function showCopyStatus() {
+      copyStatus.classList.add("show");
+      setTimeout(() => {
+        copyStatus.classList.remove("show");
+      }, 2000);
+    }
+
     closeTabsBtn.addEventListener("click", async () => {
       if (hyperbeamInstance && adminToken) {
         try {
-          // LETS FIND THE TABS
           const tabs = await hyperbeamInstance.tabs.query({});
           console.log("Found tabs:", tabs);
 
-          // F$%# THE TABS, LETS DELETE THEM
           const tabIds = tabs.map(tab => tab.id);
           await hyperbeamInstance.tabs.remove(tabIds);
           console.log("Closed all tabs:", tabIds);
@@ -599,6 +937,113 @@
       }
     });
 
+    joinSessionBtn.addEventListener("click", async () => {
+      const shareCode = prompt("Enter the share code from your friend:");
+      if (!shareCode) return;
+
+      const embedUrl = reconstructEmbedUrl(shareCode.trim());
+      if (!embedUrl) {
+        alert("Code invalid!");
+        return;
+      }
+
+      joinSessionBtn.disabled = true;
+      joinSessionBtn.innerHTML = '<i class="fas fa-circle-notch loading-icon"></i> Joining...';
+      status.style.display = "none";
+      document.getElementById("introContainer").style.display = "none";
+
+      try {
+        currentEmbedUrl = embedUrl;
+        currentSessionId = embedUrl.split('/').pop().split('?')[0];
+        isJoinedSession = true;
+
+        hyperbeamContainer.innerHTML = '';
+        vmSessionContainer.style.display = "flex";
+
+        endSessionBtn.style.display = "none";
+        leaveSessionBtn.style.display = "block";
+        closeTabsBtn.style.display = "none";
+        shareBtn.style.display = "none";
+        timer.style.display = "none";
+        remoteSessionIndicator.style.display = "block";
+
+        loadingOverlay.innerHTML = '<div class="loading-spinner"></div>Joining session...';
+        loadingOverlay.style.display = "flex";
+
+        createSessionBtn.style.display = "none";
+
+        setTimeout(() => {
+          loadingOverlay.style.display = "none";
+        }, 800);
+
+        try {
+          hyperbeamInstance = await Hyperbeam(hyperbeamContainer, embedUrl, {
+            volume: 0.8,
+            videoPaused: false,
+            delegateKeyboard: true,
+
+            onConnectionStateChange: ({ state }) => {
+              console.log('Connection state:', state);
+              updateConnectionStatus(state);
+            },
+
+            onDisconnect: ({ type }) => {
+              console.log('Disconnected:', type);
+              if (type !== 'request') {
+                if (isJoinedSession) {
+                  status.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Session was ended by host';
+                } else {
+                  status.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Connection lost';
+                }
+                status.style.display = "block";
+                setTimeout(() => {
+                  if (isJoinedSession) {
+                    leaveSession();
+                  } else {
+                    endSession(false);
+                  }
+                }, 2000);
+              }
+            },
+
+            onCloseWarning: ({ type, deadline }) => {
+              if (deadline) {
+                console.log(`${type} timeout warning: ${deadline.delay}ms remaining`);
+              }
+            }
+          });
+
+          console.log('Joined session successfully :)');
+
+        } catch (hyperbeamError) {
+          console.error("Failed to join session >:(", hyperbeamError);
+          status.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Failed to join session';
+          status.style.display = "block";
+          joinSessionBtn.disabled = false;
+          joinSessionBtn.innerHTML = '<div><span><i class="fa-solid fa-users" style="margin-right: 5px"></i>Join Session</span></div>';
+          document.getElementById("introContainer").style.display = "flex";
+          vmSessionContainer.style.display = "none";
+
+          setTimeout(() => {
+            status.style.display = "none";
+          }, 5000);
+          return;
+        }
+
+      } catch (error) {
+        console.error("Error joining session:", error);
+        status.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Failed to join session';
+        status.style.display = "block";
+        joinSessionBtn.disabled = false;
+        joinSessionBtn.innerHTML = '<div><span><i class="fa-solid fa-users" style="margin-right: 5px"></i>Join Session</span></div>';
+        document.getElementById("introContainer").style.display = "flex";
+
+        setTimeout(() => {
+          status.style.display = "none";
+        }, 5000);
+      }
+    });
+
     createSessionBtn.addEventListener("click", async () => {
       createSessionBtn.disabled = true;
       createSessionBtn.innerHTML = '<i class="fas fa-circle-notch loading-icon"></i> Creating...';
@@ -606,9 +1051,7 @@
       document.getElementById("introContainer").style.display = "none";
 
       try {
-        if (!csrfToken) {
-          await getCSRFToken();
-        }
+        await getCSRFToken();
 
         const response = await fetch(`${API_URL}/v0/vm/create`, {
           method: "POST",
@@ -638,15 +1081,20 @@
 
         const embedUrl = data.embed_url;
         currentSessionId = data.session_id || embedUrl.split('/').pop();
-
-        // okay to the skids out there
-        // the admin token is NOT confidential
-        // its simply a "password" to control your vm's tabs
-        // since nobody can access your VM, it's not a "secret"
+        currentEmbedUrl = embedUrl;
         adminToken = data.admin_token;
+        isJoinedSession = false;
 
         hyperbeamContainer.innerHTML = '';
         vmSessionContainer.style.display = "flex";
+
+        // Update UI for own session
+        endSessionBtn.style.display = "block";
+        leaveSessionBtn.style.display = "none";
+        closeTabsBtn.style.display = "none";
+        shareBtn.style.display = "block";
+        timer.style.display = "block";
+        remoteSessionIndicator.style.display = "none";
 
         loadingOverlay.innerHTML = '<div class="loading-spinner"></div>One sec...';
         loadingOverlay.style.display = "flex";
@@ -656,7 +1104,6 @@
         let timeLeft = 720;
         updateCountdownDisplay(timeLeft);
 
-        //asdfasf          
         setTimeout(() => {
           loadingOverlay.style.display = "none";
         }, 800);
@@ -699,7 +1146,7 @@
           status.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Failed to connect to browser';
           status.style.display = "block";
           createSessionBtn.disabled = false;
-          createSessionBtn.innerHTML = '<i class="fas fa-desktop"></i> Start Session';
+          createSessionBtn.innerHTML = '<div><span><i class="fa-regular fa-desktop" style="margin-right: 5px"></i>Start Session</span></div>';
           document.getElementById("introContainer").style.display = "flex";
           vmSessionContainer.style.display = "none";
 
@@ -730,7 +1177,7 @@
         status.innerHTML = '<i class="fas fa-exclamation-triangle"></i> No sessions available';
         status.style.display = "block";
         createSessionBtn.disabled = false;
-        createSessionBtn.innerHTML = '<i class="fas fa-desktop"></i> Start Session';
+        createSessionBtn.innerHTML = '<div><span><i class="fa-regular fa-desktop" style="margin-right: 5px"></i>Start Session</span></div>';
         document.getElementById("introContainer").style.display = "flex";
 
         await getCSRFToken();
