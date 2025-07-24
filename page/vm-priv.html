@@ -1101,7 +1101,7 @@
 
         createSessionBtn.style.display = "none";
 
-        let timeLeft = 720;
+        let timeLeft = 1080;
         updateCountdownDisplay(timeLeft);
 
         setTimeout(() => {
@@ -1110,7 +1110,7 @@
 
         try {
           hyperbeamInstance = await Hyperbeam(hyperbeamContainer, embedUrl, {
-            timeout: 720,
+            timeout: 1080,
             volume: 0.8,
             videoPaused: false,
             delegateKeyboard: true,
