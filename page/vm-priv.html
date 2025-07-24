@@ -411,124 +411,147 @@
     }
 
     .share-modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(8px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      animation: fadeIn 0.3s ease-out;
-    }
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  backdrop-filter: blur(12px);
+  background-color: rgba(0, 0, 0, 0.7);
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.27s ease;
+  z-index: 999;
+}
 
-    .share-modal {
-      background: var(--fourth-bg);
-      border-radius: 24px;
-      padding: 24px;
-      max-width: 500px;
-      width: 90%;
-      text-align: center;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-      animation: scaleIn 0.3s ease-out;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
+.share-modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
 
-    .share-modal h3 {
-      color: var(--secondary-text-color);
-      font-size: 24px;
-      font-weight: 700;
-      margin: 0 0 16px 0;
-      text-align: left;
-    }
+.share-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.92);
+  background: var(--fourth-bg);
+  padding: 1.1rem;
+  border-radius: 22px;
+  border: 2.2px solid rgba(255, 255, 255, 0.15);
+  opacity: 0;
+  transition: 0.27s ease;
+  z-index: 1000;
+  max-width: 90%;
+  width: 400px;
+  text-align: center;
+  pointer-events: none;
+}
 
-    .share-modal p {
-      color: var(--secondary-text-color);
-      font-size: 16px;
-      margin: 0 0 24px 0;
-      opacity: 0.8;
-      text-align: left;
-    }
+.share-modal.active {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  pointer-events: auto;
+}
 
-    .share-code-container {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      padding: 20px;
-      margin: 24px 0;
-      position: relative;
-      text-align: left;
-    }
+.share-modal h3 {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+  color: white;
+  text-align: left;
+  width: 100%;
+}
 
-    .share-code {
-      font-family: 'Courier New', monospace;
-      font-size: 18px;
-      font-weight: 600;
-      color: #34d399;
-      word-break: break-all;
-      line-height: 1.4;
-    }
+.share-modal p {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  color: rgba(255, 255, 255, 0.85);
+  text-align: left;
+  width: 100%;
+}
 
-    .copy-status {
-      position: absolute;
-      top: -8px;
-      right: 12px;
-      background: #34d399;
-      color: #000;
-      padding: 4px 12px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 600;
-      opacity: 0;
-      transform: translateY(-10px);
-      transition: all 0.2s ease;
-      display: none;
-    }
+.share-code-container {
+  background: #1e1e1e;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  color: #a4b8db;
+  font-family: monospace;
+  font-size: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 1rem;
+  text-align: left;
+  position: relative;
+  border: none;
+}
 
-    .copy-status.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
+.share-code {
+  font-family: monospace;
+  font-size: 12px;
+  color: #a4b8db;
+  white-space: pre-wrap;
+  word-break: break-all;
+  line-height: 1.4;
+}
 
-    .share-modal-buttons {
-      display: flex;
-      gap: 12px;
-      justify-content: flex-end;
-      margin-top: 24px;
-    }
+.copy-status {
+  position: absolute;
+  top: -8px;
+  right: 12px;
+  background: #34d399;
+  color: #000;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.2s ease;
+  display: none;
+}
 
-    .share-modal button {
-      padding: 16px 28px;
-      border: none;
-      border-radius: 14px;
-      font-size: 18px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.2s ease;
-    }
+.copy-status.show {
+  opacity: 1;
+  transform: translateY(0);
+}
 
-    .copy-btn {
-      background: linear-gradient(45deg, #34d399, #10b981);
-      color: white;
-      width: auto;
-    }
+.share-modal-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 0;
+  width: 100%;
+}
 
-    .copy-btn:hover {
-      background: linear-gradient(45deg, #10b981, #059669);
-    }
+.share-modal button {
+  padding: 0.62rem 1.35rem;
+  border: none;
+  font-weight: 600;
+  font-size: 1.15rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  width: auto;
+}
 
-    .close-modal-btn {
-      background: rgba(255, 255, 255, 0.1);
-      color: var(--secondary-text-color);
-      width: auto;
-    }
+.copy-btn {
+  background-color: #49517c;
+  color: white;
+}
 
-    .close-modal-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
-    }
+.copy-btn:hover {
+  background-color: #3d456b;
+}
+
+.close-modal-btn {
+  background-color: #49517c;
+  color: white;
+}
+
+.close-modal-btn:hover {
+  background-color: #3d456b;
+}
 
     @keyframes fadeIn {
       from {
