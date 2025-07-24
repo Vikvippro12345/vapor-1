@@ -899,48 +899,68 @@
       leaveSession();
     });
 
-    shareBtn.addEventListener("click", async () => {
-      if (currentEmbedUrl) {
-        const shareCode = generateShareCode(currentEmbedUrl);
-        if (shareCode) {
-          shareCodeElement.textContent = shareCode;
-          shareModalOverlay.style.display = "flex";
-        } else {
-          alert("Share code couldn't be generated.");
-        }
-      }
-    });
 
-    copyCodeBtn.addEventListener("click", async () => {
-      const shareCode = shareCodeElement.textContent;
-      try {
-        await navigator.clipboard.writeText(shareCode);
-        showCopyStatus();
-      } catch (error) {
-        console.error("Failed to copy ", error);
-        const range = document.createRange();
-        range.selectNode(shareCodeElement);
-        window.getSelection().removeAllRanges();
-        window.getSelection().addRange(range);
-      }
-    });
-
-    closeModalBtn.addEventListener("click", () => {
-      shareModalOverlay.style.display = "none";
-    });
-
-    shareModalOverlay.addEventListener("click", (e) => {
-      if (e.target === shareModalOverlay) {
-        shareModalOverlay.style.display = "none";
-      }
-    });
-
-    function showCopyStatus() {
-      copyStatus.classList.add("show");
-      setTimeout(() => {
-        copyStatus.classList.remove("show");
-      }, 2000);
+shareBtn.addEventListener("click", async () => {
+  if (currentEmbedUrl) {
+    const shareCode = generateShareCode(currentEmbedUrl);
+    if (shareCode) {
+      shareCodeElement.textContent = shareCode;
+      // Show modal with animation
+      shareModalOverlay.style.display = "flex";
+      requestAnimationFrame(() => {
+        shareModalOverlay.classList.add("active");
+        document.querySelector('.share-modal').classList.add("active");
+      });
+    } else {
+      alert("Share code couldn't be generated.");
     }
+  }
+});
+
+copyCodeBtn.addEventListener("click", async () => {
+  const shareCode = shareCodeElement.textContent;
+  try {
+    await navigator.clipboard.writeText(shareCode);
+    showCopyStatus();
+  } catch (error) {
+    console.error("Failed to copy ", error);
+    const range = document.createRange();
+    range.selectNode(shareCodeElement);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+  }
+});
+
+closeModalBtn.addEventListener("click", () => {
+  hideShareModal();
+});
+
+shareModalOverlay.addEventListener("click", (e) => {
+  if (e.target === shareModalOverlay) {
+    hideShareModal();
+  }
+});
+
+function hideShareModal() {
+  shareModalOverlay.classList.remove("active");
+  document.querySelector('.share-modal').classList.remove("active");
+  
+  // Hide the modal after animation completes
+  setTimeout(() => {
+    shareModalOverlay.style.display = "none";
+  }, 270);
+}
+
+function showCopyStatus() {
+  copyStatus.style.display = "block";
+  copyStatus.classList.add("show");
+  setTimeout(() => {
+    copyStatus.classList.remove("show");
+    setTimeout(() => {
+      copyStatus.style.display = "none";
+    }, 200);
+  }, 2000);
+}
 
     closeTabsBtn.addEventListener("click", async () => {
       if (hyperbeamInstance && adminToken) {
