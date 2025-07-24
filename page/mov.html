@@ -65,7 +65,7 @@
       }
       .game-grid {
         display: grid;
-        grid-template-columns: repeat(5, 200px);
+        grid-template-columns: repeat(4, 200px);
         gap: 20px;
         justify-content: center;
         padding: 20px;
@@ -172,7 +172,7 @@
               (t.style.backgroundImage = `url(https://image.tmdb.org/t/p/w500${e.poster_path})`),
               (t.innerHTML = `\n            <div class="overlay">\n              <div class="movie-title">${e.title}</div>\n            </div>\n          `),
               t.addEventListener("click", () => {
-                window.location.href = `/_a/mov/mov.html?id=${e.id}`;
+            window.location.href = `/mov/mov.html?id=${e.id}`;
               }),
               gameGrid.appendChild(t);
           });
