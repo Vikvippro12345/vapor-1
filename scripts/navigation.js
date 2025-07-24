@@ -142,8 +142,8 @@ document.querySelector(".fa-discord").parentElement.onclick = () => {
   window.location.href = "https://discord.gg/BHwm9rrK55";
 };
 
-document.querySelector(".fa-coins").parentElement.onclick = () => {
-  showDonateModal();
+document.querySelector(".fa-lock").parentElement.onclick = () => {
+  window.open("/usage.html");
 };
 
 document.querySelector(".fa-handshake").parentElement.onclick = () => {
