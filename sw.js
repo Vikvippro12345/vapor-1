@@ -1,5 +1,5 @@
 
-// hop off, skids.
+// whatever dumbass decided to inject the service worker on ALL PAGES, what the hell is wrong with you??
 
 
 
@@ -19,30 +19,38 @@ importScripts("/scram/scramjet.shared.js", "/scram/scramjet.worker.js");
 const scramjet = new ScramjetServiceWorker();
 
 async function handleRequest(event) {
-	await scramjet.loadConfig();
-	if (scramjet.route(event)) {
-		const response = await scramjet.fetch(event);
+	const url = new URL(event.request.url);
+	const needsProxy = 
+		url.pathname.startsWith('/embed.html') ||
+		url.pathname.startsWith('/scram.html') ||
+		localStorage.getItem('proxGame') === 'true';
+	
+	if (needsProxy) {
+		await scramjet.loadConfig();
+		if (scramjet.route(event)) {
+			const response = await scramjet.fetch(event);
 
-		const contentType = response.headers.get("content-type") || "";
-		if (contentType.includes("text/html")) {
-			const originalText = await response.text();
-			const modifiedHtml = originalText.replace(
-				/<head[^>]*>/i,
-				(match) =>
-					`${match}<!-- pr0x1ed by vapor's static sj -->`
-			);
+			const contentType = response.headers.get("content-type") || "";
+			if (contentType.includes("text/html")) {
+				const originalText = await response.text();
+				const modifiedHtml = originalText.replace(
+					/<head[^>]*>/i,
+					(match) =>
+						`${match}<!-- pr0.x.1ed by vapor's static sj -->`
+				);
 
-			const newHeaders = new Headers(response.headers);
-			newHeaders.set("content-length", modifiedHtml.length.toString());
+				const newHeaders = new Headers(response.headers);
+				newHeaders.set("content-length", modifiedHtml.length.toString());
 
-			return new Response(modifiedHtml, {
-				status: response.status,
-				statusText: response.statusText,
-				headers: newHeaders,
-			});
+				return new Response(modifiedHtml, {
+					status: response.status,
+					statusText: response.statusText,
+					headers: newHeaders,
+				});
+			}
+
+			return response;
 		}
-
-		return response;
 	}
 
 	return fetch(event.request);
