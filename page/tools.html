@@ -213,8 +213,7 @@
           toolDiv.style.backgroundImage = `url(${backgroundUrl})`;
 
           toolDiv.addEventListener("click", () => {
-            const proxTool = localStorage.getItem("proxGame") === "true";
-            const toolUrl = proxTool ? `/embed.html#${url}` : url;
+            const toolUrl = url;
 
             fetch(toolUrl, { method: "HEAD" })
               .then((response) => {
