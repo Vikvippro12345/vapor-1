@@ -89,7 +89,7 @@ html, body {
 .modal-button {
   padding: 0.62rem 1.35rem;
   border: none;
-  background-color: #49517c;
+  background-color: var(--button-bg);
   color: white;
   font-weight: 600;
   font-size: 1.15rem;
@@ -100,7 +100,7 @@ html, body {
 }
 
 .modal-button:hover {
-  background-color: #3d456b;
+  background-color: var(--button-hover);
 }
 
 @keyframes spin {
