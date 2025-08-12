@@ -1,5 +1,5 @@
 
-// whatever dumbass decided to inject the service worker on ALL PAGES, what the hell is wrong with you??
+// fuck this sw.js
 
 
 
@@ -20,37 +20,42 @@ const scramjet = new ScramjetServiceWorker();
 
 async function handleRequest(event) {
 	const url = new URL(event.request.url);
-	const needsProxy = 
-		url.pathname.startsWith('/embed.html') ||
-		url.pathname.startsWith('/scram.html') ||
-		localStorage.getItem('proxGame') === 'true';
+	const referrer = event.request.referrer ? new URL(event.request.referrer) : null;
 	
-	if (needsProxy) {
-		await scramjet.loadConfig();
-		if (scramjet.route(event)) {
-			const response = await scramjet.fetch(event);
+	const isProxyPage = url.pathname === '/scram.html' || url.pathname === '/embed.html';
+	const isFromProxyPage = referrer && (
+		referrer.pathname === '/scram.html' || 
+		referrer.pathname === '/embed.html'
+	);
 
-			const contentType = response.headers.get("content-type") || "";
-			if (contentType.includes("text/html")) {
-				const originalText = await response.text();
-				const modifiedHtml = originalText.replace(
-					/<head[^>]*>/i,
-					(match) =>
-						`${match}<!-- pr0.x.1ed by vapor's static sj -->`
-				);
+	if (!isProxyPage && !isFromProxyPage) {
+		return fetch(event.request);
+	}
 
-				const newHeaders = new Headers(response.headers);
-				newHeaders.set("content-length", modifiedHtml.length.toString());
+	await scramjet.loadConfig();
+	if (scramjet.route(event)) {
+		const response = await scramjet.fetch(event);
 
-				return new Response(modifiedHtml, {
-					status: response.status,
-					statusText: response.statusText,
-					headers: newHeaders,
-				});
-			}
+		const contentType = response.headers.get("content-type") || "";
+		if (contentType.includes("text/html")) {
+			const originalText = await response.text();
+			const modifiedHtml = originalText.replace(
+				/<head[^>]*>/i,
+				(match) =>
+					`${match}<!-- pr0x1ed by vapor's static sj -->`
+			);
 
-			return response;
+			const newHeaders = new Headers(response.headers);
+			newHeaders.set("content-length", modifiedHtml.length.toString());
+
+			return new Response(modifiedHtml, {
+				status: response.status,
+				statusText: response.statusText,
+				headers: newHeaders,
+			});
 		}
+
+		return response;
 	}
 
 	return fetch(event.request);
