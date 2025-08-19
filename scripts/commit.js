@@ -1,6 +1,5 @@
 /**
- * this gets the current commit ID to display in the sidebar
- * theres zero point in having this, but why not?
+ * ok ts is so old
  */
 
 const projectPath = "technonyte00/vapor";

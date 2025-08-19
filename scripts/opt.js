@@ -1,7 +1,6 @@
 /**
- * basically...
- * this gets the current settings and applies them on start
- * anything i add to settings i'll need to add here
+ * ok so this just gets the saved settings and
+ * shits all over the page making it look cool yuh
  */
 
 const cloakPresets = {

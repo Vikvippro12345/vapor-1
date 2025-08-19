@@ -10,6 +10,7 @@
         margin: 0;
         box-sizing: border-box;
       }
+    
       body {
         background: var(--bg);
         color: var(--text-color);
@@ -18,6 +19,7 @@
         align-items: center;
         height: 100vh;
       }
+    
       .error-container {
         width: 65%;
         height: 80%;
@@ -27,7 +29,7 @@
         padding: 20px;
         text-align: left;
       }
-
+    
       .error-title {
         font-weight: 1000;
         font-size: 10rem;
@@ -35,39 +37,41 @@
           90deg,
           transparent 0%,
           transparent 20%,
-          #6366f1 85%,
-          #8fd7eb 100%
+          var(--secondary) 85%,
+          var(--primary) 100%
         );
         background-size: 200% 100%;
-        background-position: 0% 0;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         animation: gradientSlide 2s ease-in-out forwards;
       }
-
+    
       @keyframes gradientSlide {
         0% {
           background-position: 0% 0;
         }
         100% {
-          background-position: 165% 0;
+          background-position: 100% 0;
         }
       }
-
+    
       .error-body {
         font-weight: 500;
         font-size: 1.5rem;
         color: var(--text-color);
+        margin-top: 1rem;
       }
-
+    
       .error-footer {
         color: rgba(255, 255, 255, 0.5);
       }
-
+    
       a {
         color: var(--text-color);
+        text-decoration: underline;
       }
     </style>
+    
   </head>
   <body class="container centered">
     <div class="error-container">
@@ -75,11 +79,11 @@
         <h1 class="error-title">404</h1>
         <div class="error-body">
           That page does not exist or was removed.<br /><br><a href="/"
-            >Go back to home</a
+            >Back to index</a
           >
         </div>
       </div>
-      <small class="error-footer"><i>VAPOR v3 - technonyte</i></small>
+      <small class="error-footer"><i></i></small>
     </div>
   </body>
 </html>

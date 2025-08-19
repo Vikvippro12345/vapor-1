@@ -1,10 +1,13 @@
 /**
  * these ARE the navigation items for the sidebar
  * 
+ * oo i didnt know this existed - technonyte
+ * 
  * Badges:
  * <span class='badge'>Updated</span>
  */
 
+// bing bop
 const navItems = [
   { title: "Home", icon: "fa-home", url: "page/home.html", type: "item" },
   { type: "divider" },

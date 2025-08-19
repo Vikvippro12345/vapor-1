@@ -8,8 +8,10 @@ const navContainer = document.getElementById("nav-items");
 let openCategoryWrapper = null;
 
 function createNavItem(item, index, parentCategory = null) {
+
+  // THIS STUFF IS REDUNDANT IDK WHY ITS HERE
   if (item.type === "category") {
-    // Category item
+    // category
     const categoryWrapper = document.createElement("div");
     categoryWrapper.className = "nav-category-wrapper";
     const navCategory = document.createElement("a");
@@ -40,12 +42,12 @@ function createNavItem(item, index, parentCategory = null) {
     categoryWrapper.appendChild(navCategory);
     navContainer.appendChild(categoryWrapper);
   } else if (item.type === "divider") {
-    // Divider item
+    // divider
     const divider = document.createElement("div");
     divider.className = "nav-divider";
     navContainer.appendChild(divider);
   } else if (parentCategory) {
-    // Nested nav item
+    // nested
     const nestedNav = document.createElement("a");
     nestedNav.className = "nav-item nav-nested-item";
     nestedNav.innerHTML = `
@@ -61,7 +63,7 @@ function createNavItem(item, index, parentCategory = null) {
     };
     parentCategory.appendChild(nestedNav);
   } else {
-    // Normal nav item
+    // normal item
     const navItemstem = document.createElement("a");
     navItemstem.className = "nav-item" + (index === 0 ? " active" : "");
     navItemstem.innerHTML = `
@@ -82,10 +84,8 @@ function createNavItem(item, index, parentCategory = null) {
 function toggleCategory(wrapper, navCategory, children) {
   let expanded = wrapper.classList.contains("expanded");
   if (!expanded) {
-    // Expand
     wrapper.classList.add("expanded");
     openCategoryWrapper = wrapper;
-    // Insert nested items
     const nestedList = document.createElement("div");
     nestedList.className = "nav-nested-list";
     children.forEach((child, idx) => createNavItem(child, idx, nestedList));
@@ -96,7 +96,6 @@ function toggleCategory(wrapper, navCategory, children) {
       nestedList.classList.add("fade-in");
     }, 10);
   } else {
-    // Collapse
     closeCategory(wrapper);
   }
 }
@@ -118,13 +117,11 @@ function closeCategory(wrapper) {
   }
 }
 
-// Clear navContainer first
 navContainer.innerHTML = "";
 navItems.forEach((item, index) => {
   createNavItem(item, index);
 });
 
-// Close all categories when sidebar is not hovered
 const sidebar = document.querySelector('.sidebar');
 sidebar.addEventListener('mouseleave', () => {
   document.querySelectorAll('.nav-category-wrapper.expanded').forEach(closeCategory);
@@ -143,7 +140,9 @@ document.querySelector(".fa-discord").parentElement.onclick = () => {
 };
 
 document.querySelector(".fa-lock").parentElement.onclick = () => {
-  window.open("/usage.html");
+  const usageUrl = "usage.html";
+  const frame = document.getElementById("frame");
+  frame.src = usageUrl;
 };
 
 document.querySelector(".fa-handshake").parentElement.onclick = () => {
@@ -167,18 +166,16 @@ function setActiveNav(title) {
   if (activeItem) activeItem.classList.add("active");
 }
 
+// no more cringy ass comments
 document.querySelector(".fa-expand").parentElement.onclick = () => {
   const frame = document.getElementById("frame");
   if (frame.requestFullscreen) {
     frame.requestFullscreen();
   } else if (frame.mozRequestFullScreen) {
-    // firefoxy :)
     frame.mozRequestFullScreen();
   } else if (frame.webkitRequestFullscreen) {
-    // ew, chrome, safari??, whats opera..?
     frame.webkitRequestFullscreen();
   } else if (frame.msRequestFullscreen) {
-    // INTERNET EXPLORER AND EDGE *vomits*
     frame.msRequestFullscreen();
   }
 };

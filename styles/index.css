@@ -115,14 +115,25 @@ html, body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: var(--bg);
-  z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Inter",  sans-serif;
+  font-family: "Inter", sans-serif;
   color: white;
+  z-index: 9999;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(10px);
 }
+
+#loader-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  opacity: 0.6;
+  z-index: -1;
+}
+
 
 .loader-spinner {
   width: 24px;

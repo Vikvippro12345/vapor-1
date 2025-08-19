@@ -7,10 +7,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
 <style>
   :root {
-    --primary-color: #90caf9;
+    --primary: #90caf9;
     --text-color: #e1e8f0;
-    --divider-color: #2a3a5a;
-    --bg-dropdown: #1a253d;
+    --secondary: #2a3a5a;
+    --third-bg: #1a253d;
   }
   * {
     box-sizing: border-box;
@@ -34,7 +34,7 @@
   h1, h2 {
     position: relative;
     padding-left: 14px;
-    color: var(--primary-color);
+    color: var(--primary);
   }
   h1 {
     font-weight: 700;
@@ -55,7 +55,7 @@
     top: 4px;
     bottom: 4px;
     width: 4px;
-    background-color: var(--divider-color);
+    background-color: var(--secondary);
     border-radius: 2px;
   }
   p {
@@ -64,13 +64,13 @@
     font-size: 1rem;
   }
   strong {
-    color: var(--primary-color);
+    color: var(--primary);
   }
   em {
     font-style: italic;
   }
   a {
-    color: var(--primary-color);
+    color: var(--primary);
     text-decoration: none;
   }
   a:hover,
@@ -90,7 +90,7 @@
   .toggle-btn {
     display: block;
     width: 100%;
-    background: var(--divider-color);
+    background: var(--secondary);
     border: none;
     color: var(--text-color);
     font-size: 1rem;
@@ -112,7 +112,7 @@
     max-height: 0;
     overflow: hidden;
     overflow-y: scroll;
-    background: var(--bg-dropdown);
+    background: var(--third-bg);
     border-radius: 0 0 8px 8px;
     padding: 0 1rem;
     transition: max-height 0.35s ease;

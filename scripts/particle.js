@@ -1,3 +1,5 @@
+// particles shown on all pages
+
 document.addEventListener("DOMContentLoaded", function () {
   particlesJS("particles-js", {
   particles: {
