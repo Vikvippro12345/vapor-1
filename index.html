@@ -37,12 +37,27 @@ Wassup bro!
     });
     window.addEventListener("load", () => {
       const loader = document.getElementById("loader-overlay");
-      if (loader) {
-        loader.style.opacity = "0";
-        loader.style.transition = "opacity 0.27s ease";
-        setTimeout(() => loader.remove(), 1500);
-      }
+      if (!loader) return;
+
+      const minTime = 750;
+      const start = Date.now();
+
+      loader.style.opacity = "1";
+      loader.style.transition = "opacity 0.27s ease";
+
+      const fadeOut = () => {
+        const elapsed = Date.now() - start;
+        const remaining = Math.max(minTime - elapsed, 0);
+
+        setTimeout(() => {
+          loader.style.opacity = "0";
+          setTimeout(() => loader.remove(), 270);
+        }, remaining);
+      };
+
+      fadeOut();
     });
+
   </script>
 
   <script src="/scripts/opt.js"></script>
