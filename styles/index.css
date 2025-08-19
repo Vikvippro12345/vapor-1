@@ -121,7 +121,7 @@ html, body {
   font-family: "Inter", sans-serif;
   color: white;
   z-index: 9999;
-  backdrop-filter: blur(15px);
+  backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
 
