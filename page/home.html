@@ -1,363 +1,371 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles/defaults.css" />
+    <script src="/scripts/theme.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="/styles/defaults.css" />
-  <script src="/scripts/theme.js"></script>
-  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        height: 100%;
+        background: var(--bg-dark);
+        color: rgba(255, 255, 255, 0.8);
+        font-family: "Inter", sans-serif;
+      }
 
-    body,
-    html {
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      height: 100%;
-      background: var(--bg-dark);
-      color: rgba(255, 255, 255, 0.8);
-      font-family: "Inter", sans-serif;
-    }
+      .content-container {
+        height: 100vh;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        gap: 10px;
+      }
 
-    .content-container {
-      height: 100vh;
-      width: 100%;
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-      gap: 10px;
-    }
+      .content {
+        text-align: left;
+        opacity: 0;
+        transform: translateX(20px);
+        animation: zoomL 0.6s forwards 0.2s;
+      }
 
-    .content {
-      text-align: left;
-      opacity: 0;
-      transform: translateX(20px);
-      animation: zoomL 0.6s forwards 0.2s;
-    }
+      h1 {
+        margin: 0;
+        font-weight: 700;
+        color: var(--primary);
+        font-size: 65px;
+      }
 
-    h1 {
-      margin: 0;
-      font-weight: 700;
-      color: var(--primary);
-      font-size: 65px;
-    }
+      h1 span {
+        font-weight: 1000;
+        color: var(--text-color);
+      }
 
-    h1 span {
-      font-weight: 1000;
-      color: var(--text-color);
-    }
-
-    h1 span.title {
-      font-weight: 700;
-      background: linear-gradient(90deg,
+      h1 span.title {
+        font-weight: 700;
+        background: linear-gradient(
+          90deg,
           transparent 0%,
           transparent 20%,
-          var(--primary) 80%,
-          var(--secondary) 100%);
-      background-size: 400% 100%;
-      background-position: -100% 0;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: gradientSlide 2s ease-in-out forwards;
-    }
-
-    @keyframes gradientSlide {
-      0% {
-        background-position: 0% 0%;
+          var(--gradient-end) 80%,
+          var(--gradient-start) 100%
+        );
+        background-size: 400% 100%;
+        background-position: -100% 0;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: gradientSlide 2s ease-in-out forwards;
       }
 
-      100% {
-        background-position: 100% 0%;
-      }
-    }
-
-    .buttons-container {
-      margin-top: 5px;
-      display: flex;
-      gap: 10px;
-      justify-content: flex-end;
-      padding-bottom: 10px;
-    }
-
-    .action-btn {
-      padding: 10px 14px;
-      border: none;
-      border-radius: 8px;
-      background-color: var(--button-bg);
-      color: white;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.15s ease;
-      font-family: "Inter", sans-serif;
-    }
-
-    .action-btn:hover {
-      background-color: var(--button-hover);
-    }
-
-    .whats-new-btn {
-      background-color: var(--button-bg);
-    }
-
-    .whats-new-btn:hover {
-      background-color: var(--button-hover);
-    }
-
-    img {
-      width: 300px;
-      transform: translateY(-15px);
-      opacity: 0;
-      animation: zoomR 0.8s forwards;
-    }
-
-    #particles-js {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      opacity: 0;
-      animation: fadeIn 1.5s ease forwards 0.5s;
-    }
-
-    i {
-      margin-right: 5px;
-    }
-
-    h1 {
-      pointer-events: none;
-    }
-
-    @keyframes fadeIn {
-      to {
-        opacity: 1;
-      }
-    }
-
-    @keyframes zoomR {
-      0% {
-        transform: translateX(100%) scale(1);
-        opacity: 0;
-      }
-
-      100% {
-        transform: translateX(0) scale(1);
-        opacity: 1;
-      }
-    }
-
-    @keyframes zoomL {
-      0% {
-        opacity: 0;
-        transform: translateX(-25px);
-      }
-
-      100% {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-
-    iframe {
-      position: fixed;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      border-radius: 10px;
-      z-index: 10000;
-    }
-  </style>
-</head>
-
-<body>
-  <div id="particles-js"></div>
-
-  <iframe
-    src="/ads/728x90.html"
-    width="728"
-    height="90"
-    sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-popups-to-escape-sandbox"
-    scrolling="no"
-    style="border:0;"
-    referrerpolicy="no-referrer">
-  </iframe>
-
-  <div class="content-container">
-    <div class="content">
-      <h1><span class="title">VAPOR</span> <span>v3</span></h1>
-      <div class="buttons-container">
-        <button class="action-btn whats-new-btn" id="whats-new-btn">
-          <i class="fa-solid fa-megaphone"></i> What's New
-        </button>
-        <button class="action-btn" id="get-started-btn">
-          <i class="fa-brands fa-discord"></i> Our Discord
-        </button>
-      </div>
-    </div>
-    <img src="/_a/logo.png" alt="Logo" />
-  </div>
-
-  <script>
-    particlesJS("particles-js", {
-  particles: {
-    number: {
-      value: 150,
-      density: {
-        enable: true,
-        value_area: 800,
-      },
-    },
-    color: {
-      value: "#ffffff",
-    },
-    shape: {
-      type: "circle",
-      stroke: {
-        width: 0,
-        color: "#000000",
-      },
-      polygon: {
-        nb_sides: 5,
-      },
-    },
-    opacity: {
-      value: 0.5,
-      random: true,
-      anim: {
-        enable: false,
-        speed: 1,
-        opacity_min: 0.1,
-        sync: false,
-      },
-    },
-    size: {
-      value: 1.5,
-      random: true,
-      anim: {
-        enable: false,
-        speed: 80,
-        size_min: 0.1,
-        sync: false,
-      },
-    },
-    line_linked: {
-      enable: false,
-    },
-    move: {
-      enable: true,
-      speed: 1.5,
-      direction: "right",
-      random: true,
-      straight: true,
-      out_mode: "out",
-      bounce: false,
-      attract: {
-        enable: false,
-      },
-    },
-  },
-  interactivity: {
-    detect_on: "canvas",
-    events: {
-      onhover: {
-        enable: false,
-      },
-      onclick: {
-        enable: true,
-        mode: "push",
-      },
-      resize: true,
-    },
-    modes: {
-      push: {
-        particles_nb: 25,
-      },
-    },
-  },
-  retina_detect: true,
-});
-
-
-  document.getElementById("whats-new-btn").addEventListener("click", () => {
-    if (window.parent && typeof window.parent.showModal === "function") {
-      window.parent.showModal();
-    } else {
-      console.warn("no modal function in the parent");
-    }
-  });
-
-  document.getElementById("get-started-btn").addEventListener("click", () => {
-    window.open("https://dsc.gg/vaporr");
-  });
-
-  // thank you gpt
-  function tintImage(imgElement, tintHex) {
-    const img = new Image();
-    img.crossOrigin = "anonymous";
-    img.src = imgElement.src;
-
-    img.onload = () => {
-      const canvas = document.createElement("canvas");
-      canvas.width = img.width;
-      canvas.height = img.height;
-      const ctx = canvas.getContext("2d");
-
-      ctx.drawImage(img, 0, 0);
-
-      const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      const data = imgData.data;
-
-      function hexToRgb(hex) {
-        hex = hex.replace("#", "");
-        if (hex.length === 3) {
-          hex = hex.split("").map((c) => c + c).join("");
+      @keyframes gradientSlide {
+        0% {
+          background-position: 0% 0%;
         }
-        const bigint = parseInt(hex, 16);
-        return {
-          r: (bigint >> 16) & 255,
-          g: (bigint >> 8) & 255,
-          b: bigint & 255,
+
+        100% {
+          background-position: 100% 0%;
+        }
+      }
+
+      .buttons-container {
+        margin-top: 5px;
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+        padding-bottom: 10px;
+      }
+
+      .action-btn {
+        padding: 10px 14px;
+        border: none;
+        border-radius: 8px;
+        background-color: var(--button-bg);
+        color: white;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        font-family: "Inter", sans-serif;
+      }
+
+      .action-btn:hover {
+        background-color: var(--button-hover);
+        transform: translateY(-2px);
+      }
+
+      .whats-new-btn {
+        background-color: var(--button-bg);
+      }
+
+      .whats-new-btn:hover {
+        background-color: var(--button-hover);
+      }
+
+      img {
+        width: 300px;
+        transform: translateY(-15px);
+        opacity: 0;
+        animation: zoomR 0.8s forwards;
+      }
+
+      #particles-js {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        opacity: 0;
+        animation: fadeIn 1.5s ease forwards 0.5s;
+      }
+
+      i {
+        margin-right: 5px;
+      }
+
+      h1 {
+        pointer-events: none;
+      }
+
+      @keyframes fadeIn {
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes zoomR {
+        0% {
+          transform: translateX(100%) scale(1);
+          opacity: 0;
+        }
+
+        100% {
+          transform: translateX(0) scale(1);
+          opacity: 1;
+        }
+      }
+
+      @keyframes zoomL {
+        0% {
+          opacity: 0;
+          transform: translateX(-25px);
+        }
+
+        100% {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      iframe {
+        position: fixed;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 10px;
+        z-index: 10000;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="particles-js"></div>
+
+    <iframe
+      src="/ads/728x90.html"
+      width="728"
+      height="90"
+      sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-popups-to-escape-sandbox"
+      scrolling="no"
+      style="border: 0"
+      referrerpolicy="no-referrer">
+    </iframe>
+
+    <div class="content-container">
+      <div class="content">
+        <h1><span class="title">VAPOR</span> <span>v3</span></h1>
+        <div class="buttons-container">
+          <button class="action-btn whats-new-btn" id="whats-new-btn">
+            <i class="fa-solid fa-megaphone"></i> What's New
+          </button>
+          <button class="action-btn" id="get-started-btn">
+            <i class="fa-brands fa-discord"></i> Our Discord
+          </button>
+        </div>
+      </div>
+      <img src="/_a/logo.png" alt="Logo" />
+    </div>
+
+    <script>
+      particlesJS("particles-js", {
+        particles: {
+          number: {
+            value: 150,
+            density: {
+              enable: true,
+              value_area: 800,
+            },
+          },
+          color: {
+            value: "#ffffff",
+          },
+          shape: {
+            type: "circle",
+            stroke: {
+              width: 0,
+              color: "#000000",
+            },
+            polygon: {
+              nb_sides: 5,
+            },
+          },
+          opacity: {
+            value: 0.5,
+            random: true,
+            anim: {
+              enable: false,
+              speed: 1,
+              opacity_min: 0.1,
+              sync: false,
+            },
+          },
+          size: {
+            value: 1.5,
+            random: true,
+            anim: {
+              enable: false,
+              speed: 80,
+              size_min: 0.1,
+              sync: false,
+            },
+          },
+          line_linked: {
+            enable: false,
+          },
+          move: {
+            enable: true,
+            speed: 1.5,
+            direction: "right",
+            random: true,
+            straight: true,
+            out_mode: "out",
+            bounce: false,
+            attract: {
+              enable: false,
+            },
+          },
+        },
+        interactivity: {
+          detect_on: "canvas",
+          events: {
+            onhover: {
+              enable: false,
+            },
+            onclick: {
+              enable: true,
+              mode: "push",
+            },
+            resize: true,
+          },
+          modes: {
+            push: {
+              particles_nb: 25,
+            },
+          },
+        },
+        retina_detect: true,
+      });
+
+      document.getElementById("whats-new-btn").addEventListener("click", () => {
+        if (window.parent && typeof window.parent.showModal === "function") {
+          window.parent.showModal();
+        } else {
+          console.warn("no modal function in the parent");
+        }
+      });
+
+      document
+        .getElementById("get-started-btn")
+        .addEventListener("click", () => {
+          window.open("https://dsc.gg/vaporr");
+        });
+
+      // thank you gpt
+      function tintImage(imgElement, tintHex) {
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.src = imgElement.src;
+
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext("2d");
+
+          ctx.drawImage(img, 0, 0);
+
+          const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const data = imgData.data;
+
+          function hexToRgb(hex) {
+            hex = hex.replace("#", "");
+            if (hex.length === 3) {
+              hex = hex
+                .split("")
+                .map((c) => c + c)
+                .join("");
+            }
+            const bigint = parseInt(hex, 16);
+            return {
+              r: (bigint >> 16) & 255,
+              g: (bigint >> 8) & 255,
+              b: bigint & 255,
+            };
+          }
+
+          const tintRgb = hexToRgb(tintHex);
+
+          for (let i = 0; i < data.length; i += 4) {
+            const alpha = data[i + 3] / 255;
+            if (alpha > 0) {
+              const gray =
+                0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
+              data[i] = (tintRgb.r * gray) / 255;
+              data[i + 1] = (tintRgb.g * gray) / 255;
+              data[i + 2] = (tintRgb.b * gray) / 255;
+            }
+          }
+
+          ctx.putImageData(imgData, 0, 0);
+          imgElement.src = canvas.toDataURL();
         };
       }
 
-      const tintRgb = hexToRgb(tintHex);
+      window.addEventListener("themeLoaded", () => {
+        const logoImg = document.querySelector("img[src='/_a/logo.png']");
 
-      for (let i = 0; i < data.length; i += 4) {
-        const alpha = data[i + 3] / 255;
-        if (alpha > 0) {
-          const gray = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
-          data[i] = (tintRgb.r * gray) / 255;
-          data[i + 1] = (tintRgb.g * gray) / 255;
-          data[i + 2] = (tintRgb.b * gray) / 255;
+        const style = getComputedStyle(document.documentElement);
+        const primaryColor = style.getPropertyValue("--gradient-end").trim();
+
+        if (localStorage.getItem("theme") == "light") return;
+
+        if (logoImg.complete) {
+          tintImage(logoImg, primaryColor);
+        } else {
+          logoImg.addEventListener("load", () => {
+            tintImage(logoImg, primaryColor);
+          });
         }
-      }
-
-      ctx.putImageData(imgData, 0, 0);
-      imgElement.src = canvas.toDataURL();
-    };
-  }
-
-  window.addEventListener("themeLoaded", () => {
-    const logoImg = document.querySelector("img[src='/_a/logo.png']");
-
-    const style = getComputedStyle(document.documentElement);
-    const primaryColor = style.getPropertyValue("--secondary").trim();
-
-    if (logoImg.complete) {
-      tintImage(logoImg, primaryColor);
-    } else {
-      logoImg.addEventListener("load", () => {
-        tintImage(logoImg, primaryColor);
       });
-    }
-  });
-</script>
-</body>
-
+    </script>
+  </body>
 </html>

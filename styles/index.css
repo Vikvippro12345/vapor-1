@@ -2,7 +2,8 @@
  * index styles
  * these are the styles for the main page
  */
-html, body {
+html,
+body {
   overflow: hidden;
 }
 
@@ -119,7 +120,7 @@ html, body {
   align-items: center;
   justify-content: center;
   font-family: "Inter", sans-serif;
-  color: white;
+  color: var(--text-color);
   z-index: 9999;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -134,12 +135,11 @@ html, body {
   z-index: -1;
 }
 
-
 .loader-spinner {
   width: 24px;
   height: 24px;
   border: 3px solid rgba(255, 255, 255, 0.25);
-  border-top-color: white;
+  border-top-color: var(--primary);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -149,7 +149,7 @@ pre {
   padding: 0.75rem 1rem;
   border-radius: 8px;
   overflow-x: auto;
-  color: #a4b8db;
+  color: var(--primary);
   font-family: monospace;
   font-size: 12px;
   width: 100%;
