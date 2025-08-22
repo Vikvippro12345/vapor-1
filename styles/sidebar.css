@@ -160,7 +160,7 @@
   z-index: 98;
 }
 
-.sidebar:hover+.overlay {
+.sidebar:hover + .overlay {
   opacity: 1;
   visibility: visible;
   pointer-events: none;
@@ -250,4 +250,103 @@
 .sidebar:not(:hover) .nav-divider {
   width: 30px;
   margin: 8px 18px;
+}
+
+.sidebar:not(:hover) .premium-container {
+  opacity: 0;
+}
+
+.premium-container {
+  padding: 1rem;
+  background: linear-gradient(45deg, #ff6b6b 10%, #f7b733 50%, #ff6b6b 90%);
+  background-size: 200% 200%;
+  background-position: 0% 50%;
+  animation: premium-gradient-bg 4s linear infinite alternate;
+  margin: 1rem 0;
+  transition: opacity 0.27s ease;
+  -webkit-transition: opacity 0.27s ease;
+  -moz-transition: opacity 0.27s ease;
+  -ms-transition: opacity 0.27s ease;
+  -o-transition: opacity 0.27s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 275px;
+  z-index: 1;
+  -webkit-animation: premium-gradient-bg 4s linear infinite alternate;
+}
+
+@keyframes premium-gradient-bg {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+.premium-container::before {
+  content: "";
+  position: absolute;
+  inset: -16px;
+  border-radius: 18px;
+  z-index: -1;
+  background: linear-gradient(45deg, #ff6b6b 10%, #f7b733 50%, #ff6b6b 90%);
+  background-size: 200% 200%;
+  background-position: 0% 50%;
+  animation: premium-gradient-bg 4s linear infinite alternate;
+  filter: blur(10px);
+  opacity: 0.2;
+  pointer-events: none;
+  -webkit-animation: premium-gradient-bg 4s linear infinite alternate;
+  -webkit-filter: blur(10px);
+}
+
+.premium-title {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.premium-subtitle {
+  text-align: center;
+  font-size: 1rem;
+  color: #fff;
+}
+
+.shine {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    -45deg,
+    #ffffff00 0%,
+    #ffffff00 39.9%,
+    #ffffff40 40%,
+    #ffffff40 44.9%,
+    #ffffff80 45%,
+    #ffffff80 55%,
+    #ffffff40 55.1%,
+    #ffffff40 60%,
+    #ffffff00 60.1%,
+    #ffffff00 100%
+  );
+  animation: shine 3s infinite;
+}
+
+@keyframes shine {
+  0% {
+    left: -100%;
+  }
+  50% {
+    left: 100%;
+  }
+  100% {
+    left: 100%;
+  }
 }
