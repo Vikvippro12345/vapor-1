@@ -4,7 +4,7 @@
 */
 
 @import url("https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 @import url("/_a/fa/css/all.min.css");
 @import url("global.css");
 
@@ -19,6 +19,8 @@
   --secondary-text-color: #d5dce8;
   --button-bg: #2b384d;
   --button-hover: #3c4a5d;
+  --gradient-start: #8aeee9;
+  --gradient-end: #6366f1;
 }
 
 * {
