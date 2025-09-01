@@ -5,9 +5,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Vapor scramjet not skid frfrfr</title>
-  <script>
-    alert("Heads up!\nThis browser is VERY unreliable, and quite possibly fail to work.\nIt is recommended to use the VMs for any browsing.\n\nThis browser also may be removed in future updates to allow room for better features.")
-  </script>
   <link rel="icon" href="favicon.webp" />
   <link rel="stylesheet" href="/styles/defaults.css" />
   <link rel="prefetch" href="/scram/scramjet.worker.js" />
@@ -34,10 +31,8 @@
       height: 100vh;
       margin: 0;
       padding: 0;
-      background: var(--bg, #0a0a0a);
+      background: var(--bg);
       overflow: hidden;
-      --bg: #0a0a0a;
-      --fourth-bg: #1a1a1a;
     }
 
     @keyframes fade {
@@ -67,7 +62,7 @@
     .browser-container {
       width: 100%;
       height: 100%;
-      color: rgba(255, 255, 255, 0.85);
+      color: var(--text-color);
       display: flex;
       flex-direction: column;
       padding: 0.5em;
@@ -76,7 +71,7 @@
     }
 
     .browser-container a {
-      color: rgba(255, 255, 255, 0.85);
+      color: var(--primary);
     }
 
     .browser-container input,
@@ -89,7 +84,7 @@
       font-family: "Inter Tight", "Inter", system-ui, -apple-system,
         BlinkMacSystemFont, sans-serif;
       margin-bottom: 0;
-      color: white;
+      color: var(--text-color);
     }
 
     .browser-container iframe {
@@ -105,23 +100,17 @@
       padding: 0.6rem 1rem;
       border: none;
       outline: none;
-      color: white;
+      color: var(--text-color);
       height: auto;
       border-radius: 8px;
       flex: 1;
-      background: var(--fourth-bg, #1a1a1a);
+      background: var(--button-bg);
       font-size: 1.1rem;
       transition: 0.2s ease;
     }
 
     input.bar:focus {
-      background-color: #49517c;
-    }
-
-    .input_row>label {
-      font-size: 0.9rem;
-      color: rgba(255, 255, 255, 0.7);
-      margin-bottom: 0.5rem;
+      background-color: var(--button-hover);
     }
 
     p {
@@ -136,11 +125,11 @@
     }
 
     .nav button {
-      color: white;
+      color: var(--text-color);
       outline: none;
       border: none;
       border-radius: 8px;
-      background: var(--fourth-bg, #1a1a1a);
+      background: var(--button-bg);
       padding: 0.6rem 1rem;
       cursor: pointer;
       transition: 0.2s ease;
@@ -148,14 +137,13 @@
     }
 
     .nav button:hover {
-      background-color: #49517c;
+      background-color: var(--button-hover);
     }
 
     .tabs {
       padding-top: 0.6rem;
       padding-bottom: 0rem;
       gap: 0.3rem;
-      /*border-bottom: 1px solid rgba(255, 255, 255, 0.1);*/
       overflow-x: auto;
       overflow-y: hidden;
       white-space: nowrap;
@@ -170,16 +158,16 @@
     }
 
     .tabs::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.15);
+      background: var(--third-bg);
       border-radius: 2px;
     }
 
     .tab {
-      color: white;
+      color: var(--text-color);
       outline: none;
       border: none;
       border-radius: 8px;
-      background: var(--fourth-bg, #1a1a1a);
+      background: var(--button-bg);
       padding: 0.5rem 1rem;
       width: 245px;
       min-width: 245px;
@@ -196,11 +184,11 @@
     }
 
     .tab.active {
-      background-color: #49517c;
+      background-color: var(--button-hover);
     }
 
     .tab:hover:not(.active) {
-      background-color: #3d456b;
+      background-color: var(--third-bg);
     }
 
     .tab-favicon {
@@ -220,7 +208,7 @@
     .tab-close {
       background: none;
       border: none;
-      color: rgba(255, 255, 255, 0.7);
+      color: var(--secondary-text-color);
       cursor: pointer;
       padding: 0;
       width: 20px;
@@ -235,16 +223,16 @@
     }
 
     .tab-close:hover {
-      background-color: rgba(255, 255, 255, 0.15);
-      color: white;
+      background-color: var(--third-bg);
+      color: var(--text-color);
     }
 
     .new-tab {
-      color: white;
+      color: var(--text-color);
       outline: none;
       border: none;
       border-radius: 8px;
-      background: var(--fourth-bg, #1a1a1a);
+      background: var(--button-bg);
       padding: 0.7rem;
       cursor: pointer;
       width: 40px;
@@ -258,7 +246,7 @@
     }
 
     .new-tab:hover {
-      background-color: #49517c;
+      background-color: var(--button-hover);
     }
 
     .iframe-container {
@@ -278,76 +266,6 @@
       display: none;
     }
 
-    .cfg {
-      background: var(--fourth-bg, #1a1a1a);
-      color: white;
-      border-radius: 12px;
-      padding: 1rem;
-      transition: opacity 0.27s ease;
-      max-width: 90%;
-      width: 400px;
-    }
-
-    .cfg[open] {
-      animation: fade 0.27s ease normal;
-    }
-
-    .cfg::backdrop {
-      backdrop-filter: blur(12px);
-      background-color: rgba(0, 0, 0, 0.7);
-    }
-
-    .buttons {
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-    }
-
-    .buttons button {
-      border: none;
-      background: var(--fourth-bg, #1a1a1a);
-      border-radius: 8px;
-      color: white;
-      padding: 0.7rem 1.2rem;
-      max-width: 40px;
-      max-height: 40px;
-      cursor: pointer;
-      transition: 0.2s ease;
-      font-size: 1rem;
-    }
-
-    .buttons button:hover {
-      background-color: #49517c;
-    }
-
-    .input_row input {
-      background: var(--fourth-bg, #1a1a1a);
-      border: none;
-      border-radius: 8px;
-      color: white;
-      outline: none;
-      padding: 0.7rem 1rem;
-      font-size: 1rem;
-      transition: 0.2s ease;
-    }
-
-    .input_row input:focus {
-      background-color: #49517c;
-    }
-
-    .input_row {
-      margin-bottom: 1rem;
-      margin-top: 0.5rem;
-    }
-
-    .input_row input {
-      flex-grow: 1;
-    }
-
-    .centered {
-      justify-content: center;
-      align-items: center;
-    }
-
     .sortable-ghost {
       opacity: 0.5 !important;
     }
@@ -358,13 +276,13 @@
     }
 
     .version {
-      color: rgba(255, 255, 255, 0.7) !important;
+      color: var(--secondary-text-color) !important;
       font-size: 1rem;
       margin-left: auto;
     }
 
     .version b {
-      color: white;
+      color: var(--text-color);
     }
 
     .config-btn {
@@ -375,6 +293,7 @@
   <script src="/baremux/index.js"></script>
   <script src="/scram/scramjet.controller.js"></script>
   <script src="config.js"></script>
+  <script src="/scripts/theme.js"></script>
 </head>
 
 <body>
@@ -397,12 +316,7 @@
 
     const store = {
       url: "https://",
-      wispurl:
-        _CONFIG?.wispurl ||
-        (location.protocol === "https:" ? "wss" : "ws") +
-        "://" +
-        location.host +
-        "/wisp/",
+      wispurl: localStorage.getItem("proxServer") || "wss://gointospace.app/wisp/",
       bareurl:
         _CONFIG?.bareurl ||
         (location.protocol === "https:" ? "https" : "http") +
@@ -412,7 +326,7 @@
       proxy: "",
     };
 
-    connection.setTransport("/epoxy/index.mjs", [{wisp: store.wispurl}]);
+    connection.setTransport("/epoxy/index.mjs", [{ wisp: store.wispurl }]);
 
     // tab management
     let tabs = [];
@@ -625,50 +539,15 @@
       return activeTab.frame.go(url);
     }
 
-    function showConfig() {
-      document.getElementById("config-modal").showModal();
-    }
-
-    function closeConfig() {
-      const modal = document.getElementById("config-modal");
-      modal.style.opacity = 0;
-      setTimeout(() => {
-        modal.close();
-        modal.style.opacity = 1;
-      }, 250);
-    }
-
     window.addEventListener("load", async () => {
       const root = document.getElementById("app");
 
       root.innerHTML = `
           <div class="browser-container">
-            <dialog id="config-modal" class="cfg">
-              <div style="align-self: end">
-                <div class="flex buttons">
-                  <button style="display:none;" onclick="connection.setTransport('/baremod/index.mjs', [store.bareurl])">use bare server 3</button>
-                  <button style="display:none;" onclick="connection.setTransport('/libcurl/index.mjs', [{ wisp: store.wispurl }])">use libcurl.js</button>
-                  <button onclick="connection.setTransport('/epoxy/index.mjs', [{ wisp: store.wispurl }])">Use Epoxy</button>
-                </div>
-              </div>
-              <div class="flex col input_row">
-                <label for="wisp_url_input">Wisp:</label>
-                <input id="wisp_url_input" value="${store.wispurl}" spellcheck="false">
-              </div>
-              <div class="flex col input_row">
-                <label for="bare_url_input">Bare:</label>
-                <input id="bare_url_input" value="${store.bareurl}" spellcheck="false">
-              </div>
-              <div class="flex buttons centered">
-                <button onclick="closeConfig()">Close</button>
-              </div>
-            </dialog>
-
             <div class="flex tabs" id="tabs-container">
             </div>
 
             <div class="flex nav">
-              <button onclick="showConfig()" display="display: none;"><i class="fa-regular fa-cog"></i></button>
               <button onclick="getActiveTab()?.frame.back()"><i class="fa-regular fa-chevron-left"></i></button>
               <button onclick="getActiveTab()?.frame.forward()"><i class="fa-regular fa-chevron-right"></i></button>
               <button onclick="getActiveTab()?.frame.reload()"><i class="fa-regular fa-rotate-right"></i></button>

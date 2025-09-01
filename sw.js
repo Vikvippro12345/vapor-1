@@ -1,12 +1,3 @@
-
-// fuck this sw.js
-
-
-
-
-
-
-// dumb hack to allow firefox to work (please dont do this in prod)
 if (navigator.userAgent.includes("Firefox")) {
 	Object.defineProperty(globalThis, "crossOriginIsolated", {
 		value: true,
@@ -19,19 +10,6 @@ importScripts("/scram/scramjet.shared.js", "/scram/scramjet.worker.js");
 const scramjet = new ScramjetServiceWorker();
 
 async function handleRequest(event) {
-	const url = new URL(event.request.url);
-	const referrer = event.request.referrer ? new URL(event.request.referrer) : null;
-	
-	const isProxyPage = url.pathname === '/scram.html' || url.pathname === '/embed.html';
-	const isFromProxyPage = referrer && (
-		referrer.pathname === '/scram.html' || 
-		referrer.pathname === '/embed.html'
-	);
-
-	if (!isProxyPage && !isFromProxyPage) {
-		return fetch(event.request);
-	}
-
 	await scramjet.loadConfig();
 	if (scramjet.route(event)) {
 		const response = await scramjet.fetch(event);

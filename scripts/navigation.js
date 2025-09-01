@@ -1,181 +1,149 @@
 /**
- * this creates the navigation items in the sidebar
+ * This handles the navi.js processing, etc
  */
 
+const mainNavContainer = document.getElementById("nav-items");
+const extrasNavContainer = document.getElementById("nav-items-extras");
+const nestNavContainer = document.getElementById("nav-items-nest");
+const navTopContainer = document.getElementById("nav-top-container");
+const settingsBtn = document.querySelector(".settings-btn");
+const extrasBtn = document.querySelector(".extras-btn");
+const frame = document.getElementById("frame");
 
-const navContainer = document.getElementById("nav-items");
+let isExtrasPanelActive = false;
+let activeNestParent = null;
+let lastSelectedNestUrl = null;
 
-let openCategoryWrapper = null;
+function updateExtrasPanelVisibility(visible) {
+  isExtrasPanelActive = visible;
+  navTopContainer.classList.toggle("extras-active", visible);
+  extrasBtn.classList.toggle("active", visible);
+}
 
-function createNavItem(item, index, parentCategory = null) {
+function hideNestPanel() {
+  navTopContainer.classList.remove("nest-active");
+}
 
-  // THIS STUFF IS REDUNDANT IDK WHY ITS HERE
-  if (item.type === "category") {
-    // category
-    const categoryWrapper = document.createElement("div");
-    categoryWrapper.className = "nav-category-wrapper";
-    const navCategory = document.createElement("a");
-    navCategory.className = "nav-item nav-category";
-    navCategory.innerHTML = `
-      <div class="icon-container">
-        <i class="fa-regular ${item.icon}"></i>
-        <i class="fa-regular fa-chevron-down chevron-icon" style="display:none;"></i>
-      </div>
-      <span class="nav-text">${item.title}</span>
-    `;
-    navCategory.href = "#";
-    navCategory.onclick = (e) => {
-      e.preventDefault();
-      if (openCategoryWrapper && openCategoryWrapper !== categoryWrapper) {
-        closeCategory(openCategoryWrapper);
+function showNestPanel(nestKey, parentElement) {
+  const items = navData[nestKey]; 
+  if (!items) {
+    console.error("FATAL ERROR: Nest data for '" + nestKey + "' was not found in the navData object! Check navi.js.");
+    return;
+  }
+  
+  updateExtrasPanelVisibility(false);
+  navTopContainer.classList.add("nest-active");
+  activeNestParent = parentElement;
+
+  nestNavContainer.innerHTML = '';
+  const backLink = document.createElement("a");
+  backLink.className = "nav-item";
+  backLink.innerHTML = `<div class="icon-container"><i class="fa-regular fa-chevron-left"></i></div><span class="nav-text">Back</span>`;
+  backLink.href = "#";
+  backLink.onclick = (e) => {
+    e.preventDefault();
+    hideNestPanel();
+    updateActiveStates(activeNestParent);
+  };
+  nestNavContainer.appendChild(backLink);
+  nestNavContainer.appendChild(document.createElement("div")).className = "nav-divider";
+  populateNav(nestNavContainer, items, false);
+}
+
+function updateActiveStates(activeElement) {
+  document.querySelectorAll(".nav-item, .quick-action-btn").forEach(el => el.classList.remove("active"));
+
+  if (activeElement) {
+    activeElement.classList.add("active");
+    if (extrasNavContainer.contains(activeElement)) {
+      extrasBtn.classList.add("active");
+    }
+  }
+  
+  if (activeNestParent) {
+    activeNestParent.classList.add("active");
+  }
+}
+
+function createNavItem(item, container, isInitialLoad) {
+  if (item.type === "divider") {
+    container.appendChild(document.createElement("div")).className = "nav-divider";
+    return;
+  }
+
+  const navLink = document.createElement("a");
+  navLink.className = "nav-item";
+
+  if (isInitialLoad && item.title === "Home") {
+    navLink.classList.add("active");
+    frame.src = item.url;
+  }
+
+  let iconClasses = item.icon;
+  if (!/fa-(solid|regular|brands)/.test(iconClasses)) iconClasses = `fa-regular ${iconClasses}`;
+  
+  const nestChevron = item.nest ? `<i class="fa-regular fa-chevron-right nav-chevron"></i>` : '';
+
+  navLink.innerHTML = `<div class="icon-container"><i class="${iconClasses}"></i></div><span class="nav-text">${item.title}${nestChevron}</span>`;
+  navLink.href = "#";
+
+  if (container === nestNavContainer && item.url === lastSelectedNestUrl) {
+    navLink.classList.add('active');
+  }
+
+  navLink.onclick = (e) => {
+    e.preventDefault();
+
+    if (item.nest) {
+      showNestPanel(item.nest, navLink);
+      updateActiveStates(navLink);
+      return;
+    }
+
+    if (container === mainNavContainer) {
+      frame.src = item.url;
+      activeNestParent = null;
+      lastSelectedNestUrl = null; 
+      hideNestPanel();
+      updateExtrasPanelVisibility(false);
+      updateActiveStates(navLink);
+    } else if (container === extrasNavContainer) {
+      if (item.selectable) {
+        const currentActiveLink = document.querySelector(".nav-item.active");
+        if (currentActiveLink) currentActiveLink.classList.remove("active");
+        settingsBtn.classList.remove('active');
+        navLink.classList.add("active");
+        frame.src = item.url;
+      } else {
+        if (item.url.startsWith("https://")) window.open(item.url, "_blank");
       }
-      toggleCategory(categoryWrapper, navCategory, item.children);
-    };
-    navCategory.onmouseenter = () => {
-      navCategory.querySelector(".icon-container > .fa-regular").style.display = "none";
-      navCategory.querySelector(".chevron-icon").style.display = "inline-block";
-    };
-    navCategory.onmouseleave = () => {
-      navCategory.querySelector(".icon-container > .fa-regular").style.display = "inline-block";
-      navCategory.querySelector(".chevron-icon").style.display = "none";
-    };
-    categoryWrapper.appendChild(navCategory);
-    navContainer.appendChild(categoryWrapper);
-  } else if (item.type === "divider") {
-    // divider
-    const divider = document.createElement("div");
-    divider.className = "nav-divider";
-    navContainer.appendChild(divider);
-  } else if (parentCategory) {
-    // nested
-    const nestedNav = document.createElement("a");
-    nestedNav.className = "nav-item nav-nested-item";
-    nestedNav.innerHTML = `
-      <div class="icon-container">
-        <i class="fa-regular ${item.icon}"></i>
-      </div>
-      <span class="nav-text">${item.title}</span>
-    `;
-    nestedNav.href = "#";
-    nestedNav.onclick = (e) => {
-      e.preventDefault();
-      loadPage(item.url, nestedNav);
-    };
-    parentCategory.appendChild(nestedNav);
-  } else {
-    // normal item
-    const navItemstem = document.createElement("a");
-    navItemstem.className = "nav-item" + (index === 0 ? " active" : "");
-    navItemstem.innerHTML = `
-          <div class="icon-container">
-            <i class="fa-regular ${item.icon}"></i>
-          </div>
-          <span class="nav-text">${item.title}</span>
-        `;
-    navItemstem.href = "#";
-    navItemstem.onclick = (e) => {
-      e.preventDefault();
-      loadPage(item.url, navItemstem);
-    };
-    navContainer.appendChild(navItemstem);
-  }
+    } else if (container === nestNavContainer) {
+      frame.src = item.url;
+      lastSelectedNestUrl = item.url;
+      updateActiveStates(navLink);
+    }
+  };
+
+  container.appendChild(navLink);
 }
 
-function toggleCategory(wrapper, navCategory, children) {
-  let expanded = wrapper.classList.contains("expanded");
-  if (!expanded) {
-    wrapper.classList.add("expanded");
-    openCategoryWrapper = wrapper;
-    const nestedList = document.createElement("div");
-    nestedList.className = "nav-nested-list";
-    children.forEach((child, idx) => createNavItem(child, idx, nestedList));
-    wrapper.appendChild(nestedList);
-    setTimeout(() => {
-      nestedList.style.maxHeight = nestedList.scrollHeight + "px";
-      nestedList.style.opacity = 1;
-      nestedList.classList.add("fade-in");
-    }, 10);
-  } else {
-    closeCategory(wrapper);
-  }
+extrasBtn.onclick = () => {
+  hideNestPanel();
+  updateExtrasPanelVisibility(!isExtrasPanelActive);
+  settingsBtn.classList.remove("active");
+};
+
+settingsBtn.onclick = () => {
+  frame.src = "page/options.html";
+  hideNestPanel();
+  updateActiveStates(settingsBtn);
+  updateExtrasPanelVisibility(false);
+};
+
+function populateNav(container, items, isInitial) {
+  if (isInitial) container.innerHTML = "";
+  items.forEach((item) => createNavItem(item, container, isInitial));
 }
 
-function closeCategory(wrapper) {
-  const nestedList = wrapper.querySelector(".nav-nested-list");
-  if (nestedList) {
-    nestedList.classList.remove("fade-in");
-    nestedList.style.maxHeight = "0px";
-    nestedList.style.opacity = 0;
-    setTimeout(() => {
-      if (nestedList.parentNode) nestedList.parentNode.removeChild(nestedList);
-      wrapper.classList.remove("expanded");
-      if (openCategoryWrapper === wrapper) openCategoryWrapper = null;
-    }, 120);
-  } else {
-    wrapper.classList.remove("expanded");
-    if (openCategoryWrapper === wrapper) openCategoryWrapper = null;
-  }
-}
-
-navContainer.innerHTML = "";
-navItems.forEach((item, index) => {
-  createNavItem(item, index);
-});
-
-const sidebar = document.querySelector('.sidebar');
-sidebar.addEventListener('mouseleave', () => {
-  document.querySelectorAll('.nav-category-wrapper.expanded').forEach(closeCategory);
-});
-
-function loadPage(url, selectedItem) {
-  const frame = document.getElementById("frame");
-  frame.src = url;
-  const navItems = document.querySelectorAll(".nav-item");
-  navItems.forEach((item) => item.classList.remove("active"));
-  selectedItem.classList.add("active");
-}
-
-document.querySelector(".fa-discord").parentElement.onclick = () => {
-  window.location.href = "https://discord.gg/BHwm9rrK55";
-};
-
-document.querySelector(".fa-lock").parentElement.onclick = () => {
-  const usageUrl = "usage.html";
-  const frame = document.getElementById("frame");
-  frame.src = usageUrl;
-};
-
-document.querySelector(".fa-handshake").parentElement.onclick = () => {
-  const partnersUrl = "page/partners.html";
-  const frame = document.getElementById("frame");
-  frame.src = partnersUrl;
-};
-
-document.querySelector(".fa-cog").parentElement.onclick = () => {
-  const settingsUrl = "page/options.html";
-  const frame = document.getElementById("frame");
-  frame.src = settingsUrl;
-};
-
-function setActiveNav(title) {
-  const navItems = document.querySelectorAll(".nav-item");
-  navItems.forEach((item) => item.classList.remove("active"));
-  const activeItem = Array.from(navItems).find((item) =>
-    item.textContent.includes(title)
-  );
-  if (activeItem) activeItem.classList.add("active");
-}
-
-// no more cringy ass comments
-document.querySelector(".fa-expand").parentElement.onclick = () => {
-  const frame = document.getElementById("frame");
-  if (frame.requestFullscreen) {
-    frame.requestFullscreen();
-  } else if (frame.mozRequestFullScreen) {
-    frame.mozRequestFullScreen();
-  } else if (frame.webkitRequestFullscreen) {
-    frame.webkitRequestFullscreen();
-  } else if (frame.msRequestFullscreen) {
-    frame.msRequestFullscreen();
-  }
-};
+populateNav(mainNavContainer, navItems, true);
+populateNav(extrasNavContainer, extraNavItems, true);
