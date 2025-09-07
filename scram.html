@@ -1,25 +1,15 @@
 <!DOCTYPE html>
+<!----------------------!
+ ! SJ-Static | by VAPOR
+ !---------------------->
 <html lang="en">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Vapor scramjet not skid frfrfr</title>
-  <link rel="icon" href="favicon.webp" />
+
   <link rel="stylesheet" href="/styles/defaults.css" />
-  <link rel="prefetch" href="/scram/scramjet.worker.js" />
-  <link rel="prefetch" href="/scram/scramjet.shared.js" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&amp;family=Inter+Tight:ital,wght@0,100..900;1,100..900&amp;family=Inter:wght@100..900&amp;display=swap&amp;"
-    rel="stylesheet" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Hind:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Hind:wght@300;400;500;600;700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-    rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
   <style>
     body,
@@ -81,7 +71,7 @@
     }
 
     .browser-container h1 {
-      font-family: "Inter Tight", "Inter", system-ui, -apple-system,
+      font-family: "Inter", system-ui, -apple-system,
         BlinkMacSystemFont, sans-serif;
       margin-bottom: 0;
       color: var(--text-color);
@@ -291,7 +281,7 @@
   </style>
   <script src="https://cdn.jsdelivr.net/npm/dreamland"></script>
   <script src="/baremux/index.js"></script>
-  <script src="/scram/scramjet.controller.js"></script>
+  <script src="/scram/scramjet.all.js"></script>
   <script src="config.js"></script>
   <script src="/scripts/theme.js"></script>
 </head>
@@ -299,18 +289,19 @@
 <body>
   <div id="app"></div>
   <script>
+    const { ScramjetController } = $scramjetLoadController();
+    
     const scramjet = new ScramjetController({
       files: {
         wasm: "/scram/scramjet.wasm.wasm",
-        worker: "/scram/scramjet.worker.js",
-        client: "/scram/scramjet.client.js",
-        shared: "/scram/scramjet.shared.js",
+        all: "/scram/scramjet.all.js",
         sync: "/scram/scramjet.sync.js",
       },
     });
-
+    
     scramjet.init();
     navigator.serviceWorker.register("./sw.js");
+
 
     const connection = new BareMux.BareMuxConnection("/baremux/worker.js");
 

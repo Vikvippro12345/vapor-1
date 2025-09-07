@@ -1,3 +1,10 @@
+
+/************************
+ * SJ-Static | by VAPOR
+ ***********************/
+
+
+
 if (navigator.userAgent.includes("Firefox")) {
 	Object.defineProperty(globalThis, "crossOriginIsolated", {
 		value: true,
@@ -5,9 +12,11 @@ if (navigator.userAgent.includes("Firefox")) {
 	});
 }
 
-importScripts("/scram/scramjet.shared.js", "/scram/scramjet.worker.js");
+importScripts("/scram/scramjet.all.js");
 
+const { ScramjetServiceWorker } = $scramjetLoadWorker();
 const scramjet = new ScramjetServiceWorker();
+
 
 async function handleRequest(event) {
 	await scramjet.loadConfig();
