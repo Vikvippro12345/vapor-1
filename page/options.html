@@ -293,29 +293,32 @@
         gap: 10px;
         border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 10px;
-        background: #212630;
+        background: var(--bg);
         max-height: 250px;
         margin-top: 0;
         overflow-y: auto;
         height: 0;
         opacity: 0;
-        transition: height 0.5s ease-in-out, padding 0.5s ease-in-out,
-          margin 0.5s ease-in-out;
+        padding: 0 10px;
+        transition: height 0.3s ease-in-out, padding 0.3s ease-in-out,
+          margin 0.3s ease-in-out, opacity 0.3s ease-in-out;
       }
 
       .theme {
-        border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 10px;
         cursor: pointer;
-        transition: 0.3s;
         padding: 10px;
-        border: 3px solid var(--secondary);
-        transition: 0.3s;
-        font-family: "Inter" !important;
+        border-width: 3px;
+        border-style: solid;
+        transition: transform 0.2s ease-in-out;
       }
 
       .theme:hover {
         transform: scale(1.05);
+      }
+
+      .theme h2, .theme p {
+        font-family: "Inter", sans-serif !important;
       }
 
       .current-theme {
@@ -325,28 +328,48 @@
         padding: 10px;
         border: 3px solid var(--secondary);
         display: flex;
-        transition: height 0.5s ease-in-out;
+        align-items: stretch;
+        gap: 10px;
+      }
+      
+      .theme-data-wrapper {
+        flex-grow: 1;
+        min-width: 0;
+        mask-image: linear-gradient(to right, black 85%, transparent 100%);
+        -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
       }
 
-      .current-theme div {
-        flex: 1;
+      #currentThemeData p {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: clip;
       }
 
-      .current-theme button {
+      #editThemeBtn {
+        width: 3rem;
+        height: 3rem;
+        padding: 0;
+        margin: 3px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
         border: none;
         background: var(--button-bg);
-        padding: 10px;
         color: var(--text-color);
-        height: auto;
-        margin: 0;
         border-radius: 10px;
         cursor: pointer;
         transition: 0.3s;
       }
 
-      .current-theme button:hover {
+      #editThemeBtn:hover {
         background: var(--button-hover);
       }
+
+      #editThemeIcon {
+        font-size: 16px;
+      }
+
 
       .fancy {
         background: linear-gradient(
@@ -374,112 +397,46 @@
         }
       }
 
-      /*themes*/
-      .theme-vapor {
-        border: 3px solid #7d93ba;
-      }
-      .theme-light {
-        border: 3px solid #444f60;
-        background: #d5dce8;
-        color: #444f60;
-      }
-      .theme-light p {
-        color: #444f60;
-      }
-      .theme-amoled {
-        border: 3px solid #0a111d;
-        background: #000000;
-        color: #d5dce8;
-      }
-      .theme-midnight {
-        border: 3px solid #7c3aed;
-        background: #0b0c1a;
-        color: #7c3aed;
-      }
-      .theme-midnight p {
-        color: #7c3aed;
-      }
-      .theme-ember {
-        border: 3px solid #ff7043;
-        background: #1e0f0c;
-        color: #ff7043;
-      }
-      .theme-ember p {
-        color: #ff7043;
-      }
-      .theme-forest {
-        border: 3px solid #38a169;
-        background: #0d1b0d;
-        color: #38a169;
-      }
-      .theme-forest p {
-        color: #38a169;
-      }
-      .theme-violet {
-        border: 3px solid #9f7aea;
-        background: #1a0b2e;
-        color: #9f7aea;
-      }
-      .theme-violet p {
-        color: #9f7aea;
-      }
-      .theme-sunset {
-        border: 3px solid #ed8936;
-        background: #1a0f0a;
-        color: #ed8936;
-      }
-      .theme-sunset p {
-        color: #ed8936;
-      }
-      .theme-crimson {
-        border: 3px solid #b33232;
-        background: #1a0b0b;
-        color: #b33232;
-      }
-      .theme-crimson p {
-        color: #b33232;
-      }
-      .theme-ocean {
-        border: 3px solid #5fa8d3;
-        background: #0c1821;
-        color: #5fa8d3;
-      }
-      .theme-ocean p {
-        color: #5fa8d3;
-      }
-      .theme-grayscale {
-        border: 3px solid #b0b0b0;
-        background: #0d0d0d;
-        color: #b0b0b0;
-      }
-      .theme-grayscale p {
-        color: #b0b0b0;
-      }
-      .theme-slate {
-        border: 3px solid #6a81a7;
-        background: #121619;
-        color: #6a81a7;
-      }
-      .theme-slate p {
-        color: #6a81a7;
-      }
-      .theme-matrix {
-        border: 3px solid #00ff00;
-        background: #000000;
-        color: #00ff00;
-        text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00;
-        box-shadow: 0 0 10px #00ff00, 0 0 10px #00ff00 inset;
-      }
-      .theme-matrix * {
-        font-family: "Courier Prime", monospace;
-      }
-      .theme-matrix p {
-        color: #00ff00;
-      }
-      .theme-custom {
-        border: 3px solid var(--primary);
-      }
-
+      .theme-vapor { background-color: #0F111A; color: #d5dce8; border-color: #7d93ba; }
+      .theme-vapor p { color: #9ca3af; }
+      .theme-light { background-color: #d5dce8; color: #444f60; border-color: #444f60; }
+      .theme-light p { color: #444f60; }
+      .theme-amoled { background-color: #000000; color: #d5dce8; border-color: #0a111d; }
+      .theme-amoled p { color: #d5dce8; }
+      .theme-midnight { background-color: #0b0c1a; color: #7c3aed; border-color: #7c3aed; }
+      .theme-midnight p { color: #a17ff0; }
+      .theme-catppuccin-mocha { background-color: #1e1e2e; color: #cba6f7; border-color: #cba6f7; }
+      .theme-catppuccin-mocha p { color: #cba6f7; }
+      .theme-ember { background-color: #1e0f0c; color: #ff7043; border-color: #ff7043; }
+      .theme-ember p { color: #ff8a65; }
+      .theme-lunar { background-color: #191a1f; color: #f6e9a6; border-color: #f6e9a6; }
+      .theme-lunar p { color: #f6e9a6; }
+      .theme-forest { background-color: #0d1b0d; color: #38a169; border-color: #38a169; }
+      .theme-forest p { color: #48bb78; }
+      .theme-marine { background-color: #161b22; color: #768ca3; border-color: #768ca3; }
+      .theme-marine p { color: #768ca3; }
+      .theme-violet { background-color: #1a0b2e; color: #9f7aea; border-color: #9f7aea; }
+      .theme-violet p { color: #b794f4; }
+      .theme-sunset { background-color: #1a0f0a; color: #ed8936; border-color: #ed8936; }
+      .theme-sunset p { color: #f6ad55; }
+      .theme-crimson { background-color: #1a0b0b; color: #b33232; border-color: #b33232; }
+      .theme-crimson p { color: #e53e3e; }
+      .theme-royal { background-color: #181222; color: #d4af37; border-color: #d4af37; }
+      .theme-royal p { color: #d4af37; }
+      .theme-ocean { background-color: #0c1821; color: #5fa8d3; border-color: #5fa8d3; }
+      .theme-ocean p { color: #7dc3e8; }
+      .theme-jade { background-color: #111815; color: #4caf7a; border-color: #4caf7a; }
+      .theme-jade p { color: #4caf7a; }
+      .theme-grayscale { background-color: #0d0d0d; color: #b0b0b0; border-color: #b0b0b0; }
+      .theme-grayscale p { color: #b0b0b0; }
+      .theme-slate { background-color: #121619; color: #6a81a7; border-color: #6a81a7; }
+      .theme-slate p { color: #8a9dbf; }
+      .theme-matrix { background-color: #000000; color: #00ff00; border-color: #00ff00; text-shadow: 0 0 5px #00ff00; }
+      .theme-matrix p { color: #00ff00; }
+      .theme-matrix * { font-family: "Courier Prime", monospace !important; }
+      .theme-custom { background-color: var(--bg); color: var(--text-color); border-color: var(--primary); }
+      .theme-custom p { color: var(--secondary-text-color); }
+      
       .modal-overlay {
         position: fixed;
         top: 0;
@@ -550,28 +507,34 @@
         font-size: 1rem;
         color: var(--secondary-text-color);
       }
-
-      .mode-toggle-group {
-        display: flex;
-        background-color: var(--secondary-bg);
-        border-radius: 10px;
-        padding: 4px;
-      }
-
-      .mode-toggle-group button {
-        padding: 8px 16px;
+      
+      .manual-color-input {
+        width: 50px;
+        height: 30px;
         border: none;
-        background-color: transparent;
-        color: var(--secondary-text-color);
-        border-radius: 8px;
+        padding: 0;
+        border-radius: 6px;
         cursor: pointer;
-        font-size: 14px;
-        transition: background-color 0.2s ease, color 0.2s ease;
+        background-color: transparent;
+      }
+      
+      .manual-color-input::-webkit-color-swatch-wrapper {
+        padding: 0;
+      }
+      
+      .manual-color-input::-webkit-color-swatch {
+        border-radius: 6px;
+        border: 2px solid var(--secondary-bg);
       }
 
-      .mode-toggle-group button.active {
-        background-color: var(--third-bg);
-        color: var(--text-color);
+      #manualThemeContainer .modal-option {
+        gap: 1rem;
+      }
+
+      #manualThemeContainer {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
       }
 
       .modal-actions {
@@ -608,70 +571,6 @@
 
       #applyTheme:hover {
         filter: brightness(1.15);
-      }
-
-      .color-picker-container {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-      }
-
-      .color-box-wrapper {
-        width: 100%;
-        height: 180px;
-        border-radius: 22px;
-        border: 3px solid white;
-        position: relative;
-        cursor: crosshair;
-      }
-
-      #color-box-canvas {
-        width: 100%;
-        height: 100%;
-        border-radius: 19px;
-      }
-
-      #color-selector {
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        border: 3px solid white;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-        position: absolute;
-        transform: translate(-50%, -50%);
-        pointer-events: none;
-      }
-
-      #hue-slider {
-        width: 100%;
-        height: 20px;
-        border-radius: 10px;
-        border: 3px solid white;
-        position: relative;
-        cursor: pointer;
-        background: linear-gradient(
-          to right,
-          red,
-          yellow,
-          lime,
-          aqua,
-          blue,
-          magenta,
-          red
-        );
-      }
-
-      #hue-selector {
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        border: 3px solid white;
-        background-color: #eee;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-        position: absolute;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        pointer-events: none;
       }
 
       .font-search-wrapper {
@@ -732,7 +631,7 @@
         </div>
         <div class="menu-item" data-target="customize">
           <i class="fa-regular fa-palette"></i> Customize
-          <span class="redbadge">NEW</span>
+          <span class="badge">MORE</span>
         </div>
       </div>
 
@@ -740,12 +639,12 @@
         <div class="card">
           <h1 class="fancy">About VAPOR</h1>
           <p>
-            Your #1 destination for un.bl0ck1ng<br /><br /><br />technonyte0 -
+            Your #1 destination for unbl0ck1ng<br /><br /><br />technonyte0 -
             Owner + Founder<br />Evicly - Co-Owner<br />m3rcury.w0rksh0p/tn -
-            U|tr@.v10l3t + W1sp<br />3kh0 - most of the games<br />Hyperbeam SDK
-            - VM<br />gh:ambr0sial/nova - Sources for Movies/TV<br />Pollinations
-            - AI chat<br />socket.io - chat.v2<br />??? - ???<br />Particles.js
-            - particles duh<br />Javascript - being annoying
+            Scr@mj3t + W1sp<br />gn-math - new game library<br />Hyperbeam SDK
+            - VM (also bad service)<br />ambr0sial/nove - Sources for Movies/TV<br />Pollinations
+            - AI chat<br />socket.io - chat.v2<br />Particles.js
+            - particles<br />Javascript - being annoying
           </p>
         </div>
       </div>
@@ -879,12 +778,14 @@
           <h2>Theme</h2>
           <p>Pick from tons of themes or make your own.</p>
           <div class="current-theme" id="currentTheme">
-            <div id="currentThemeData">
-              <h2>Loading...</h2>
-              <p>...</p>
+            <div class="theme-data-wrapper">
+              <div id="currentThemeData">
+                <h2>Loading...</h2>
+                <p>...</p>
+              </div>
             </div>
-            <button onclick="editTheme()">
-              <i class="fa-regular fa-pencil"></i>
+            <button id="editThemeBtn">
+              <i class="fa-solid fa-pencil" id="editThemeIcon"></i>
             </button>
           </div>
           <div class="theme-select" id="themeSelect"></div>
@@ -910,31 +811,25 @@
       <div class="main-modal" id="customThemeModal">
         <div class="modal-title">Create Custom Theme</div>
         <div class="modal-body">
-          <div class="modal-option">
-            <label for="modeToggle">Mode</label>
-            <div class="mode-toggle-group" id="modeToggle">
-              <button type="button" data-mode="dark" class="active">
-                Dark
-              </button>
-              <button type="button" data-mode="light">Light</button>
+
+            <div id="manualThemeContainer">
+              <div class="modal-option">
+                <label for="manualBgColor">Background Color</label>
+                <input type="color" id="manualBgColor" class="manual-color-input" value="#1a0b2e">
+              </div>
+              <div class="modal-option">
+                <label for="manualPrimaryColor">Primary Color</label>
+                <input type="color" id="manualPrimaryColor" class="manual-color-input" value="#7c3aed">
+              </div>
             </div>
-          </div>
-          <div class="color-picker-container" id="pickerContainer">
-            <div class="color-box-wrapper">
-              <canvas id="color-box-canvas"></canvas>
-              <div id="color-selector"></div>
-            </div>
-            <div id="hue-slider">
-              <div id="hue-selector"></div>
-            </div>
-          </div>
+
           <div class="modal-option">
             <label>Font</label>
             <div class="font-search-wrapper">
               <input
                 type="text"
                 id="font-search-input"
-                placeholder="Search fonts..." />
+                placeholder="Inter" />
               <div id="font-search-results"></div>
             </div>
           </div>
@@ -970,124 +865,109 @@
         const customThemeOverlay =
           document.getElementById("customThemeOverlay");
         const customThemeModal = document.getElementById("customThemeModal");
-        const modeToggle = document.getElementById("modeToggle");
+
+        const manualPrimaryColorInput = document.getElementById("manualPrimaryColor");
+        const manualBgColorInput = document.getElementById("manualBgColor");
+        const editThemeBtn = document.getElementById("editThemeBtn");
+        const editThemeIcon = document.getElementById("editThemeIcon");
+
         const cancelThemeBtn = document.getElementById("cancelTheme");
         const applyThemeBtn = document.getElementById("applyTheme");
-        const colorBoxWrapper = document.querySelector(".color-box-wrapper");
-        const colorBoxCanvas = document.getElementById("color-box-canvas");
-        const colorSelector = document.getElementById("color-selector");
-        const hueSlider = document.getElementById("hue-slider");
-        const hueSelector = document.getElementById("hue-selector");
         const fontSearchInput = document.getElementById("font-search-input");
         const fontSearchResults = document.getElementById(
           "font-search-results"
         );
-        const ctx = colorBoxCanvas.getContext("2d");
 
-        let currentColor = { h: 259, s: 1, v: 1 };
-        let selectedColor = "#7c3aed";
-        let selectedFont = "Default";
+        let selectedFont = "Inter";
         let originalThemeState = {};
         let googleFontList = null;
         let debounceTimer;
+        
+
+        function applyFont(fontName) {
+            const sanitizedFontName = fontName ? fontName.trim() : 'Inter';
+            if (sanitizedFontName.toLowerCase() === 'inter') {
+                const existingLink = document.getElementById("custom-font-link");
+                if (existingLink) existingLink.remove();
+                document.body.style.fontFamily = `"Inter", sans-serif`;
+                return;
+            }
+            const linkId = "custom-font-link";
+            let link = document.getElementById(linkId);
+            if (!link) {
+                link = document.createElement("link");
+                link.id = linkId;
+                link.rel = "stylesheet";
+                document.head.appendChild(link);
+            }
+            link.href = `https://fonts.googleapis.com/css2?family=${sanitizedFontName.replace(/ /g, "+")}:wght@400;600;700&display=swap`;
+            document.body.style.fontFamily = `"${sanitizedFontName}", sans-serif`;
+        }
+
+        function applyThemeStyles(themeData) {
+            const root = document.documentElement;
+            Object.entries(themeData.colors).forEach(([key, value]) => {
+                root.style.setProperty(key, value);
+            });
+            applyFont(themeData.settings.font);
+        }
+
+        function initializeTheme() {
+            const themeValue = localStorage.getItem("theme") || "vapor";
+            let themeData;
+
+            if (localStorage.getItem("livePreviewTheme")) {
+                themeData = JSON.parse(localStorage.getItem("livePreviewTheme"));
+                applyThemeStyles(themeData);
+                return;
+            }
+
+            document.body.removeAttribute("data-theme");
+            const root = document.documentElement;
+            const styleProps = ["--primary", "--secondary", "--bg", "--secondary-bg", "--third-bg", "--fourth-bg", "--text-color", "--secondary-text-color", "--button-bg", "--button-hover", "--gradient-start", "--gradient-end"];
+            styleProps.forEach(prop => root.style.removeProperty(prop));
+            
+            if (themeValue === "custom") {
+                const customTheme = JSON.parse(localStorage.getItem("customTheme"));
+                const customSettings = JSON.parse(localStorage.getItem("customThemeSettings"));
+                if (customTheme && customSettings) {
+                    themeData = { colors: customTheme, settings: customSettings };
+                    applyThemeStyles(themeData);
+                }
+            } else {
+                document.body.setAttribute("data-theme", themeValue);
+                applyFont('Inter');
+            }
+        }
+        
+        initializeTheme();
+
 
         const themes = [
-          {
-            name: "VAPOR (Default)",
-            desc: "The default VAPOR theme you know and love.",
-            class: "theme-vapor",
-            value: "vapor",
-          },
-          {
-            name: "VAPOR Light",
-            desc: "Light mode for the weirdos out there.",
-            class: "theme-light",
-            value: "light",
-          },
-          {
-            name: "VAPOR Amoled",
-            desc: "A true amoled theme for VAPOR.",
-            class: "theme-amoled",
-            value: "amoled",
-          },
-          {
-            name: "Midnight",
-            desc: "Deep blues and purples for night owls.",
-            class: "theme-midnight",
-            value: "midnight",
-          },
-          {
-            name: "Ember",
-            desc: "Warm ember glow with deep reds and oranges.",
-            class: "theme-ember",
-            value: "ember",
-          },
-          {
-            name: "Forest",
-            desc: "A calming forest-inspired theme with green tones.",
-            class: "theme-forest",
-            value: "forest",
-          },
-          {
-            name: "Violet",
-            desc: "A sleek purple theme with elegant vibes.",
-            class: "theme-violet",
-            value: "violet",
-          },
-          {
-            name: "Sunset",
-            desc: "Warm colors inspired by a sunset.",
-            class: "theme-sunset",
-            value: "sunset",
-          },
-          {
-            name: "Crimson",
-            desc: "Deep dark reds with a bold punch.",
-            class: "theme-crimson",
-            value: "crimson",
-          },
-          {
-            name: "Ocean",
-            desc: "Cool tones inspired by the ocean.",
-            class: "theme-ocean",
-            value: "ocean",
-          },
-          {
-            name: "Grayscale",
-            desc: "A minimalist grayscale theme.",
-            class: "theme-grayscale",
-            value: "grayscale",
-          },
-          {
-            name: "Slate",
-            desc: "Smooth slate grays with soft blue highlights.",
-            class: "theme-slate",
-            value: "slate",
-          },
-          {
-            name: "Matrix",
-            desc: "A green and black terminal theme inspired by the Matrix.",
-            class: "theme-matrix",
-            value: "matrix",
-          },
-          {
-            name: "Custom Theme",
-            desc: "Create your own personalized theme.",
-            class: "theme-custom",
-            value: "custom",
-          },
+          { name: "VAPOR (Default)", desc: "The default VAPOR theme you know and love.", class: "theme-vapor", value: "vapor" },
+          { name: "VAPOR Light", desc: "Light mode for the weirdos out there.", class: "theme-light", value: "light" },
+          { name: "VAPOR Amoled", desc: "A true amoled theme for VAPOR.", class: "theme-amoled", value: "amoled" },
+          { name: "Midnight", desc: "Deep blues and purples for night owls.", class: "theme-midnight", value: "midnight" },
+          { name: "Catppuccin Mocha", desc: "The original dark, cozy, and vibrant flavor.", class: "theme-catppuccin-mocha", value: "cat-mocha" },
+          { name: "Ember", desc: "Warm ember glow with deep reds and oranges.", class: "theme-ember", value: "ember" },
+          { name: "Lunar", desc: "Cool grays and a soft glow, like moonlight.", class: "theme-lunar", value: "lunar" },
+          { name: "Forest", desc: "A calming forest-inspired theme with green tones.", class: "theme-forest", value: "forest" },
+          { name: "Marine", desc: "A cool and focused deep-sea blue theme.", class: "theme-marine", value: "marine" },
+          { name: "Violet", desc: "A sleek purple theme with elegant vibes.", class: "theme-violet", value: "violet" },
+          { name: "Sunset", desc: "Warm colors inspired by a sunset.", class: "theme-sunset", value: "sunset" },
+          { name: "Crimson", desc: "Deep dark reds with a bold punch.", class: "theme-crimson", value: "crimson" },
+          { name: "Royal", desc: "A luxurious theme of deep indigo and gold.", class: "theme-royal", value: "royal" },
+          { name: "Ocean", desc: "Cool tones inspired by the ocean.", class: "theme-ocean", value: "ocean" },
+          { name: "Jade", desc: "A calm and sophisticated green-based theme.", class: "theme-jade", value: "jade" },
+          { name: "Grayscale", desc: "A minimalist grayscale theme.", class: "theme-grayscale", value: "grayscale" },
+          { name: "Slate", desc: "Smooth slate grays with soft blue highlights.", class: "theme-slate", value: "slate" },
+          { name: "Matrix", desc: "A green and black terminal theme inspired by the Matrix.", class: "theme-matrix", value: "matrix" },
+          { name: "Custom Theme", desc: "Create your own personalized theme.", class: "theme-custom", value: "custom" }
         ];
 
         let themeHTML = "";
         themes.forEach((theme) => {
-          themeHTML += `
-            <div class="theme ${theme.class || ""}" onclick="window.setTheme('${
-            theme.value || ""
-          }')">
-                <h2>${theme.name}</h2>
-                <p>${theme.desc}</p>
-            </div>
-        `;
+          themeHTML += `<div class="theme ${theme.class || ""}" onclick="window.setTheme('${theme.value || ""}')"><h2>${theme.name}</h2><p>${theme.desc}</p></div>`;
         });
         themeSelect.innerHTML = themeHTML;
 
@@ -1105,29 +985,31 @@
           }
 
           currentThemeDiv.className = "current-theme";
-          currentThemeDiv.classList.add(themeData.class);
+          if(themeData.class) {
+              currentThemeDiv.classList.add(themeData.class.split(' ')[0]);
+          }
 
-          document.getElementById("currentThemeData").innerHTML = `
-            <h2>${themeData.name}</h2>
-            <p>${themeData.desc}</p>
-        `;
+          document.getElementById("currentThemeData").innerHTML = `<h2>${themeData.name}</h2><p>${themeData.desc}</p>`;
         }
 
-        window.editTheme = () => {
-          themeSelect.style.opacity = 1;
-          themeSelect.style.height = "250px";
-          themeSelect.style.padding = "10px";
-          themeSelect.style.marginTop = "10px";
-        };
-
-        function closeThemeEditor() {
-          themeSelect.style.height = "0px";
-          themeSelect.style.padding = "0 10px";
-          themeSelect.style.marginTop = "0px";
-          setTimeout(() => {
+        function toggleThemeEditor() {
+          const isOpen = themeSelect.style.height === "250px";
+          if (isOpen) {
+            themeSelect.style.height = "0px";
             themeSelect.style.opacity = 0;
-          }, 500);
+            editThemeIcon.classList.remove("fa-xmark");
+            editThemeIcon.classList.add("fa-pencil");
+          } else {
+            themeSelect.style.opacity = 1;
+            themeSelect.style.height = "250px";
+            themeSelect.style.padding = "10px";
+            themeSelect.style.marginTop = "10px";
+            editThemeIcon.classList.remove("fa-pencil");
+            editThemeIcon.classList.add("fa-xmark");
+          }
         }
+        editThemeBtn.addEventListener("click", toggleThemeEditor);
+
 
         function openCustomThemeModal() {
           originalThemeState = {
@@ -1145,209 +1027,58 @@
           if (revert) {
             if (originalThemeState.theme === "custom") {
               localStorage.setItem("theme", "custom");
-              localStorage.setItem(
-                "customTheme",
-                originalThemeState.customTheme
-              );
-              localStorage.setItem(
-                "customThemeSettings",
-                originalThemeState.customSettings
-              );
+              localStorage.setItem( "customTheme", originalThemeState.customTheme );
+              localStorage.setItem( "customThemeSettings", originalThemeState.customSettings );
             } else {
               localStorage.setItem("theme", originalThemeState.theme);
               localStorage.removeItem("customTheme");
               localStorage.removeItem("customThemeSettings");
             }
-            initializeTheme();
           }
+          initializeTheme();
           customThemeOverlay.classList.remove("active");
           customThemeModal.classList.remove("active");
         }
 
         function loadCustomThemeSettingsIntoModal() {
-          const savedSettings = JSON.parse(
-            localStorage.getItem("customThemeSettings")
-          );
-          if (!savedSettings) {
-            currentColor = rgbToHsv(124, 58, 237);
-            modeToggle.querySelector(".active").classList.remove("active");
-            modeToggle
-              .querySelector('[data-mode="dark"]')
-              .classList.add("active");
-            selectedFont = "Default";
-          } else {
-            const initialRgb = hexToRgb(savedSettings.primary);
-            currentColor = rgbToHsv(initialRgb.r, initialRgb.g, initialRgb.b);
-            modeToggle.querySelector(".active").classList.remove("active");
-            modeToggle
-              .querySelector(`[data-mode="${savedSettings.mode}"]`)
-              .classList.add("active");
-            selectedFont = savedSettings.font || "Default";
-          }
-          fontSearchInput.value = selectedFont;
-          updatePickerUI();
-        }
-
-        function drawColorCanvas() {
-          const width = colorBoxCanvas.offsetWidth;
-          const height = colorBoxCanvas.offsetHeight;
-          colorBoxCanvas.width = width;
-          colorBoxCanvas.height = height;
-
-          ctx.fillStyle = `hsl(${currentColor.h}, 100%, 50%)`;
-          ctx.fillRect(0, 0, width, height);
-
-          const satGradient = ctx.createLinearGradient(0, 0, width, 0);
-          satGradient.addColorStop(0, "rgba(255,255,255,1)");
-          satGradient.addColorStop(1, "rgba(255,255,255,0)");
-          ctx.fillStyle = satGradient;
-          ctx.fillRect(0, 0, width, height);
-
-          const valGradient = ctx.createLinearGradient(0, 0, 0, height);
-          valGradient.addColorStop(0, "rgba(0,0,0,0)");
-          valGradient.addColorStop(1, "rgba(0,0,0,1)");
-          ctx.fillStyle = valGradient;
-          ctx.fillRect(0, 0, width, height);
-        }
-
-        function updatePickerUI() {
-          drawColorCanvas();
-
-          const hueX = (currentColor.h / 360) * hueSlider.offsetWidth;
-          hueSelector.style.left = `${hueX}px`;
-
-          const colorX = currentColor.s * colorBoxWrapper.offsetWidth;
-          const colorY = (1 - currentColor.v) * colorBoxWrapper.offsetHeight;
-          colorSelector.style.left = `${colorX}px`;
-          colorSelector.style.top = `${colorY}px`;
-
-          selectedColor = hsvToHex(
-            currentColor.h,
-            currentColor.s,
-            currentColor.v
-          );
-          colorSelector.style.backgroundColor = selectedColor;
+            const savedSettings = JSON.parse(localStorage.getItem("customThemeSettings"));
+            if (!savedSettings) {
+                manualPrimaryColorInput.value = "#7c3aed";
+                manualBgColorInput.value = "#1a0b2e";
+                selectedFont = "Inter";
+            } else {
+                manualPrimaryColorInput.value = savedSettings.primary;
+                manualBgColorInput.value = savedSettings.background;
+                selectedFont = savedSettings.font || "Inter";
+            }
+            fontSearchInput.value = selectedFont;
         }
 
         function livePreviewTheme() {
-          const mode = modeToggle.querySelector(".active").dataset.mode;
-          const liveData = {
-            colors: generateTheme(selectedColor, mode),
-            settings: { font: selectedFont },
-          };
+          const generatedTheme = generateManualTheme(manualPrimaryColorInput.value, manualBgColorInput.value);
+          const liveData = { colors: generatedTheme, settings: { font: selectedFont } };
           localStorage.setItem("livePreviewTheme", JSON.stringify(liveData));
           initializeTheme();
         }
 
-        function handleHueDrag(event) {
-          event.preventDefault();
-          const rect = hueSlider.getBoundingClientRect();
-          const x = Math.max(
-            0,
-            Math.min(
-              (event.clientX || event.touches[0].clientX) - rect.left,
-              rect.width
-            )
-          );
-          currentColor.h = Math.round((x / rect.width) * 360);
-          if (currentColor.h === 360) currentColor.h = 0;
-          updatePickerUI();
-          livePreviewTheme();
-        }
-
-        function handleColorDrag(event) {
-          event.preventDefault();
-          const rect = colorBoxWrapper.getBoundingClientRect();
-          const x = Math.max(
-            0,
-            Math.min(
-              (event.clientX || event.touches[0].clientX) - rect.left,
-              rect.width
-            )
-          );
-          const y = Math.max(
-            0,
-            Math.min(
-              (event.clientY || event.touches[0].clientY) - rect.top,
-              rect.height
-            )
-          );
-
-          currentColor.s = x / rect.width;
-          currentColor.v = 1 - y / rect.height;
-
-          colorSelector.style.left = `${x}px`;
-          colorSelector.style.top = `${y}px`;
-          selectedColor = hsvToHex(
-            currentColor.h,
-            currentColor.s,
-            currentColor.v
-          );
-          colorSelector.style.backgroundColor = selectedColor;
-          livePreviewTheme();
-        }
-
-        hueSlider.addEventListener("mousedown", (e) => {
-          handleHueDrag(e);
-          document.addEventListener("mousemove", handleHueDrag);
-          document.addEventListener(
-            "mouseup",
-            () => document.removeEventListener("mousemove", handleHueDrag),
-            { once: true }
-          );
-        });
-        colorBoxWrapper.addEventListener("mousedown", (e) => {
-          handleColorDrag(e);
-          document.addEventListener("mousemove", handleColorDrag);
-          document.addEventListener(
-            "mouseup",
-            () => document.removeEventListener("mousemove", handleColorDrag),
-            { once: true }
-          );
-        });
-
-        hueSlider.addEventListener("touchstart", (e) => {
-          handleHueDrag(e);
-          document.addEventListener("touchmove", handleHueDrag);
-          document.addEventListener(
-            "touchend",
-            () => document.removeEventListener("touchmove", handleHueDrag),
-            { once: true }
-          );
-        });
-        colorBoxWrapper.addEventListener("touchstart", (e) => {
-          handleColorDrag(e);
-          document.addEventListener("touchmove", handleColorDrag);
-          document.addEventListener(
-            "touchend",
-            () => document.removeEventListener("touchmove", handleColorDrag),
-            { once: true }
-          );
-        });
-
         async function fetchAndFilterFonts(query) {
           if (!googleFontList) {
             try {
-              const response = await fetch(
-                "https://cdn.jsdelivr.net/npm/google-fonts-complete@2.2.3/google-fonts.json"
-              );
+              const response = await fetch("https://cdn.jsdelivr.net/npm/google-fonts-complete@2.2.3/google-fonts.json");
               googleFontList = await response.json();
             } catch (error) {
               console.error("Failed to fetch Google Fonts list:", error);
               return;
             }
           }
-
           const filteredFonts = Object.keys(googleFontList)
             .filter((name) => name.toLowerCase().includes(query.toLowerCase()))
             .slice(0, 50);
-
           fontSearchResults.innerHTML = "";
           if (filteredFonts.length === 0) {
             fontSearchResults.style.display = "none";
             return;
           }
-
           filteredFonts.forEach((fontName) => {
             const item = document.createElement("div");
             item.className = "font-result-item";
@@ -1362,12 +1093,25 @@
           clearTimeout(debounceTimer);
           debounceTimer = setTimeout(() => {
             const query = fontSearchInput.value;
-            if (query.length > 1) {
-              fetchAndFilterFonts(query);
-            } else {
-              fontSearchResults.style.display = "none";
+            if (query.trim().toLowerCase() === 'inter') {
+                selectedFont = 'Inter';
+                fontSearchResults.style.display = 'none';
+                livePreviewTheme();
+            } else if (query.length > 1) { 
+                fetchAndFilterFonts(query); 
+            } else { 
+                fontSearchResults.style.display = "none"; 
             }
           }, 500);
+        });
+
+        fontSearchInput.addEventListener("keypress", (e) => {
+            if (e.key === 'Enter' && fontSearchInput.value.trim().toLowerCase() === 'inter') {
+                selectedFont = 'Inter';
+                fontSearchInput.blur();
+                fontSearchResults.style.display = 'none';
+                livePreviewTheme();
+            }
         });
 
         fontSearchResults.addEventListener("click", (e) => {
@@ -1391,86 +1135,10 @@
           const b = parseInt(hex.substring(5, 7), 16);
           return { r, g, b };
         }
-
-        function rgbToHsv(r, g, b) {
-          (r /= 255), (g /= 255), (b /= 255);
-          let max = Math.max(r, g, b),
-            min = Math.min(r, g, b);
-          let h,
-            s,
-            v = max;
-          let d = max - min;
-          s = max == 0 ? 0 : d / max;
-          if (max == min) {
-            h = 0;
-          } else {
-            switch (max) {
-              case r:
-                h = (g - b) / d + (g < b ? 6 : 0);
-                break;
-              case g:
-                h = (b - r) / d + 2;
-                break;
-              case b:
-                h = (r - g) / d + 4;
-                break;
-            }
-            h /= 6;
-          }
-          return { h: h * 360, s: s, v: v };
-        }
-
-        function hsvToRgb(h, s, v) {
-          let r, g, b;
-          let i = Math.floor(h / 60);
-          let f = h / 60 - i;
-          let p = v * (1 - s);
-          let q = v * (1 - f * s);
-          let t = v * (1 - (1 - f) * s);
-          switch (i % 6) {
-            case 0:
-              (r = v), (g = t), (b = p);
-              break;
-            case 1:
-              (r = q), (g = v), (b = p);
-              break;
-            case 2:
-              (r = p), (g = v), (b = t);
-              break;
-            case 3:
-              (r = p), (g = q), (b = v);
-              break;
-            case 4:
-              (r = t), (g = p), (b = v);
-              break;
-            case 5:
-              (r = v), (g = p), (b = q);
-              break;
-          }
-          return {
-            r: Math.round(r * 255),
-            g: Math.round(g * 255),
-            b: Math.round(b * 255),
-          };
-        }
-
-        function hsvToHex(h, s, v) {
-          const { r, g, b } = hsvToRgb(h, s, v);
-          const toHex = (c) => c.toString(16).padStart(2, "0");
-          return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
-        }
-
         function hexToHSL(hex) {
           const { r, g, b } = hexToRgb(hex);
-          const r_norm = r / 255,
-            g_norm = g / 255,
-            b_norm = b / 255;
-          let cmin = Math.min(r_norm, g_norm, b_norm),
-            cmax = Math.max(r_norm, g_norm, b_norm),
-            delta = cmax - cmin,
-            h = 0,
-            s = 0,
-            l = 0;
+          const r_norm = r / 255, g_norm = g / 255, b_norm = b / 255;
+          let cmin = Math.min(r_norm, g_norm, b_norm), cmax = Math.max(r_norm, g_norm, b_norm), delta = cmax - cmin, h = 0, s = 0, l = 0;
           if (delta == 0) h = 0;
           else if (cmax == r_norm) h = ((g_norm - b_norm) / delta) % 6;
           else if (cmax == g_norm) h = (b_norm - r_norm) / delta + 2;
@@ -1483,57 +1151,47 @@
           l = +(l * 100).toFixed(1);
           return { h, s, l };
         }
-
         function hslToHex(h, s, l) {
           s /= 100;
           l /= 100;
           const k = (n) => (n + h / 30) % 12;
           const a = s * Math.min(l, 1 - l);
-          const f = (n) =>
-            l - a * Math.max(-1, Math.min(k(n) - 3, 9 - k(n), 1));
-          const toHex = (c) =>
-            Math.round(c * 255)
-              .toString(16)
-              .padStart(2, "0");
+          const f = (n) => l - a * Math.max(-1, Math.min(k(n) - 3, 9 - k(n), 1));
+          const toHex = (c) => Math.round(c * 255).toString(16).padStart(2, "0");
           return `#${toHex(f(0))}${toHex(f(8))}${toHex(f(4))}`;
         }
+        
+        function getLuminance(hex) {
+            const { r, g, b } = hexToRgb(hex);
+            const a = [r, g, b].map(v => {
+                v /= 255;
+                return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+            });
+            return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+        }
 
-        function generateTheme(hexColor, mode) {
-          const base = hexToHSL(hexColor);
-          const h = base.h;
-          const s = base.s;
 
-          if (mode === "dark") {
+        function generateManualTheme(primaryHex, backgroundHex) {
+            const bg = hexToHSL(backgroundHex);
+            const primary = hexToHSL(primaryHex);
+            const isLight = getLuminance(backgroundHex) > 0.5;
+
+            const clampedL = Math.max(8, Math.min(92, bg.l));
+
             return {
-              "--primary": hexColor,
-              "--secondary": hslToHex(h, s, Math.min(base.l + 10, 100)),
-              "--bg": hslToHex(h, s * 0.4, 8),
-              "--secondary-bg": hslToHex(h, s * 0.35, 12),
-              "--third-bg": hslToHex(h, s * 0.3, 18),
-              "--fourth-bg": hslToHex(h, s * 0.3, 15),
-              "--text-color": hslToHex(h, s * 0.3, 88),
-              "--secondary-text-color": hslToHex(h, s * 0.2, 75),
-              "--button-bg": hslToHex(h, s * 0.35, 12),
-              "--button-hover": hslToHex(h, s * 0.3, 18),
-              "--gradient-start": hexColor,
-              "--gradient-end": hslToHex(h, s, Math.min(base.l + 10, 100)),
+                "--bg": backgroundHex,
+                "--secondary-bg": hslToHex(bg.h, bg.s, isLight ? clampedL - 7 : clampedL + 7),
+                "--third-bg": hslToHex(bg.h, bg.s, isLight ? clampedL - 12 : clampedL + 12),
+                "--fourth-bg": hslToHex(bg.h, bg.s, isLight ? clampedL - 10 : clampedL + 10),
+                "--primary": primaryHex,
+                "--secondary": hslToHex(primary.h, primary.s, isLight ? Math.max(0, primary.l - 10) : Math.min(100, primary.l + 10)),
+                "--text-color": hslToHex(bg.h, 15, isLight ? 10 : 90),
+                "--secondary-text-color": hslToHex(bg.h, 10, isLight ? 30 : 75),
+                "--button-bg": hslToHex(bg.h, bg.s, isLight ? clampedL - 7 : clampedL + 7),
+                "--button-hover": hslToHex(bg.h, bg.s, isLight ? clampedL - 12 : clampedL + 12),
+                "--gradient-start": primaryHex,
+                "--gradient-end": hslToHex(primary.h, primary.s, Math.min(100, primary.l + 15)),
             };
-          } else {
-            return {
-              "--primary": hexColor,
-              "--secondary": hslToHex(h, s, Math.max(base.l - 10, 0)),
-              "--bg": hslToHex(h, s * 0.3, 55),
-              "--secondary-bg": hslToHex(h, s * 0.25, 60),
-              "--third-bg": hslToHex(h, s * 0.2, 68),
-              "--fourth-bg": hslToHex(h, s * 0.2, 64),
-              "--text-color": hslToHex(h, s * 0.15, 15),
-              "--secondary-text-color": hslToHex(h, s * 0.1, 30),
-              "--button-bg": hslToHex(h, s * 0.25, 60),
-              "--button-hover": hslToHex(h, s * 0.2, 68),
-              "--gradient-start": hexColor,
-              "--gradient-end": hslToHex(h, s * 0.25, 60),
-            };
-          }
         }
 
         window.setTheme = (themeValue) => {
@@ -1542,68 +1200,53 @@
             return;
           }
           localStorage.setItem("theme", themeValue);
+
           window.dispatchEvent(
             new StorageEvent("storage", { key: "theme", newValue: themeValue })
           );
+          
           updateCurrentThemeDisplay();
-          closeThemeEditor();
+          if (themeSelect.style.height === "250px") { toggleThemeEditor(); }
         };
-
-        modeToggle.addEventListener("click", (e) => {
-          if (e.target.tagName === "BUTTON") {
-            modeToggle.querySelector(".active").classList.remove("active");
-            e.target.classList.add("active");
-            livePreviewTheme();
-          }
-        });
+        
+        manualPrimaryColorInput.addEventListener('input', livePreviewTheme);
+        manualBgColorInput.addEventListener('input', livePreviewTheme);
 
         applyThemeBtn.addEventListener("click", () => {
-          const mode = modeToggle.querySelector(".active").dataset.mode;
           const font = selectedFont;
-          const customThemeSettings = {
-            primary: selectedColor,
-            mode: mode,
-            font: font,
+          const customThemeSettings = { 
+              primary: manualPrimaryColorInput.value, 
+              background: manualBgColorInput.value, 
+              font: font 
           };
-          const generatedTheme = generateTheme(selectedColor, mode);
+          const generatedTheme = generateManualTheme(manualPrimaryColorInput.value, manualBgColorInput.value);
 
           localStorage.setItem("customTheme", JSON.stringify(generatedTheme));
-          localStorage.setItem(
-            "customThemeSettings",
-            JSON.stringify(customThemeSettings)
-          );
+          localStorage.setItem("customThemeSettings", JSON.stringify(customThemeSettings));
           localStorage.setItem("theme", "custom");
-
+          
           closeCustomThemeModal(false);
           updateCurrentThemeDisplay();
-          closeThemeEditor();
+          if (themeSelect.style.height === "250px") { toggleThemeEditor(); }
         });
 
-        cancelThemeBtn.addEventListener("click", () =>
-          closeCustomThemeModal(true)
-        );
-        customThemeOverlay.addEventListener("click", () =>
-          closeCustomThemeModal(true)
-        );
-
-        customThemeModal.addEventListener("click", (event) => {
-          event.stopPropagation();
-        });
-
+        cancelThemeBtn.addEventListener("click", () => closeCustomThemeModal(true));
+        customThemeOverlay.addEventListener("click", () => closeCustomThemeModal(true));
+        customThemeModal.addEventListener("click", (event) => { event.stopPropagation(); });
+        
         updateCurrentThemeDisplay();
-        window.addEventListener("storage", updateCurrentThemeDisplay);
+        window.addEventListener("storage", () => {
+            initializeTheme();
+            updateCurrentThemeDisplay();
+        });
 
         menuItems.forEach((item) => {
           item.addEventListener("click", () => {
             menuItems.forEach((menu) => menu.classList.remove("active"));
-            contentDivs.forEach((content) =>
-              content.classList.remove("active")
-            );
+            contentDivs.forEach((content) => content.classList.remove("active"));
             item.classList.add("active");
             const target = item.getAttribute("data-target");
-            document
-              .querySelector(`.content.${target}`)
-              .classList.add("active");
+            document.querySelector(`.content.${target}`).classList.add("active");
           });
         });
 
@@ -1614,26 +1257,15 @@
             options.forEach((opt) => (opt.style.backgroundColor = ""));
             option.style.backgroundColor = "rgba(255,255,255,0.2)";
             serverNotification.classList.add("show");
-            setTimeout(() => {
-              serverNotification.classList.remove("show");
-            }, 5000);
+            setTimeout(() => { serverNotification.classList.remove("show"); }, 5000);
           });
         });
 
-        function validateWisp(url) {
-          return url.startsWith("wss://")
-            ? url.endsWith("/")
-              ? url
-              : url + "/"
-            : null;
-        }
+        function validateWisp(url) { return url.startsWith("wss://") ? url.endsWith("/") ? url : url + "/" : null; }
 
         setCustomServerButton.addEventListener("click", () => {
           const validatedUrl = validateWisp(customServerInput.value.trim());
-          if (!validatedUrl) {
-            customServerError.style.display = "block";
-            return;
-          }
+          if (!validatedUrl) { customServerError.style.display = "block"; return; }
           customServerError.style.display = "none";
           options.forEach((opt) => (opt.style.backgroundColor = ""));
           localStorage.setItem("proxServer", validatedUrl);
@@ -1641,22 +1273,16 @@
           serverNotification.classList.add("show");
           setTimeout(() => {
             serverNotification.classList.remove("show");
-            serverNotification.textContent =
-              "If server settings do not apply, try running CTRL+SHIFT+R.";
+            serverNotification.textContent = "If server settings do not apply, try running CTRL+SHIFT+R.";
           }, 5000);
           customServerInput.value = "";
         });
 
-        customServerInput.addEventListener("input", () => {
-          customServerError.style.display = "none";
-        });
-        customServerInput.addEventListener("keypress", (e) => {
-          if (e.key === "Enter") setCustomServerButton.click();
-        });
+        customServerInput.addEventListener("input", () => { customServerError.style.display = "none"; });
+        customServerInput.addEventListener("keypress", (e) => { if (e.key === "Enter") setCustomServerButton.click(); });
 
         const setupToggle = (toggleEl, storageKey) => {
-          if (localStorage.getItem(storageKey) === "true")
-            toggleEl.classList.add("active");
+          if (localStorage.getItem(storageKey) === "true") toggleEl.classList.add("active");
           toggleEl.addEventListener("click", () => {
             const isEnabled = toggleEl.classList.toggle("active");
             localStorage.setItem(storageKey, isEnabled);
