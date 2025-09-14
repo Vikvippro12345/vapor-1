@@ -1498,7 +1498,7 @@ window.onYouTubeIframeAPIReady = function () {
         try {
           if (!trackData.videoId) {
             const videoData = await fetch(
-              `https://vapor.my/api/yt?query=${encodeURIComponent(
+              `/api/yt?query=${encodeURIComponent(
                 `${trackData.trackName} - ${trackData.artistName} "topic"`
               )}`
             ).then((res) => res.json());
@@ -1600,7 +1600,7 @@ if (player) {
           if (!track.videoId) {
             preloadPromises.push(
               fetch(
-                `https://vapor.my/api/yt?query=${encodeURIComponent(
+                `/api/yt?query=${encodeURIComponent(
                   `${track.trackName} - ${track.artistName} "topic"`
                 )}`
               )
@@ -1614,7 +1614,7 @@ if (player) {
           if (!track.rawLRC) {
             preloadPromises.push(
               fetch(
-                `https://vapor.my/api/mxlyric?s=${encodeURIComponent(
+                `/api/mxlyric?s=${encodeURIComponent(
                   track.trackName
                 )}&a=${encodeURIComponent(track.artistName)}`
               )
@@ -2031,7 +2031,7 @@ if (player) {
         const timeoutId = setTimeout(() => controller.abort(), 8000);
 
         try {
-          const apiUrl = `https://vapor.my/api/mxlyric?s=${encodeURIComponent(
+          const apiUrl = `/api/mxlyric?s=${encodeURIComponent(
             trackName
           )}&a=${encodeURIComponent(artistName)}`;
 
@@ -2398,15 +2398,15 @@ if (player) {
     const encodedQuery = encodeURIComponent(`q=${query}`);
 
     const artistPromise = fetch(
-      `https://vapor.my/api/mxsearch?path=searchArtist&queries=${encodedQuery}`
+      `/api/mxsearch?path=searchArtist&queries=${encodedQuery}`
     ).then(res => res.json());
 
     const albumPromise = fetch(
-      `https://vapor.my/api/mxsearch?path=searchAlbum&queries=${encodedQuery}`
+      `/api/mxsearch?path=searchAlbum&queries=${encodedQuery}`
     ).then(res => res.json());
 
     const trackPromise = fetch(
-      `https://vapor.my/api/mxsearch?path=searchTrack&queries=${encodedQuery}${encodeURIComponent('&limit=25')}`
+      `/api/mxsearch?path=searchTrack&queries=${encodedQuery}${encodeURIComponent('&limit=25')}`
     ).then(res => res.json());
 
     const results = await Promise.allSettled([
@@ -2545,13 +2545,13 @@ if (player) {
         showLoader(targetContainer);
         try {
           const topTracksPromise = fetch(
-            `https://vapor.my/api/mxsearch?path=artist${
+            `/api/mxsearch?path=artist${
               artist.id
             }Top&queries=${encodeURIComponent("limit=10")}`
           ).then((res) => res.json());
 
           const albumsPromise = fetch(
-            `https://vapor.my/api/mxsearch?path=artist${
+            `/api/mxsearch?path=artist${
               artist.id
             }Albums&queries=${encodeURIComponent("limit=10")}`
           ).then((res) => res.json());
@@ -2621,7 +2621,7 @@ if (player) {
         showLoader(searchDetailsView);
         try {
           const response = await fetch(
-            `https://vapor.my/api/mxsearch?path=album${album.id}`
+            `/api/mxsearch?path=album${album.id}`
           );
           const fullAlbumData = await response.json();
 
@@ -3074,7 +3074,7 @@ if (player) {
             trackData.artistId ||
             (
               await fetch(
-                `https://vapor.my/api/mxsearch?path=searchArtist&queries=${encodeURIComponent(
+                `/api/mxsearch?path=searchArtist&queries=${encodeURIComponent(
                   `q=${trackData.artistName}`
                 )}`
               ).then((r) => r.json())
@@ -3082,7 +3082,7 @@ if (player) {
           if (!artistId) throw new Error("Artist not found");
 
           const radioData = await fetch(
-            `https://vapor.my/api/mxrecommend?path=artist${artistId}Radio`
+            `/api/mxrecommend?path=artist${artistId}Radio`
           ).then((r) => r.json());
           if (radioData.error) throw new Error(radioData.error);
 
@@ -3116,7 +3116,7 @@ if (player) {
             trackData.artistId ||
             (
               await fetch(
-                `https://vapor.my/api/mxsearch?path=searchArtist&queries=${encodeURIComponent(
+                `/api/mxsearch?path=searchArtist&queries=${encodeURIComponent(
                   `q=${trackData.artistName}`
                 )}`
               ).then((r) => r.json())
@@ -3124,7 +3124,7 @@ if (player) {
           if (!artistId) throw new Error("Artist not found");
 
           const relatedData = await fetch(
-            `https://vapor.my/api/mxrecommend?path=artist${artistId}Related`
+            `/api/mxrecommend?path=artist${artistId}Related`
           ).then((r) => r.json());
           if (relatedData.error) throw new Error(relatedData.error);
 
@@ -3187,7 +3187,7 @@ if (player) {
               if (artistIds.length >= 5) break;
               try {
                 const search = await fetch(
-                  `https://vapor.my/api/mxsearch?path=searchArtist&queries=${encodeURIComponent(
+                  `/api/mxsearch?path=searchArtist&queries=${encodeURIComponent(
                     `q=${fav.artistName}`
                   )}`
                 ).then((r) => r.json());
@@ -3205,7 +3205,7 @@ if (player) {
 
           const relatedPromises = seedArtists.map((id) =>
             fetch(
-              `https://vapor.my/api/mxrecommend?path=artist${id}Related`
+              `/api/mxrecommend?path=artist${id}Related`
             ).then((r) => r.json())
           );
           const relatedResults = await Promise.all(relatedPromises);
@@ -3223,7 +3223,7 @@ if (player) {
 
           const topTrackPromises = finalArtists.map((id) =>
             fetch(
-              `https://vapor.my/api/mxsearch?path=artist${id}Top&queries=${encodeURIComponent(
+              `/api/mxsearch?path=artist${id}Top&queries=${encodeURIComponent(
                 "limit=2"
               )}`
             ).then((r) => r.json())
@@ -3266,7 +3266,7 @@ if (player) {
             trackData.artistId ||
             (
               await fetch(
-                `https://vapor.my/api/mxsearch?path=searchArtist&queries=${encodeURIComponent(
+                `/api/mxsearch?path=searchArtist&queries=${encodeURIComponent(
                   `q=${trackData.artistName}`
                 )}`
               ).then((r) => r.json())
@@ -3276,7 +3276,7 @@ if (player) {
           radioSeedArtist = trackData.artistName;
 
           const radioData = await fetch(
-            `https://vapor.my/api/mxrecommend?path=artist${artistId}Radio`
+            `/api/mxrecommend?path=artist${artistId}Radio`
           ).then((r) => r.json());
           if (radioData.error) throw new Error(radioData.error);
 
