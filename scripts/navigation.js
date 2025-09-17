@@ -15,6 +15,15 @@ let lastSelectedNestUrl = null;
 const allPanels = [mainNavContainer, extrasNavContainer, nestNavContainer];
 
 let allZonesCache = [];
+let allGamesSorted = [];
+
+function debounce(func, delay) {
+  let timeout;
+  return function(...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), delay);
+  };
+}
 
 allPanels.forEach(panel => {
   const scrollContainer = document.createElement('div');
@@ -40,43 +49,10 @@ document.querySelectorAll('.nav-scroll-container').forEach(sc => {
 
 const MAX_RECENTLY_PLAYED = 45;
 
-function getFromStorage(key) {
-    try {
-        const item = localStorage.getItem(key);
-        return item ? JSON.parse(item) : [];
-    } catch (e) {
-        console.error(`Failed to parse ${key} from localStorage`, e);
-        return [];
-    }
-}
-
-function saveToStorage(key, value) {
-    try {
-        localStorage.setItem(key, JSON.stringify(value));
-    } catch (e) {
-        console.error(`Failed to save ${key} to localStorage`, e);
-    }
-}
-
-function toggleFavorite(gameName) {
-    let favorites = getFromStorage('favoriteGames');
-    if (favorites.includes(gameName)) {
-        favorites = favorites.filter(name => name !== gameName);
-    } else {
-        favorites.push(gameName);
-    }
-    saveToStorage('favoriteGames', favorites);
-}
-
-function addRecentlyPlayed(game) {
-    let recent = getFromStorage('recentlyPlayed');
-    recent = recent.filter(item => item.name !== game.name);
-    recent.unshift(game);
-    if (recent.length > MAX_RECENTLY_PLAYED) {
-        recent = recent.slice(0, MAX_RECENTLY_PLAYED);
-    }
-    saveToStorage('recentlyPlayed', recent);
-}
+function getFromStorage(key) { try { const i = localStorage.getItem(key); return i ? JSON.parse(i) : []; } catch (e) { console.error(`Failed to parse ${key}`, e); return []; } }
+function saveToStorage(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) { console.error(`Failed to save ${key}`, e); } }
+function toggleFavorite(gameName) { let f = getFromStorage('favoriteGames'); if (f.includes(gameName)) { f = f.filter(n => n !== gameName); } else { f.push(gameName); } saveToStorage('favoriteGames', f); }
+function addRecentlyPlayed(game) { let r = getFromStorage('recentlyPlayed'); r = r.filter(i => i.name !== game.name); r.unshift(game); if (r.length > MAX_RECENTLY_PLAYED) { r = r.slice(0, MAX_RECENTLY_PLAYED); } saveToStorage('recentlyPlayed', r); }
 
 async function precacheZones() {
   try {
@@ -91,9 +67,145 @@ async function precacheZones() {
   }
 }
 
+
+const VIRTUAL_ITEM_HEIGHT = 40;
+const VIRTUAL_BUFFER = 5;      
+
+function setupVirtualScroll(gameListContainer, sortedGames) {
+    const scrollContainer = nestNavContainer.querySelector('.nav-scroll-container');
+    gameListContainer.innerHTML = ''; 
+
+    const sizer = document.createElement('div');
+    sizer.className = 'virtual-scroll-sizer';
+    sizer.style.height = `${sortedGames.length * VIRTUAL_ITEM_HEIGHT}px`;
+
+    const visibleItemsContainer = document.createElement('div');
+    visibleItemsContainer.className = 'virtual-scroll-list';
+
+    sizer.appendChild(visibleItemsContainer);
+    gameListContainer.appendChild(sizer);
+
+    let lastRenderedStart = -1;
+
+    function renderVisibleItems() {
+        const scrollTop = scrollContainer.scrollTop;
+        const viewportHeight = scrollContainer.clientHeight;
+
+        const startIndex = Math.max(0, Math.floor(scrollTop / VIRTUAL_ITEM_HEIGHT) - VIRTUAL_BUFFER);
+        const endIndex = Math.min(sortedGames.length, Math.ceil((scrollTop + viewportHeight) / VIRTUAL_ITEM_HEIGHT) + VIRTUAL_BUFFER);
+
+        if (startIndex === lastRenderedStart) return;
+        lastRenderedStart = startIndex;
+
+        const fragment = document.createDocumentFragment();
+
+        for (let i = startIndex; i < endIndex; i++) {
+            const zone = sortedGames[i];
+            const navLink = createGameItemElement(zone);
+            fragment.appendChild(navLink);
+        }
+
+        visibleItemsContainer.innerHTML = '';
+        visibleItemsContainer.appendChild(fragment);
+        visibleItemsContainer.style.transform = `translateY(${startIndex * VIRTUAL_ITEM_HEIGHT}px)`;
+    }
+    
+    scrollContainer.onscroll = debounce(renderVisibleItems, 10);
+    renderVisibleItems();
+}
+
+function createGameItemElement(zone) {
+    const navLink = document.createElement('a');
+    const favorites = getFromStorage('favoriteGames');
+    const isFavorited = favorites.includes(zone.name);
+
+    navLink.className = 'nav-item';
+    if (isFavorited) navLink.classList.add('nav-item-favorited');
+    navLink.href = '#';
+
+    if (zone.blank === true) {
+        navLink.style.opacity = '0.6';
+        navLink.style.cursor = 'default';
+    }
+    
+    navLink.innerHTML = `
+      <div class="icon-container">
+        <i class="fa-regular fa-gamepad game-icon-default"></i>
+        <i class="game-icon-star ${isFavorited ? 'fa-solid' : 'fa-regular'} fa-star"></i>
+      </div>
+      <span class="nav-text">${zone.name}</span>
+    `;
+    
+    const iconContainer = navLink.querySelector('.icon-container');
+    iconContainer.onclick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleFavorite(zone.name);
+        updateAndRenderGames(document.querySelector('.game-search-input').value);
+    };
+    
+    navLink.onclick = (e) => {
+      e.preventDefault();
+      if (zone.blank === true) return;
+      addRecentlyPlayed(zone);
+
+      if (zone.redirect === true) {
+        window.open(zone.url.startsWith('http') ? zone.url : zone.url.replace("{HTML_URL}", htmlURL), '_blank');
+        return;
+      }
+      let targetFrameUrl = zone.direct
+        ? `/page/gameframe.html?url=${encodeURIComponent(zone.url)}&name=${encodeURIComponent(zone.name)}&direct=true`
+        : `/page/gameframe.html?url=${encodeURIComponent(zone.url.replace("{HTML_URL}", htmlURL))}&name=${encodeURIComponent(zone.name)}`;
+
+      frame.src = targetFrameUrl;
+      lastSelectedNestUrl = targetFrameUrl;
+      updateActiveStates(navLink);
+    };
+    
+    return navLink;
+}
+
+function updateAndRenderGames(query = '') {
+    const gameListContainer = document.querySelector('.game-list-dynamic-container');
+    const noResultsMessage = document.querySelector('.no-results-message');
+    if (!gameListContainer) return;
+
+    const lowerCaseQuery = query.toLowerCase();
+
+    const favorites = getFromStorage('favoriteGames');
+    const recentlyPlayed = getFromStorage('recentlyPlayed');
+    const recentNames = recentlyPlayed.map(g => g.name);
+
+    let sourceGames = lowerCaseQuery 
+        ? allZonesCache.filter(zone => zone.name.toLowerCase().includes(lowerCaseQuery)) 
+        : [...allZonesCache];
+
+    const displayRecent = localStorage.getItem('displayRecentGames') !== 'false';
+
+    const favoritedGames = sourceGames.filter(zone => favorites.includes(zone.name));
+    
+    if (displayRecent) {
+        const recentGames = sourceGames.filter(zone => recentNames.includes(zone.name) && !favorites.includes(zone.name));
+        const regularGames = sourceGames
+            .filter(zone => !favorites.includes(zone.name) && !recentNames.includes(zone.name))
+            .sort((a, b) => a.name.localeCompare(b.name));
+        allGamesSorted = [...favoritedGames, ...recentGames, ...regularGames];
+    } else {
+        const otherGames = sourceGames
+            .filter(zone => !favorites.includes(zone.name))
+            .sort((a, b) => a.name.localeCompare(b.name));
+        allGamesSorted = [...favoritedGames, ...otherGames];
+    }
+    
+    noResultsMessage.style.display = (allGamesSorted.length === 0 && lowerCaseQuery) ? 'flex' : 'none';
+    
+    setupVirtualScroll(gameListContainer, allGamesSorted);
+}
+
 function showGamesPanel() {
   const itemList = nestNavContainer.querySelector('.nav-item-list');
   itemList.innerHTML = '';
+  nestNavContainer.querySelector('.nav-scroll-container').onscroll = null;
 
   const backLink = document.createElement("a");
   backLink.className = "nav-item";
@@ -107,7 +219,7 @@ function showGamesPanel() {
   const searchInput = searchContainer.querySelector('input');
 
   const noResultsMessage = document.createElement('a');
-  noResultsMessage.className = 'nav-item';
+  noResultsMessage.className = 'nav-item no-results-message';
   noResultsMessage.innerHTML = `<span class="nav-text" style="opacity:1;">No matching games found.</span>`;
   noResultsMessage.style.display = 'none';
   
@@ -124,88 +236,8 @@ function showGamesPanel() {
     return;
   }
   
-  const renderGameList = (query = '') => {
-      gameListContainer.innerHTML = '';
-      const lowerCaseQuery = query.toLowerCase();
-
-      const favorites = getFromStorage('favoriteGames');
-      const recentlyPlayed = getFromStorage('recentlyPlayed');
-      const recentNames = recentlyPlayed.map(g => g.name);
-
-      let sourceGames = lowerCaseQuery ? allZonesCache.filter(zone => zone.name.toLowerCase().includes(lowerCaseQuery)) : [...allZonesCache];
-
-      const favoritedGames = sourceGames.filter(zone => favorites.includes(zone.name));
-      const recentGames = sourceGames.filter(zone => recentNames.includes(zone.name) && !favorites.includes(zone.name));
-      const regularGames = sourceGames
-          .filter(zone => !favorites.includes(zone.name) && !recentNames.includes(zone.name))
-          .sort((a, b) => a.name.localeCompare(b.name));
-
-      const sortedGames = [...favoritedGames, ...recentGames, ...regularGames];
-
-      noResultsMessage.style.display = (sortedGames.length === 0 && lowerCaseQuery) ? 'flex' : 'none';
-
-      sortedGames.forEach(zone => {
-          const navLink = document.createElement('a');
-          const isFavorited = favorites.includes(zone.name);
-
-          navLink.className = 'nav-item';
-          if (isFavorited) navLink.classList.add('nav-item-favorited');
-          navLink.href = '#';
-
-          if (zone.blank === true) {
-              navLink.style.opacity = '0.6';
-              navLink.style.cursor = 'default';
-          }
-          
-          navLink.innerHTML = `
-            <div class="icon-container">
-              <i class="fa-regular fa-gamepad game-icon-default"></i>
-              <i class="game-icon-star ${isFavorited ? 'fa-solid' : 'fa-regular'} fa-star"></i>
-            </div>
-            <span class="nav-text">${zone.name}</span>
-          `;
-          
-          const iconContainer = navLink.querySelector('.icon-container');
-
-          iconContainer.onclick = (e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              
-              gameListContainer.classList.add('fading');
-
-              setTimeout(() => {
-                  toggleFavorite(zone.name);
-                  renderGameList(searchInput.value);
-                  nestNavContainer.querySelector('.nav-scroll-container').scrollTop = 0;
-                  gameListContainer.classList.remove('fading');
-              }, 160);
-          };
-          
-          navLink.onclick = (e) => {
-            e.preventDefault();
-            if (zone.blank === true) return;
-            addRecentlyPlayed(zone);
-
-            if (zone.redirect === true) {
-              window.open(zone.url.startsWith('http') ? zone.url : zone.url.replace("{HTML_URL}", htmlURL), '_blank');
-              return;
-            }
-
-            let targetFrameUrl = zone.direct
-              ? `/page/gameframe.html?url=${encodeURIComponent(zone.url)}&name=${encodeURIComponent(zone.name)}&direct=true`
-              : `/page/gameframe.html?url=${encodeURIComponent(zone.url.replace("{HTML_URL}", htmlURL))}&name=${encodeURIComponent(zone.name)}`;
-
-            frame.src = targetFrameUrl;
-            lastSelectedNestUrl = targetFrameUrl;
-            updateActiveStates(navLink);
-          };
-          
-          gameListContainer.appendChild(navLink);
-      });
-  };
-
-  renderGameList();
-  searchInput.addEventListener('input', () => renderGameList(searchInput.value));
+  updateAndRenderGames();
+  searchInput.addEventListener('input', debounce(() => updateAndRenderGames(searchInput.value), 500));
 }
 
 
@@ -219,6 +251,7 @@ function showNestPanel(nestKey, parentElement) {
   if (nestKey === 'games') {
     showGamesPanel();
   } else {
+    nestNavContainer.querySelector('.nav-scroll-container').onscroll = null;
     const items = navData[nestKey];
     if (!items) { console.error(`Nest data for '${nestKey}' not found.`); return; }
     const itemList = nestNavContainer.querySelector('.nav-item-list');

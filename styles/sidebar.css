@@ -62,6 +62,8 @@
     -webkit-mask-image: linear-gradient(to bottom, black calc(100% - 60px), transparent 100%);
     mask-size: 100% 200%;
     -webkit-mask-size: 100% 200%;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 .nav-scroll-container.mask-bottom {
@@ -69,19 +71,23 @@
     -webkit-mask-position: 0 -100%;
 }
 .nav-scroll-container::-webkit-scrollbar {
-    width: 12px;
-}
-.nav-scroll-container::-webkit-scrollbar-track {
-    background: transparent;
-}
-.nav-scroll-container::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.2);
-    border: 3px solid var(--fourth-bg);
-    border-radius: 10px;
+    display: none;
 }
 
 .nav-item-list {
     padding: 10px 0;
+}
+
+.virtual-scroll-sizer {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+.virtual-scroll-list {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
 }
 
 .game-list-dynamic-container {
@@ -90,7 +96,6 @@
 .game-list-dynamic-container.fading {
     opacity: 0;
 }
-
 
 .game-search-container {
     display: flex;
@@ -170,15 +175,17 @@
 .nav-item {
     display: flex;
     align-items: center;
-    padding: 7.5px 12px;
+    padding: 0 12px;
     text-decoration: none;
     color: #fff;
-    transition: all 0.27s ease, padding 0.27s ease, background-color 0.12s ease;
+    transition: all 0.27s ease, background-color 0.12s ease;
     white-space: nowrap;
     margin: 0 10px;
     border-radius: 10px;
     position: relative;
     overflow: hidden;
+    height: 40px;
+    box-sizing: border-box;
 }
 .nav-item:hover {
     background-color: rgba(255, 255, 255, 0.1);
@@ -194,7 +201,7 @@
 }
 .icon-container {
     width: 20px;
-    height: 25px;
+    height: 40px; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -261,7 +268,7 @@
 }
 
 .sidebar:is(:hover, :has(.game-search-input:focus)) .nav-item {
-    padding: 7.5px 14.5px;
+    padding: 0 14.5px;
 }
 
 .game-search-container {
@@ -280,8 +287,6 @@
 .sidebar:is(:hover, :has(.game-search-input:focus)) .nav-divider {
     width: 235px;
 }
-
-
 
 .game-icon-default, .game-icon-star {
     transition: opacity 0.2s ease, color 0.2s ease;
@@ -308,7 +313,6 @@
     opacity: 1;
     color: rgba(255,255,255,0.8);
 }
-
 
 .nav-item-favorited::before {
     content: '';
