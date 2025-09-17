@@ -147,13 +147,7 @@
         font-size: 15px;
         color: rgba(255, 255, 255, 0.8);
       }
-      iframe {
-          position: fixed;
-          right: 10px;
-          top: 50%;
-          transform: translateY(-50%);
-          z-index: 10000;
-      }
+      
     </style>
     <style>
       #particles-js {
@@ -168,6 +162,14 @@
   </head>
   <body>
     <div id="particles-js"></div>
+    <style>#rightad {
+      position: fixed;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10000;
+  }
+</style>
     <iframe 
   src="/ads/160x600.html" 
   width="160" 
@@ -175,7 +177,8 @@
   sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-popups-to-escape-sandbox"
   scrolling="no"
   style="border:0;" 
-  referrerpolicy="no-referrer">
+  referrerpolicy="no-referrer"
+  id="rightad">
 </iframe>
    <div class="content">
       <div class="filter-container">

@@ -137,5 +137,65 @@
       }
     });
   </script>
+  <style>
+    #adboxtop {
+        position: fixed;
+        top: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 12px;
+        z-index: 10000;
+        opacity: 0;
+        transition: top 0.35s ease, opacity 0.35s ease;
+      }
+
+      #adboxbottom {
+        position: fixed;
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 12px;
+        z-index: 10000;
+        opacity: 0;
+        transition: bottom 0.35s ease, opacity 0.35s ease;
+      }
+  </style>
+  <iframe
+  src="/ads/728x90.html"
+  width="728"
+  height="90"
+  sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-popups-to-escape-sandbox"
+  scrolling="no"
+  style="border: 0"
+  referrerpolicy="no-referrer"
+  id="adboxtop">
+</iframe>
+<iframe
+      src="/ads/728x90.html"
+      width="728"
+      height="90"
+      sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-popups-to-escape-sandbox"
+      scrolling="no"
+      style="border: 0"
+      referrerpolicy="no-referrer"
+      id="adboxbottom">
+    </iframe>
+  <script>
+    window.addEventListener("load", () => {
+        const topAd = document.getElementById("adboxtop");
+        const bottomAd = document.getElementById("adboxbottom");
+
+        setTimeout(() => {
+          topAd.style.top = "12px";
+          topAd.style.opacity = "1";
+        }, 10);
+
+        setTimeout(() => {
+          bottomAd.style.bottom = "12px";
+          bottomAd.style.opacity = "1";
+        }, 10);
+      });
+  </script>
+  <script type='text/javascript' src='//pl27082248.revenuecpmgate.com/74/26/eb/7426eb374d3df94f2c9ed325eb39487b.js'></script>
 </body>
 </html>
