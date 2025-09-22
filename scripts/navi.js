@@ -9,7 +9,7 @@ const navItems = [
   { title: "Apps", icon: "fa-grid", type: "item", nest: "apps" },
   { title: "Tools", icon: "fa-hammer", type: "item", nest: "tools" },
   { type: "divider" },
-  { title: "VM <span class='badge'>Down</span>", icon: "fa-desktop", url: "page/vm-priv.html", type: "item" },
+  { title: "VM <span class='badge'>FIXED!</span>", icon: "fa-desktop", url: "page/vm-priv.html", type: "item" },
   { title: "Chat", icon: "fa-comments-alt", url: "/chat.html", type: "item" },
   { title: "Browser", icon: "fa-search", url: "/scram.html", type: "item" },
   { type: "divider" },
