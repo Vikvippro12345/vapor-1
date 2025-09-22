@@ -7,6 +7,7 @@
     <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
     <link href="/styles/defaults.css" rel="stylesheet" />
     <script src="/scripts/theme.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js"></script>
     <style>
       * {
         box-sizing: border-box;
@@ -765,6 +766,28 @@
           localStorage.setItem("vapor_client_id", clientId);
         }
 
+        // ==========================================================
+        // FINGERPRINT.JS INITIALIZATION
+        // ==========================================================
+        let visitorId = null; // This will hold our unique user fingerprint
+
+        const initializeFingerprint = async () => {
+          try {
+            const fp = await FingerprintJS.load();
+            const result = await fp.get();
+            visitorId = result.visitorId;
+            console.log("User Fingerprint ID:", visitorId); // For your debugging
+          } catch (error) {
+            console.error("Fingerprint generation failed:", error);
+          }
+        };
+
+        // Generate the fingerprint as soon as the page loads
+        initializeFingerprint();
+        // ==========================================================
+        // END OF FINGERPRINT.JS CODE
+        // ==========================================================
+
         const bootBtn = document.getElementById("bootBtn");
         const deleteBtn = document.getElementById("deleteBtn");
         const hbContainer = document.getElementById("hyperbeam-container");
@@ -885,6 +908,17 @@
           document.body.classList.remove("captcha-active");
           loader.classList.add("show");
 
+          // Safety check to ensure fingerprint has been generated before sending request.
+          if (!visitorId) {
+            await initializeFingerprint();
+            if (!visitorId) {
+              alert("Error: Could not verify your browser. Please refresh and try again.");
+              loader.classList.remove("show");
+              resetUI(true);
+              return;
+            }
+          }
+
           try {
             const response = await fetch(`${API_BASE_URL}/verify-and-create`, {
               method: "POST",
@@ -897,6 +931,7 @@
                 token: token,
                 duration: selectedDuration,
                 clientId: clientId,
+                visitorId: visitorId, // <-- THE ADDED LINE FOR RATE LIMITING
               }),
             });
             const data = await response.json();
