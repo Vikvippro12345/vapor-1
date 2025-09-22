@@ -901,7 +901,7 @@
             });
             const data = await response.json();
             if (!response.ok)
-              throw new Error(data.error || "Failed to create session.");
+              throw new Error(data.error || "Too many people are using the VM! Try again in a bit :)");
 
             currentSessionId = data.session_id;
 
