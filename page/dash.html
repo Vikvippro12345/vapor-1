@@ -142,7 +142,6 @@
         padding: 10px 0;
       }
 
-      /* STATS CARD */
       .stats-container {
         margin-top: 15px;
         display: flex;
@@ -158,12 +157,20 @@
         color: var(--text-color);
         font-family: "SF Mono", "Consolas", monospace;
       }
+      
+      .online-users-card .count {
+        font-family: "SF Mono", "Consolas", "Roboto Mono", monospace;
+        font-size: 52px;
+        font-weight: 700;
+        color: var(--primary);
+        margin: 10px 0 0 0;
+        line-height: 1;
+      }
 
-      /* RANDOM GAME DICE */
       .dice-container {
         margin: 20px auto 10px;
-        width: 60px;
-        height: 60px;
+        width: 50px;
+        height: 50px;
         perspective: 1000px;
         cursor: pointer;
       }
@@ -174,36 +181,69 @@
         transform-style: preserve-3d;
         animation: spin 25s linear infinite;
       }
-      .dice.spinning {
-        animation: spin-fast 1s ease-in-out;
-      }
+      .dice.spinning { animation: spin-fast 1s ease-in-out; }
       .dice-face {
         position: absolute;
-        width: 60px;
-        height: 60px;
-        background-color: rgba(255, 255, 255, 0.9);
-        border: 1px solid rgba(0, 0, 0, 0.2);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-        color: var(--bg);
+        width: 50px;
+        height: 50px;
+        background-color: rgba(255, 255, 255, 0.95);
+        border-radius: 8px;
+        display: grid;
+        padding: 6px;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 1fr);
       }
-      .face-front  { transform: rotateY(0deg) translateZ(30px); }
-      .face-back   { transform: rotateY(180deg) translateZ(30px); }
-      .face-right  { transform: rotateY(90deg) translateZ(30px); }
-      .face-left   { transform: rotateY(-90deg) translateZ(30px); }
-      .face-top    { transform: rotateX(90deg) translateZ(30px); }
-      .face-bottom { transform: rotateX(-90deg) translateZ(30px); }
+      .dot {
+        background-color: var(--bg);
+        border-radius: 50%;
+        width: 10px;
+        height: 10px;
+        align-self: center;
+        justify-self: center;
+      }
+      .face-1 .dot:nth-child(1) { grid-column: 2; grid-row: 2; }
+      .face-2 .dot:nth-child(1) { grid-column: 1; grid-row: 1; }
+      .face-2 .dot:nth-child(2) { grid-column: 3; grid-row: 3; }
+      .face-3 .dot:nth-child(1) { grid-column: 1; grid-row: 1; }
+      .face-3 .dot:nth-child(2) { grid-column: 2; grid-row: 2; }
+      .face-3 .dot:nth-child(3) { grid-column: 3; grid-row: 3; }
+      .face-4 .dot:nth-child(1), .face-4 .dot:nth-child(2) { grid-row: 1; }
+      .face-4 .dot:nth-child(3), .face-4 .dot:nth-child(4) { grid-row: 3; }
+      .face-4 .dot:nth-child(1), .face-4 .dot:nth-child(3) { grid-column: 1; }
+      .face-4 .dot:nth-child(2), .face-4 .dot:nth-child(4) { grid-column: 3; }
+      .face-5 .dot:nth-child(1) { grid-column: 2; grid-row: 2; }
+      .face-5 .dot:nth-child(2), .face-5 .dot:nth-child(3) { grid-row: 1; }
+      .face-5 .dot:nth-child(4), .face-5 .dot:nth-child(5) { grid-row: 3; }
+      .face-5 .dot:nth-child(2), .face-5 .dot:nth-child(4) { grid-column: 1; }
+      .face-5 .dot:nth-child(3), .face-5 .dot:nth-child(5) { grid-column: 3; }
+      .face-6 .dot:nth-child(1), .face-6 .dot:nth-child(2), .face-6 .dot:nth-child(3) { grid-row: 1; }
+      .face-6 .dot:nth-child(4), .face-6 .dot:nth-child(5), .face-6 .dot:nth-child(6) { grid-row: 3; }
+      .face-6 .dot:nth-child(1), .face-6 .dot:nth-child(4) { grid-column: 1; }
+      .face-6 .dot:nth-child(2), .face-6 .dot:nth-child(5) { grid-column: 2; }
+      .face-6 .dot:nth-child(3), .face-6 .dot:nth-child(6) { grid-column: 3; }
+      
+      .face-front  { transform: rotateY(0deg) translateZ(25px); }
+      .face-back   { transform: rotateY(180deg) translateZ(25px); }
+      .face-right  { transform: rotateY(90deg) translateZ(25px); }
+      .face-left   { transform: rotateY(-90deg) translateZ(25px); }
+      .face-top    { transform: rotateX(90deg) translateZ(25px); }
+      .face-bottom { transform: rotateX(-90deg) translateZ(25px); }
 
-      @keyframes spin {
-        from { transform: rotateX(0deg) rotateY(0deg); }
-        to { transform: rotateX(360deg) rotateY(360deg); }
-      }
-      @keyframes spin-fast {
-        from { transform: rotateX(0deg) rotateY(0deg); }
-        to { transform: rotateX(1080deg) rotateY(1080deg); }
-      }
+      @keyframes spin { from { transform: rotateX(0deg) rotateY(0deg); } to { transform: rotateX(360deg) rotateY(360deg); } }
+      @keyframes spin-fast { from { transform: rotateX(0deg) rotateY(0deg); } to { transform: rotateX(1080deg) rotateY(1080deg); } }
+      
+      .status-indicator { width: 10px; height: 10px; border-radius: 50%; position: relative; }
+      .status-indicator::after { content: ''; position: absolute; inset: 0; border-radius: 50%; animation: pulse 1.5s infinite; background-color: inherit; }
+      .status-indicator.ok { background-color: #4CAF50; }
+      .status-indicator.degraded { background-color: #FFC107; }
+      .status-indicator.outage { background-color: #F44336; }
+      @keyframes pulse { 0% { transform: scale(1); opacity: 0.6; } 100% { transform: scale(2.5); opacity: 0; } }
+      
+      .text-item { display: flex; flex-direction: column; }
+      .text-item .name { font-weight: 600; font-size: 15px; }
+      .text-item .desc { font-size: 14px; color: var(--secondary-text-color); }
+      .text-item .date { font-size: 12px; color: rgba(255,255,255,0.5); text-transform: uppercase; margin-top: 4px; }
+      .text-list-container { gap: 10px; }
 
     </style>
   </head>
@@ -218,24 +258,15 @@
     </div>
 
     <div id="card-templates" style="display: none;">
+      <div class="card online-users-card">
+        <p class="card-label"><i class="fa-solid fa-users"></i> Online Users</p>
+        <p class="count" id="online-users-count">...</p>
+      </div>
       <div class="card stats-card">
         <p class="card-label"><i class="fa-solid fa-chart-simple"></i> Stats</p>
         <div class="stats-container">
             <p class="stat-item">Total Games: <span id="stats-total-games">...</span></p>
             <p class="stat-item">Total Accounts: <span id="stats-total-accounts">0</span></p>
-        </div>
-      </div>
-      <div class="card random-game-card">
-        <p class="card-label"><i class="fa-solid fa-shuffle"></i> Random Game</p>
-        <div class="dice-container" id="dice-container">
-          <div class="dice" id="dice">
-            <div class="dice-face face-front"><i class="fa-solid fa-question"></i></div>
-            <div class="dice-face face-back"><i class="fa-solid fa-dice"></i></div>
-            <div class="dice-face face-right"><i class="fa-solid fa-gamepad"></i></div>
-            <div class="dice-face face-left"><i class="fa-solid fa-ghost"></i></div>
-            <div class="dice-face face-top"><i class="fa-solid fa-rocket"></i></div>
-            <div class="dice-face face-bottom"><i class="fa-solid fa-bomb"></i></div>
-          </div>
         </div>
       </div>
        <div class="card favorites-card">
@@ -245,6 +276,27 @@
       <div class="card recent-games-card">
           <p class="card-label"><i class="fa-solid fa-clock-rotate-left"></i> Recently Played</p>
           <div class="list-container" id="recently-played-list"></div>
+      </div>
+      <div class="card random-game-card">
+        <p class="card-label"><i class="fa-solid fa-shuffle"></i> Random Game</p>
+        <div class="dice-container" id="dice-container">
+          <div class="dice" id="dice">
+            <div class="dice-face face-1 face-front"><div class="dot"></div></div>
+            <div class="dice-face face-6 face-back"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+            <div class="dice-face face-3 face-right"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+            <div class="dice-face face-4 face-left"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+            <div class="dice-face face-5 face-top"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+            <div class="dice-face face-2 face-bottom"><div class="dot"></div><div class="dot"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card status-card">
+        <p class="card-label"><span id="status-indicator" class="status-indicator"></span> Status</p>
+        <div class="list-container text-list-container" id="status-list"></div>
+      </div>
+       <div class="card updates-card">
+          <p class="card-label"><i class="fa-solid fa-bullhorn"></i> Updates</p>
+          <div class="list-container text-list-container" id="updates-list"></div>
       </div>
       <div class="card quick-actions-card">
           <p class="card-label"><i class="fa-solid fa-bolt"></i> Quick Actions</p>
@@ -278,6 +330,12 @@
         function navigateParentFrame(url) { const frame = getParentFrame(); if (frame) frame.src = url; }
         function getFromStorage(key) { try { return JSON.parse(localStorage.getItem(key)) || []; } catch (e) { return []; } }
 
+        const userCountElement = document.getElementById("online-users-count");
+        if (window.parent && window.parent.vaporsock) {
+          userCountElement.textContent = window.parent.vaporsock.onlineusers;
+          window.parent.addEventListener('vaporsock:update', (event) => { userCountElement.textContent = event.detail.onlineUsers; });
+        } else { userCountElement.textContent = "N/A"; }
+
         let allGamesCache = null;
         async function getAllGames() {
           if (allGamesCache) return allGamesCache;
@@ -304,10 +362,7 @@
         function displayFavorites(allGames) {
             const favoriteNames = getFromStorage('favoriteGames');
             favoritesList.innerHTML = '';
-            if (favoriteNames.length === 0) {
-                favoritesList.innerHTML = `<p class="empty-list-text">You haven't favorited any games yet.</p>`;
-                return;
-            }
+            if (favoriteNames.length === 0) { favoritesList.innerHTML = `<p class="empty-list-text">You haven't favorited any games yet.</p>`; return; }
             if (favoriteNames.length > 3) { favoritesList.classList.add('scrollable-list'); }
             const favoriteGameObjects = allGames.filter(game => favoriteNames.includes(game.name));
             favoriteGameObjects.forEach(game => favoritesList.appendChild(createGameButton(game)));
@@ -344,7 +399,7 @@
         function animateCountUp(element, target) {
             let count = 0;
             const step = () => {
-                const increment = (target - count) * 0.1;
+                const increment = Math.max(1, (target - count) * 0.05);
                 count += increment;
                 if (count < target) {
                     element.textContent = Math.ceil(count).toLocaleString();
@@ -365,21 +420,57 @@
         const dice = document.getElementById('dice');
         diceContainer.addEventListener('click', async () => {
             if (dice.classList.contains('spinning')) return;
-
             const allGames = await getAllGames();
             if (allGames.length === 0) return;
-
             dice.classList.add('spinning');
-            
             setTimeout(() => {
                 const randomIndex = Math.floor(Math.random() * allGames.length);
                 const randomGame = allGames[randomIndex];
-                const gameButton = createGameButton(randomGame);
-                gameButton.click();
-                
+                createGameButton(randomGame).click();
                 dice.classList.remove('spinning');
             }, 1000);
         });
+        
+        const statusList = document.getElementById("status-list");
+        const statusIndicator = document.getElementById("status-indicator");
+        async function fetchAndDisplayStatus() {
+          try {
+            const response = await fetch('/_a/status.json');
+            const statusData = await response.json();
+            const outages = statusData.current_outages || [];
+            statusList.innerHTML = '';
+            statusIndicator.className = 'status-indicator';
+            if (outages.length === 0) {
+              statusIndicator.classList.add('ok');
+              statusList.innerHTML = `<p class="empty-list-text">No current outages!</p>`;
+            } else {
+              if (outages.length === 1) statusIndicator.classList.add('degraded');
+              if (outages.length >= 2) statusIndicator.classList.add('outage');
+              outages.forEach(outage => {
+                const item = document.createElement('div');
+                item.className = 'text-item';
+                item.innerHTML = `<span class="name">${outage.name}</span><span class="desc">${outage.description}</span><span class="date">${outage.date}</span>`;
+                statusList.appendChild(item);
+              });
+            }
+          } catch(error) { statusList.innerHTML = `<p class="empty-list-text">Could not load status.</p>`; }
+        }
+
+        const updatesList = document.getElementById("updates-list");
+        async function fetchAndDisplayUpdates() {
+          try {
+            const response = await fetch('/_a/updates.json');
+            const updates = await response.json();
+            updatesList.innerHTML = '';
+            if (!updates || updates.length === 0) { updatesList.innerHTML = `<p class="empty-list-text">No recent updates.</p>`; return; }
+            updates.slice(0, 3).forEach(update => {
+              const item = document.createElement('div');
+              item.className = 'text-item';
+              item.innerHTML = `<span class="name">${update.name}</span><span class="desc">${update.description}</span><span class="date">${update.date}</span>`;
+              updatesList.appendChild(item);
+            });
+          } catch(error) { updatesList.innerHTML = `<p class="empty-list-text">Could not load updates.</p>`; }
+        }
         
         async function initializeDashboard() {
             const allGames = await getAllGames();
@@ -387,6 +478,8 @@
             displayFavorites(allGames);
             displayRecentlyPlayed(allGames);
             displayQuickActions();
+            fetchAndDisplayStatus();
+            fetchAndDisplayUpdates();
         }
 
         initializeDashboard();
