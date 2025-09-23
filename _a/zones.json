@@ -641,7 +641,8 @@
   {
     "name": "Poly Track",
     "cover": "{COVER_URL}/123.png",
-    "url": "{HTML_URL}/123.html"
+    "url": "{HTML_URL}/123.html",
+    "featured": true
   },
   {
     "name": "Moto X3M Pool Party",
@@ -2136,11 +2137,6 @@
     "url": "{HTML_URL}/423.html"
   },
   {
-    "name": "Deltarune",
-    "cover": "{COVER_URL}/425.png",
-    "url": "{HTML_URL}/425.html"
-  },
-  {
     "name": "Andy's Apple Farm",
     "cover": "{COVER_URL}/426.png",
     "url": "{HTML_URL}/426.html"
@@ -2358,7 +2354,8 @@
   {
     "name": "Doodle Jump",
     "cover": "{COVER_URL}/470.png",
-    "url": "{HTML_URL}/470.html"
+    "url": "{HTML_URL}/470.html",
+    "featured": true
   },
   {
     "name": "Madness Combat: Project Nexus (classic)",
