@@ -36,10 +36,8 @@
 
       .sections-wrapper {
         padding: 40px 20px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-        align-items: flex-start;
+        column-count: 2;
+        column-gap: 20px;
       }
 
       .card {
@@ -47,8 +45,8 @@
         border-radius: 12px;
         padding: 20px;
         height: auto;
-        flex-basis: calc(50% - 10px);
-        min-width: 250px;
+        margin-bottom: 20px;
+        break-inside: avoid;
         opacity: 0;
         animation: fadeInOnly 0.4s ease forwards;
       }
