@@ -36,16 +36,23 @@
 
       .sections-wrapper {
         padding: 40px 20px;
-        column-count: 2;
-        column-gap: 20px;
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+      }
+
+      .column {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 50%;
       }
 
       .card {
         background-color: var(--secondary-bg);
         border-radius: 12px;
         padding: 20px;
-        margin-bottom: 20px;
-        break-inside: avoid;
+        height: auto;
         opacity: 0;
         animation: fadeInOnly 0.4s ease forwards;
       }
@@ -54,12 +61,7 @@
         from { opacity: 0; }
         to { opacity: 1; }
       }
-
-      .sections-wrapper > .card:nth-child(1) { animation-delay: 0.1s; }
-      .sections-wrapper > .card:nth-child(2) { animation-delay: 0.2s; }
-      .sections-wrapper > .card:nth-child(3) { animation-delay: 0.3s; }
-      .sections-wrapper > .card:nth-child(4) { animation-delay: 0.4s; }
-
+      
       .card-label {
         margin: 0;
         text-transform: uppercase;
@@ -124,22 +126,27 @@
 
     <div class="dashboard-container">
       <div class="sections-wrapper">
-        <div class="card online-users-card">
-          <p class="card-label">Online Users</p>
-          <p class="count" id="online-users-count">...</p>
-        </div>
-        <div class="card top-games-card">
-          <p class="card-label">Top Games</p>
-          <div class="list-container" id="top-games-list"></div>
-        </div>
-        <div class="card recent-games-card">
-            <p class="card-label">Recently Played</p>
-            <div class="list-container" id="recently-played-list"></div>
-        </div>
-        <div class="card quick-actions-card">
-            <p class="card-label">Quick Actions</p>
-            <div class="list-container" id="quick-actions-list"></div>
-        </div>
+        <div class="column" id="column-left"></div>
+        <div class="column" id="column-right"></div>
+      </div>
+    </div>
+
+    <div id="card-templates" style="display: none;">
+      <div class="card online-users-card" data-order="1">
+        <p class="card-label">Online Users</p>
+        <p class="count" id="online-users-count">...</p>
+      </div>
+      <div class="card top-games-card" data-order="2">
+        <p class="card-label">Top Games</p>
+        <div class="list-container" id="top-games-list"></div>
+      </div>
+      <div class="card recent-games-card" data-order="3">
+          <p class="card-label">Recently Played</p>
+          <div class="list-container" id="recently-played-list"></div>
+      </div>
+      <div class="card quick-actions-card" data-order="4">
+          <p class="card-label">Quick Actions</p>
+          <div class="list-container" id="quick-actions-list"></div>
       </div>
     </div>
     
@@ -151,26 +158,31 @@
         const htmlURL = "https://cdn.jsdelivr.net/gh/gn-math/html@main";
         const coverURL = "https://cdn.jsdelivr.net/gh/gn-math/covers@main";
 
+        const cardTemplates = document.getElementById('card-templates');
+        const leftCol = document.getElementById('column-left');
+        const rightCol = document.getElementById('column-right');
+        const cards = Array.from(cardTemplates.querySelectorAll('.card'));
+
+        cards.forEach((card, index) => {
+            card.style.animationDelay = `${(index + 1) * 0.1}s`;
+            if (index % 2 === 0) {
+                leftCol.appendChild(card);
+            } else {
+                rightCol.appendChild(card);
+            }
+        });
+
         function getParentFrame() {
             return window.parent.document.getElementById('frame');
         }
 
         function navigateParentFrame(url) {
             const frame = getParentFrame();
-            if (frame) {
-                frame.src = url;
-            } else {
-                console.error("Parent frame with ID 'frame' not found!");
-            }
+            if (frame) { frame.src = url; }
         }
         
         function getFromStorage(key) {
-            try {
-                const item = localStorage.getItem(key);
-                return item ? JSON.parse(item) : [];
-            } catch (e) {
-                return [];
-            }
+            try { return JSON.parse(localStorage.getItem(key)) || []; } catch (e) { return []; }
         }
 
         const userCountElement = document.getElementById("online-users-count");
@@ -187,22 +199,16 @@
         async function fetchAndDisplayTopGames() {
           try {
             const response = await fetch('/_a/zones.json');
-            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-            
             const allGames = await response.json();
             const featuredGames = allGames.filter(game => game.featured === true);
             topGamesList.innerHTML = '';
-
             featuredGames.forEach(game => {
               const button = document.createElement('button');
               button.className = 'game-button';
               button.innerHTML = `<i class="fa-solid fa-star icon"></i><span>${game.name}</span>`;
-              
               button.onclick = () => {
-                let targetFrameUrl = game.direct
-                  ? `/page/gameframe.html?url=${encodeURIComponent(game.url)}&name=${encodeURIComponent(game.name)}&direct=true`
-                  : `/page/gameframe.html?url=${encodeURIComponent(game.url.replace("{HTML_URL}", htmlURL))}&name=${encodeURIComponent(game.name)}`;
-                navigateParentFrame(targetFrameUrl);
+                let url = game.direct ? `/page/gameframe.html?url=${encodeURIComponent(game.url)}&name=${encodeURIComponent(game.name)}&direct=true` : `/page/gameframe.html?url=${encodeURIComponent(game.url.replace("{HTML_URL}", htmlURL))}&name=${encodeURIComponent(game.name)}`;
+                navigateParentFrame(url);
               };
               topGamesList.appendChild(button);
             });
@@ -219,18 +225,14 @@
                 recentlyPlayedList.innerHTML = `<p class="empty-list-text">No recently played games.</p>`;
                 return;
             }
-
             recentGames.forEach(game => {
                 const button = document.createElement('button');
                 button.className = 'game-button recent-game';
                 const coverSrc = game.cover ? game.cover.replace("{COVER_URL}", coverURL) : '/_a/logo.png';
-                button.innerHTML = `<img src="${coverSrc}" class="icon" alt="${game.name} cover"><span class="game-name">${game.name}</span>`;
-                
+                button.innerHTML = `<img src="${coverSrc}" class="icon" alt=""><span class="game-name">${game.name}</span>`;
                 button.onclick = () => {
-                    let targetFrameUrl = game.direct
-                        ? `/page/gameframe.html?url=${encodeURIComponent(game.url)}&name=${encodeURIComponent(game.name)}&direct=true`
-                        : `/page/gameframe.html?url=${encodeURIComponent(game.url.replace("{HTML_URL}", htmlURL))}&name=${encodeURIComponent(game.name)}`;
-                    navigateParentFrame(targetFrameUrl);
+                    let url = game.direct ? `/page/gameframe.html?url=${encodeURIComponent(game.url)}&name=${encodeURIComponent(game.name)}&direct=true` : `/page/gameframe.html?url=${encodeURIComponent(game.url.replace("{HTML_URL}", htmlURL))}&name=${encodeURIComponent(game.name)}`;
+                    navigateParentFrame(url);
                 };
                 recentlyPlayedList.appendChild(button);
             });

@@ -6,7 +6,7 @@ const navItems = [
   { title: "Home", icon: "fa-home", url: "page/home.html", type: "item" },
   { type: "divider" },
   { title: "Games", icon: "fa-gamepad", type: "item", nest: "games" },
-  { title: "Apps", icon: "fa-grid", type: "item", nest: "apps" },
+  { title: "Apps", icon: "fa-grid", type: "item", url: "/page/dash.html" },
   { title: "Tools", icon: "fa-hammer", type: "item", nest: "tools" },
   { type: "divider" },
   { title: "VM <span class='badge'>FIXED!</span>", icon: "fa-desktop", url: "page/vm-priv.html", type: "item" },
