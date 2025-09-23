@@ -11,11 +11,16 @@
       html {
         margin: 0;
         padding: 0;
-        height: 100%;
         font-family: "Inter", Arial, sans-serif;
         background: var(--bg);
         color: var(--text-color);
+        scrollbar-width: thin;
+        scrollbar-color: var(--primary) var(--secondary-bg);
       }
+      html::-webkit-scrollbar { width: 8px; }
+      html::-webkit-scrollbar-track { background: var(--secondary-bg); }
+      html::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+      
       #particles-js {
         position: fixed;
         top: 0;
@@ -27,11 +32,7 @@
 
       .dashboard-container {
         width: 50%;
-        height: 100%;
         margin: 0 auto;
-        overflow-y: auto;
-        scrollbar-width: thin;
-        scrollbar-color: var(--primary) var(--secondary-bg);
       }
 
       .sections-wrapper {
@@ -179,15 +180,15 @@
         height: 100%;
         position: relative;
         transform-style: preserve-3d;
-        animation: spin 25s linear infinite;
+        animation: drift 35s ease-in-out infinite alternate;
+        background-color: rgba(255, 255, 255, 0.95);
+        border-radius: 8px;
       }
-      .dice.spinning { animation: spin-fast 1s ease-in-out; }
+      .dice.spinning { animation: spin-fast 3s ease-in-out; }
       .dice-face {
         position: absolute;
         width: 50px;
         height: 50px;
-        background-color: rgba(255, 255, 255, 0.95);
-        border-radius: 8px;
         display: grid;
         padding: 6px;
         grid-template-columns: repeat(3, 1fr);
@@ -229,8 +230,12 @@
       .face-top    { transform: rotateX(90deg) translateZ(25px); }
       .face-bottom { transform: rotateX(-90deg) translateZ(25px); }
 
-      @keyframes spin { from { transform: rotateX(0deg) rotateY(0deg); } to { transform: rotateX(360deg) rotateY(360deg); } }
-      @keyframes spin-fast { from { transform: rotateX(0deg) rotateY(0deg); } to { transform: rotateX(1080deg) rotateY(1080deg); } }
+      @keyframes drift { 
+        0% { transform: rotateX(20deg) rotateY(-30deg); } 
+        50% { transform: rotateX(-15deg) rotateY(40deg); }
+        100% { transform: rotateX(25deg) rotateY(-10deg); }
+      }
+      @keyframes spin-fast { from { transform: rotateX(0deg) rotateY(0deg); } to { transform: rotateX(1440deg) rotateY(1080deg); } }
       
       .status-indicator { width: 10px; height: 10px; border-radius: 50%; position: relative; }
       .status-indicator::after { content: ''; position: absolute; inset: 0; border-radius: 50%; animation: pulse 1.5s infinite; background-color: inherit; }
@@ -268,6 +273,10 @@
             <p class="stat-item">Total Games: <span id="stats-total-games">...</span></p>
             <p class="stat-item">Total Accounts: <span id="stats-total-accounts">0</span></p>
         </div>
+      </div>
+       <div class="card top-games-card">
+        <p class="card-label"><i class="fa-solid fa-trophy"></i> Top Games</p>
+        <div class="list-container" id="top-games-list"></div>
       </div>
        <div class="card favorites-card">
           <p class="card-label"><i class="fa-solid fa-star"></i> Your Favorites</p>
@@ -358,6 +367,14 @@
             return button;
         }
 
+        const topGamesList = document.getElementById("top-games-list");
+        async function fetchAndDisplayTopGames(allGames) {
+            const featuredGames = allGames.filter(g => g.featured).slice(0, 4);
+            topGamesList.innerHTML = '';
+            if (featuredGames.length === 0) { topGamesList.innerHTML = `<p class="empty-list-text">No top games found.</p>`; return; }
+            featuredGames.forEach(game => topGamesList.appendChild(createGameButton(game)));
+        }
+
         const favoritesList = document.getElementById("favorites-list");
         function displayFavorites(allGames) {
             const favoriteNames = getFromStorage('favoriteGames');
@@ -428,7 +445,7 @@
                 const randomGame = allGames[randomIndex];
                 createGameButton(randomGame).click();
                 dice.classList.remove('spinning');
-            }, 1000);
+            }, 3000);
         });
         
         const statusList = document.getElementById("status-list");
@@ -475,6 +492,7 @@
         async function initializeDashboard() {
             const allGames = await getAllGames();
             displayStats(allGames);
+            fetchAndDisplayTopGames(allGames);
             displayFavorites(allGames);
             displayRecentlyPlayed(allGames);
             displayQuickActions();
