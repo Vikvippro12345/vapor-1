@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/styles/defaults.css" />
     <script src="/scripts/theme.js"></script>
+    <script src="/sock/online/index.js"></script> <!-- Script for user count -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <style>
       * {
@@ -203,14 +204,21 @@
       }
 
       #adboxbottom {
+        display: none;
+      }
+
+      #user-count-display {
         position: fixed;
         bottom: -15px;
         left: 50%;
         transform: translateX(-50%);
-        border-radius: 12px;
         z-index: 10000;
         opacity: 0;
         transition: bottom 0.35s ease, opacity 0.35s ease;
+        font-size: 16px;
+        font-weight: 500;
+        margin: 0;
+        font-family: "Inter";
       }
     </style>
   </head>
@@ -259,6 +267,9 @@
       id="adboxbottom">
     </iframe>
 
+    <p id="user-count-display">Active users: ...</p>
+
+
     <script>
       particlesJS("particles-js", {
         particles: { number: { value: 150, density: { enable: true, value_area: 800 } }, color: { value: "#ffffff" }, shape: { type: "circle", stroke: { width: 0, color: "#000000" }, polygon: { nb_sides: 5 } }, opacity: { value: 0.5, random: true, anim: { enable: false, speed: 1, opacity_min: 0.1, sync: false } }, size: { value: 1.5, random: true, anim: { enable: false, speed: 80, size_min: 0.1, sync: false } }, line_linked: { enable: false }, move: { enable: true, speed: 1.5, direction: "right", random: true, straight: true, out_mode: "out", bounce: false, attract: { enable: false } } }, interactivity: { detect_on: "canvas", events: { onhover: { enable: false }, onclick: { enable: true, mode: "push" }, resize: true }, modes: { push: { particles_nb: 25 } } }, retina_detect: true });
@@ -279,17 +290,25 @@
       
       window.addEventListener("load", () => {
         const topAd = document.getElementById("adboxtop");
-        const bottomAd = document.getElementById("adboxbottom");
+        const userCountDisplay = document.getElementById("user-count-display");
 
         setTimeout(() => {
           topAd.style.top = "12px";
           topAd.style.opacity = "1";
         }, 500);
 
+        
+        window.addEventListener('vaporsock:update', (event) => {
+            userCountDisplay.innerHTML = `Active users: <strong>${event.detail.onlineUsers}</strong>`;
+        });
+        
         setTimeout(() => {
-          bottomAd.style.bottom = "12px";
-          bottomAd.style.opacity = "1";
-        }, 500);
+            const currentCount = window.vaporsock ? window.vaporsock.onlineusers : 0;
+            userCountDisplay.innerHTML = `Active users: <strong>${currentCount}</strong>`;
+
+            userCountDisplay.style.bottom = "12px";
+            userCountDisplay.style.opacity = "1";
+        }, 3000); // 3000 milliseconds = 3 seconds
       });
     </script>
     
