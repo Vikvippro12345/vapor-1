@@ -69,6 +69,13 @@
         font-weight: 600;
         color: rgba(255, 255, 255, 0.75);
         letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .card-label i {
+        font-size: 12px;
       }
 
       .online-users-card .count {
@@ -99,7 +106,6 @@
         color: var(--text-color);
         font-family: "Inter", sans-serif;
         font-size: 15px;
-        font-weight: 500;
         cursor: pointer;
         text-align: left;
         transition: background-color 0.2s ease, transform 0.2s ease;
@@ -110,17 +116,27 @@
         transform: scale(1.02);
       }
 
-      .game-button .icon {
-        color: var(--primary);
+      .game-button .game-name {
+        font-weight: 500;
+      }
+
+      .game-button img.icon {
         width: 40px;
         height: 40px;
         border-radius: 6px;
         object-fit: cover;
         flex-shrink: 0;
       }
-
-      .game-button .game-name {
-        font-weight: 500;
+      
+      .quick-actions-card .game-button .icon {
+        width: 40px;
+        height: 40px;
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        color: var(--primary);
       }
       
       .empty-list-text {
@@ -141,20 +157,20 @@
     </div>
 
     <div id="card-templates" style="display: none;">
-      <div class="card online-users-card" data-order="1">
-        <p class="card-label">Online Users</p>
+      <div class="card online-users-card">
+        <p class="card-label"><i class="fa-solid fa-users"></i> Online Users</p>
         <p class="count" id="online-users-count">...</p>
       </div>
-      <div class="card top-games-card" data-order="2">
-        <p class="card-label">Top Games</p>
+      <div class="card top-games-card">
+        <p class="card-label"><i class="fa-solid fa-trophy"></i> Top Games</p>
         <div class="list-container" id="top-games-list"></div>
       </div>
-      <div class="card recent-games-card" data-order="3">
-          <p class="card-label">Recently Played</p>
+      <div class="card recent-games-card">
+          <p class="card-label"><i class="fa-solid fa-clock-rotate-left"></i> Recently Played</p>
           <div class="list-container" id="recently-played-list"></div>
       </div>
-      <div class="card quick-actions-card" data-order="4">
-          <p class="card-label">Quick Actions</p>
+      <div class="card quick-actions-card">
+          <p class="card-label"><i class="fa-solid fa-bolt"></i> Quick Actions</p>
           <div class="list-container" id="quick-actions-list"></div>
       </div>
     </div>
