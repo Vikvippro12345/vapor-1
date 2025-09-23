@@ -36,22 +36,20 @@
 
       .sections-wrapper {
         padding: 40px 20px;
-      }
-
-      .section-row {
         display: flex;
+        flex-wrap: wrap;
         gap: 20px;
-        margin-bottom: 20px;
       }
 
       .card {
         background-color: var(--secondary-bg);
         border-radius: 12px;
         padding: 20px;
-        flex: 1;
         height: auto;
+        flex: 1 1 calc(50% - 10px);
+        min-width: 250px;
         opacity: 0;
-        animation: fadeInOnly 0.5s ease forwards;
+        animation: fadeInOnly 0.4s ease forwards;
       }
 
       @keyframes fadeInOnly {
@@ -59,10 +57,10 @@
         to { opacity: 1; }
       }
 
-      .section-row.first .card:nth-child(1) { animation-delay: 0.2s; }
-      .section-row.first .card:nth-child(2) { animation-delay: 0.4s; }
-      .section-row.second .card:nth-child(1) { animation-delay: 0.6s; }
-      .section-row.second .card:nth-child(2) { animation-delay: 0.8s; }
+      .sections-wrapper > .card:nth-child(1) { animation-delay: 0.1s; }
+      .sections-wrapper > .card:nth-child(2) { animation-delay: 0.2s; }
+      .sections-wrapper > .card:nth-child(3) { animation-delay: 0.3s; }
+      .sections-wrapper > .card:nth-child(4) { animation-delay: 0.4s; }
 
       .card-label {
         margin: 0;
@@ -128,26 +126,21 @@
 
     <div class="dashboard-container">
       <div class="sections-wrapper">
-        <div class="section-row first">
-          <div class="card online-users-card">
-            <p class="card-label">Online Users</p>
-            <p class="count" id="online-users-count">...</p>
-          </div>
-          <div class="card top-games-card">
-            <p class="card-label">Top Games</p>
-            <div class="list-container" id="top-games-list"></div>
-          </div>
+        <div class="card online-users-card">
+          <p class="card-label">Online Users</p>
+          <p class="count" id="online-users-count">...</p>
         </div>
-
-        <div class="section-row second">
-            <div class="card recent-games-card">
-                <p class="card-label">Recently Played</p>
-                <div class="list-container" id="recently-played-list"></div>
-            </div>
-            <div class="card quick-actions-card">
-                <p class="card-label">Quick Actions</p>
-                <div class="list-container" id="quick-actions-list"></div>
-            </div>
+        <div class="card top-games-card">
+          <p class="card-label">Top Games</p>
+          <div class="list-container" id="top-games-list"></div>
+        </div>
+        <div class="card recent-games-card">
+            <p class="card-label">Recently Played</p>
+            <div class="list-container" id="recently-played-list"></div>
+        </div>
+        <div class="card quick-actions-card">
+            <p class="card-label">Quick Actions</p>
+            <div class="list-container" id="quick-actions-list"></div>
         </div>
       </div>
     </div>
