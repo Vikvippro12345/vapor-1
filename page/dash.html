@@ -167,13 +167,13 @@
         100% { transform: scale(2.5); opacity: 0; }
       }
 
-      .outage-item {
+      .text-item {
         display: flex;
         flex-direction: column;
       }
-      .outage-item .name { font-weight: 600; font-size: 15px; }
-      .outage-item .desc { font-size: 14px; color: var(--secondary-text-color); }
-      .outage-item .date { font-size: 12px; color: rgba(255,255,255,0.5); text-transform: uppercase; margin-top: 4px; }
+      .text-item .name { font-weight: 600; font-size: 15px; }
+      .text-item .desc { font-size: 14px; color: var(--secondary-text-color); }
+      .text-item .date { font-size: 12px; color: rgba(255,255,255,0.5); text-transform: uppercase; margin-top: 4px; }
 
     </style>
   </head>
@@ -203,6 +203,10 @@
       <div class="card status-card">
         <p class="card-label"><span id="status-indicator" class="status-indicator"></span> Status</p>
         <div class="list-container" id="status-list"></div>
+      </div>
+       <div class="card updates-card">
+          <p class="card-label"><i class="fa-solid fa-bullhorn"></i> Updates</p>
+          <div class="list-container" id="updates-list"></div>
       </div>
       <div class="card quick-actions-card">
           <p class="card-label"><i class="fa-solid fa-bolt"></i> Quick Actions</p>
@@ -295,12 +299,36 @@
               if (outages.length >= 2) statusIndicator.classList.add('outage');
               outages.forEach(outage => {
                 const item = document.createElement('div');
-                item.className = 'outage-item';
+                item.className = 'text-item';
                 item.innerHTML = `<span class="name">${outage.name}</span><span class="desc">${outage.description}</span><span class="date">${outage.date}</span>`;
                 statusList.appendChild(item);
               });
             }
           } catch(error) { statusList.innerHTML = `<p class="empty-list-text">Could not load status.</p>`; }
+        }
+
+        const updatesList = document.getElementById("updates-list");
+        async function fetchAndDisplayUpdates() {
+          try {
+            const response = await fetch('/_a/updates.json');
+            const updates = await response.json();
+            updatesList.innerHTML = '';
+
+            if (!updates || updates.length === 0) {
+              updatesList.innerHTML = `<p class="empty-list-text">No recent updates.</p>`;
+              return;
+            }
+
+            updates.slice(0, 3).forEach(update => {
+              const item = document.createElement('div');
+              item.className = 'text-item';
+              item.innerHTML = `<span class="name">${update.name}</span><span class="desc">${update.description}</span><span class="date">${update.date}</span>`;
+              updatesList.appendChild(item);
+            });
+
+          } catch(error) {
+            updatesList.innerHTML = `<p class="empty-list-text">Could not load updates.</p>`;
+          }
         }
         
         const quickActionsList = document.getElementById("quick-actions-list");
@@ -319,6 +347,7 @@
         fetchAndDisplayTopGames();
         displayRecentlyPlayed();
         fetchAndDisplayStatus();
+        fetchAndDisplayUpdates();
         displayQuickActions();
       });
     </script>
