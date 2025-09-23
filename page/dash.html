@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF--8" />
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/styles/defaults.css" />
     <script src="/scripts/theme.js"></script>
@@ -13,7 +13,7 @@
         padding: 0;
         height: 100%;
         font-family: "Inter", Arial, sans-serif;
-        background: transparent;
+        background: var(--bg);
         color: var(--text-color);
       }
       #particles-js {
@@ -49,7 +49,26 @@
         border-radius: 12px;
         padding: 20px;
         flex: 1;
-        min-height: 150px;
+        opacity: 0;
+        animation: fadeInUp 0.5s ease forwards;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .section-row .card:nth-child(1) {
+        animation-delay: 0.2s;
+      }
+      .section-row .card:nth-child(2) {
+        animation-delay: 0.4s;
       }
 
       .card-label {
@@ -63,7 +82,7 @@
 
       .online-users-card .count {
         font-family: "SF Mono", "Consolas", "Roboto Mono", monospace;
-        font-size: 64px;
+        font-size: 52px;
         font-weight: 700;
         color: var(--primary);
         margin: 10px 0 0 0;
@@ -110,7 +129,6 @@
 
     <div class="dashboard-container">
       <div class="sections-wrapper">
-
         <div class="section-row">
           <div class="card online-users-card">
             <p class="card-label">Online Users</p>
@@ -122,8 +140,6 @@
             </div>
           </div>
         </div>
-
-
       </div>
     </div>
     
@@ -134,10 +150,8 @@
       document.addEventListener("DOMContentLoaded", () => {
         
         const userCountElement = document.getElementById("online-users-count");
-
         if (window.parent && window.parent.vaporsock) {
           userCountElement.textContent = window.parent.vaporsock.onlineusers;
-
           window.parent.addEventListener('vaporsock:update', (event) => {
             userCountElement.textContent = event.detail.onlineUsers;
           });
@@ -146,18 +160,15 @@
           console.warn("Could not connect to parent vaporsock object.");
         }
 
-
         const htmlURL = "https://cdn.jsdelivr.net/gh/gn-math/html@main";
         const topGamesList = document.getElementById("top-games-list");
 
         async function fetchAndDisplayTopGames() {
           try {
             const response = await fetch('/_a/zones.json');
-            if (!response.ok) {
-              throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            const allGames = await response.json();
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
             
+            const allGames = await response.json();
             const featuredGames = allGames.filter(game => game.featured === true);
             
             topGamesList.innerHTML = '';
@@ -165,10 +176,7 @@
             featuredGames.forEach(game => {
               const button = document.createElement('button');
               button.className = 'game-button';
-              button.innerHTML = `
-                <i class="fa-solid fa-star"></i>
-                <span>${game.name}</span>
-              `;
+              button.innerHTML = `<i class="fa-solid fa-star"></i><span>${game.name}</span>`;
               
               button.onclick = () => {
                 const parentFrame = window.parent.document.getElementById('frame');
@@ -186,7 +194,6 @@
 
               topGamesList.appendChild(button);
             });
-
           } catch (error) {
             console.error("Failed to fetch top games:", error);
             topGamesList.innerHTML = `<p style="opacity: 0.7;">Could not load games.</p>`;
