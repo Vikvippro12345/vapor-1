@@ -94,6 +94,17 @@
         gap: 4px;
       }
 
+      .scrollable-list {
+        max-height: 126px;
+        overflow-y: auto;
+        padding-right: 5px;
+        scrollbar-width: thin;
+        scrollbar-color: var(--primary) var(--secondary-bg);
+      }
+      .scrollable-list::-webkit-scrollbar { width: 4px; }
+      .scrollable-list::-webkit-scrollbar-track { background: transparent; }
+      .scrollable-list::-webkit-scrollbar-thumb { background: var(--third-bg); border-radius: 2px; }
+
       .text-list-container {
         gap: 10px;
       }
@@ -200,6 +211,10 @@
         <p class="card-label"><i class="fa-solid fa-users"></i> Online Users</p>
         <p class="count" id="online-users-count">...</p>
       </div>
+       <div class="card favorites-card">
+          <p class="card-label"><i class="fa-solid fa-star"></i> Your Favorites</p>
+          <div class="list-container" id="favorites-list"></div>
+      </div>
       <div class="card top-games-card">
         <p class="card-label"><i class="fa-solid fa-trophy"></i> Top Games</p>
         <div class="list-container" id="top-games-list"></div>
@@ -256,39 +271,61 @@
           userCountElement.textContent = "N/A";
         }
 
-        const topGamesList = document.getElementById("top-games-list");
-        async function fetchAndDisplayTopGames() {
+        let allGamesCache = null;
+        async function getAllGames() {
+          if (allGamesCache) return allGamesCache;
           try {
             const response = await fetch('/_a/zones.json');
-            const allGames = await response.json();
+            allGamesCache = await response.json();
+            return allGamesCache;
+          } catch (e) {
+            return [];
+          }
+        }
+
+        function createGameButton(game) {
+            const button = document.createElement('button');
+            button.className = 'game-button';
+            const coverSrc = game.cover ? game.cover.replace("{COVER_URL}", coverURL) : '/_a/logo.png';
+            button.innerHTML = `<img src="${coverSrc}" class="icon" alt=""><span class="game-name">${game.name}</span>`;
+            button.onclick = () => {
+                let url = game.direct ? `/page/gameframe.html?url=${encodeURIComponent(game.url)}&name=${encodeURIComponent(game.name)}&direct=true` : `/page/gameframe.html?url=${encodeURIComponent(game.url.replace("{HTML_URL}", htmlURL))}&name=${encodeURIComponent(game.name)}`;
+                navigateParentFrame(url);
+            };
+            return button;
+        }
+
+        const topGamesList = document.getElementById("top-games-list");
+        async function fetchAndDisplayTopGames(allGames) {
             const featuredGames = allGames.filter(g => g.featured).slice(0, 4);
             topGamesList.innerHTML = '';
-            featuredGames.forEach(game => {
-              const button = document.createElement('button');
-              button.className = 'game-button';
-              const coverSrc = game.cover ? game.cover.replace("{COVER_URL}", coverURL) : '/_a/logo.png';
-              button.innerHTML = `<img src="${coverSrc}" class="icon" alt=""><span class="game-name">${game.name}</span>`;
-              button.onclick = () => { let u = game.direct ? `/page/gameframe.html?url=${encodeURIComponent(game.url)}&name=${encodeURIComponent(game.name)}&direct=true` : `/page/gameframe.html?url=${encodeURIComponent(game.url.replace("{HTML_URL}", htmlURL))}&name=${encodeURIComponent(game.name)}`; navigateParentFrame(u); };
-              topGamesList.appendChild(button);
-            });
-          } catch (error) { topGamesList.innerHTML = `<p class="empty-list-text">Could not load games.</p>`; }
+            if (featuredGames.length === 0) { topGamesList.innerHTML = `<p class="empty-list-text">No top games found.</p>`; return; }
+            featuredGames.forEach(game => topGamesList.appendChild(createGameButton(game)));
         }
 
         const recentlyPlayedList = document.getElementById("recently-played-list");
-        function displayRecentlyPlayed() {
-            const recentGames = getFromStorage('recentlyPlayed').slice(0, 4);
+        function displayRecentlyPlayed(allGames) {
+            const recentGameInfo = getFromStorage('recentlyPlayed').slice(0, 4);
             recentlyPlayedList.innerHTML = '';
-            if (recentGames.length === 0) { recentlyPlayedList.innerHTML = `<p class="empty-list-text">No recently played games.</p>`; return; }
-            recentGames.forEach(game => {
-                const button = document.createElement('button');
-                button.className = 'game-button';
-                const coverSrc = game.cover ? game.cover.replace("{COVER_URL}", coverURL) : '/_a/logo.png';
-                button.innerHTML = `<img src="${coverSrc}" class="icon" alt=""><span class="game-name">${game.name}</span>`;
-                button.onclick = () => { let u = game.direct ? `/page/gameframe.html?url=${encodeURIComponent(game.url)}&name=${encodeURIComponent(game.name)}&direct=true` : `/page/gameframe.html?url=${encodeURIComponent(game.url.replace("{HTML_URL}", htmlURL))}&name=${encodeURIComponent(game.name)}`; navigateParentFrame(u); };
-                recentlyPlayedList.appendChild(button);
-            });
+            if (recentGameInfo.length === 0) { recentlyPlayedList.innerHTML = `<p class="empty-list-text">No recently played games.</p>`; return; }
+            recentGameInfo.forEach(game => recentlyPlayedList.appendChild(createGameButton(game)));
         }
         
+        const favoritesList = document.getElementById("favorites-list");
+        function displayFavorites(allGames) {
+            const favoriteNames = getFromStorage('favoriteGames');
+            favoritesList.innerHTML = '';
+            if (favoriteNames.length === 0) {
+                favoritesList.innerHTML = `<p class="empty-list-text">You haven't favorited any games yet.</p>`;
+                return;
+            }
+            if (favoriteNames.length > 3) {
+                favoritesList.classList.add('scrollable-list');
+            }
+            const favoriteGameObjects = allGames.filter(game => favoriteNames.includes(game.name));
+            favoriteGameObjects.forEach(game => favoritesList.appendChild(createGameButton(game)));
+        }
+
         const statusList = document.getElementById("status-list");
         const statusIndicator = document.getElementById("status-indicator");
         async function fetchAndDisplayStatus() {
@@ -343,7 +380,7 @@
         function displayQuickActions() {
             const actions = [
               { name: 'Settings', icon: 'fa-solid fa-gear', url: '/page/options.html' },
-              { name: 'Usage Policy', icon: 'fa-solid fa-file-contract', url: './usage.html' },
+              { name: 'Our Discord', icon: 'fa-brands fa-discord', url: 'https://dsc.gg/vaporr', external: true },
               { name: 'Partners', icon: 'fa-solid fa-handshake', url: '/page/partners.html' }
             ];
             quickActionsList.innerHTML = '';
@@ -351,16 +388,28 @@
                 const button = document.createElement('button');
                 button.className = 'game-button';
                 button.innerHTML = `<i class="${action.icon} icon"></i><span>${action.name}</span>`;
-                button.onclick = () => navigateParentFrame(action.url);
+                button.onclick = () => {
+                  if (action.external) {
+                    window.open(action.url, '_blank');
+                  } else {
+                    navigateParentFrame(action.url);
+                  }
+                };
                 quickActionsList.appendChild(button);
             });
         }
+        
+        async function initializeDashboard() {
+            const allGames = await getAllGames();
+            fetchAndDisplayTopGames(allGames);
+            displayRecentlyPlayed(allGames);
+            displayFavorites(allGames);
+            fetchAndDisplayStatus();
+            fetchAndDisplayUpdates();
+            displayQuickActions();
+        }
 
-        fetchAndDisplayTopGames();
-        displayRecentlyPlayed();
-        fetchAndDisplayStatus();
-        fetchAndDisplayUpdates();
-        displayQuickActions();
+        initializeDashboard();
       });
     </script>
   </body>
