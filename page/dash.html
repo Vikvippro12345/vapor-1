@@ -74,7 +74,7 @@
         gap: 8px;
       }
 
-      .card-label i {
+      .card-label > i {
         font-size: 12px;
       }
 
@@ -91,7 +91,7 @@
         margin-top: 15px;
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: 6px;
       }
 
       .game-button {
@@ -115,11 +115,7 @@
         background-color: var(--button-hover);
         transform: scale(1.02);
       }
-
-      .game-button .game-name {
-        font-weight: 500;
-      }
-
+      
       .game-button img.icon {
         width: 40px;
         height: 40px;
@@ -128,22 +124,57 @@
         flex-shrink: 0;
       }
       
-      .quick-actions-card .game-button .icon {
+      .quick-actions-card .game-button i.icon {
         width: 40px;
-        height: 40px;
         flex-shrink: 0;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
+        text-align: center;
         font-size: 18px;
         color: var(--primary);
+      }
+
+      .game-button .game-name {
+        font-weight: 500;
       }
       
       .empty-list-text {
         color: var(--secondary-text-color);
+        text-align: center;
         font-size: 14px;
         font-style: italic;
+        padding: 10px 0;
       }
+
+      .status-indicator {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        position: relative;
+      }
+      .status-indicator::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        animation: pulse 1.5s infinite;
+        background-color: inherit;
+      }
+      .status-indicator.ok { background-color: #4CAF50; }
+      .status-indicator.degraded { background-color: #FFC107; }
+      .status-indicator.outage { background-color: #F44336; }
+
+      @keyframes pulse {
+        0% { transform: scale(1); opacity: 0.6; }
+        100% { transform: scale(2.5); opacity: 0; }
+      }
+
+      .outage-item {
+        display: flex;
+        flex-direction: column;
+      }
+      .outage-item .name { font-weight: 600; font-size: 15px; }
+      .outage-item .desc { font-size: 14px; color: var(--secondary-text-color); }
+      .outage-item .date { font-size: 12px; color: rgba(255,255,255,0.5); text-transform: uppercase; margin-top: 4px; }
+
     </style>
   </head>
   <body>
@@ -169,6 +200,10 @@
           <p class="card-label"><i class="fa-solid fa-clock-rotate-left"></i> Recently Played</p>
           <div class="list-container" id="recently-played-list"></div>
       </div>
+      <div class="card status-card">
+        <p class="card-label"><span id="status-indicator" class="status-indicator"></span> Status</p>
+        <div class="list-container" id="status-list"></div>
+      </div>
       <div class="card quick-actions-card">
           <p class="card-label"><i class="fa-solid fa-bolt"></i> Quick Actions</p>
           <div class="list-container" id="quick-actions-list"></div>
@@ -186,7 +221,7 @@
         const cardTemplates = document.getElementById('card-templates');
         const leftCol = document.getElementById('column-left');
         const rightCol = document.getElementById('column-right');
-        const cards = Array.from(cardTemplates.querySelectorAll('.card'));
+        const cards = Array.from(cardTemplates.children);
 
         cards.forEach((card, index) => {
             card.style.animationDelay = `${(index + 1) * 0.1}s`;
@@ -197,25 +232,14 @@
             }
         });
 
-        function getParentFrame() {
-            return window.parent.document.getElementById('frame');
-        }
-
-        function navigateParentFrame(url) {
-            const frame = getParentFrame();
-            if (frame) { frame.src = url; }
-        }
-        
-        function getFromStorage(key) {
-            try { return JSON.parse(localStorage.getItem(key)) || []; } catch (e) { return []; }
-        }
+        function getParentFrame() { return window.parent.document.getElementById('frame'); }
+        function navigateParentFrame(url) { const frame = getParentFrame(); if (frame) frame.src = url; }
+        function getFromStorage(key) { try { return JSON.parse(localStorage.getItem(key)) || []; } catch (e) { return []; } }
 
         const userCountElement = document.getElementById("online-users-count");
         if (window.parent && window.parent.vaporsock) {
           userCountElement.textContent = window.parent.vaporsock.onlineusers;
-          window.parent.addEventListener('vaporsock:update', (event) => {
-            userCountElement.textContent = event.detail.onlineUsers;
-          });
+          window.parent.addEventListener('vaporsock:update', (event) => { userCountElement.textContent = event.detail.onlineUsers; });
         } else {
           userCountElement.textContent = "N/A";
         }
@@ -225,52 +249,63 @@
           try {
             const response = await fetch('/_a/zones.json');
             const allGames = await response.json();
-            const featuredGames = allGames.filter(game => game.featured === true);
+            const featuredGames = allGames.filter(g => g.featured).slice(0, 4);
             topGamesList.innerHTML = '';
             featuredGames.forEach(game => {
               const button = document.createElement('button');
               button.className = 'game-button';
               const coverSrc = game.cover ? game.cover.replace("{COVER_URL}", coverURL) : '/_a/logo.png';
               button.innerHTML = `<img src="${coverSrc}" class="icon" alt=""><span class="game-name">${game.name}</span>`;
-              button.onclick = () => {
-                let url = game.direct ? `/page/gameframe.html?url=${encodeURIComponent(game.url)}&name=${encodeURIComponent(game.name)}&direct=true` : `/page/gameframe.html?url=${encodeURIComponent(game.url.replace("{HTML_URL}", htmlURL))}&name=${encodeURIComponent(game.name)}`;
-                navigateParentFrame(url);
-              };
+              button.onclick = () => { let u = game.direct ? `/page/gameframe.html?url=${encodeURIComponent(game.url)}&name=${encodeURIComponent(game.name)}&direct=true` : `/page/gameframe.html?url=${encodeURIComponent(game.url.replace("{HTML_URL}", htmlURL))}&name=${encodeURIComponent(game.name)}`; navigateParentFrame(u); };
               topGamesList.appendChild(button);
             });
-          } catch (error) {
-            topGamesList.innerHTML = `<p class="empty-list-text">Could not load games.</p>`;
-          }
+          } catch (error) { topGamesList.innerHTML = `<p class="empty-list-text">Could not load games.</p>`; }
         }
 
         const recentlyPlayedList = document.getElementById("recently-played-list");
         function displayRecentlyPlayed() {
             const recentGames = getFromStorage('recentlyPlayed').slice(0, 4);
             recentlyPlayedList.innerHTML = '';
-            if (recentGames.length === 0) {
-                recentlyPlayedList.innerHTML = `<p class="empty-list-text">No recently played games.</p>`;
-                return;
-            }
+            if (recentGames.length === 0) { recentlyPlayedList.innerHTML = `<p class="empty-list-text">No recently played games.</p>`; return; }
             recentGames.forEach(game => {
                 const button = document.createElement('button');
                 button.className = 'game-button';
                 const coverSrc = game.cover ? game.cover.replace("{COVER_URL}", coverURL) : '/_a/logo.png';
                 button.innerHTML = `<img src="${coverSrc}" class="icon" alt=""><span class="game-name">${game.name}</span>`;
-                button.onclick = () => {
-                    let url = game.direct ? `/page/gameframe.html?url=${encodeURIComponent(game.url)}&name=${encodeURIComponent(game.name)}&direct=true` : `/page/gameframe.html?url=${encodeURIComponent(game.url.replace("{HTML_URL}", htmlURL))}&name=${encodeURIComponent(game.name)}`;
-                    navigateParentFrame(url);
-                };
+                button.onclick = () => { let u = game.direct ? `/page/gameframe.html?url=${encodeURIComponent(game.url)}&name=${encodeURIComponent(game.name)}&direct=true` : `/page/gameframe.html?url=${encodeURIComponent(game.url.replace("{HTML_URL}", htmlURL))}&name=${encodeURIComponent(game.name)}`; navigateParentFrame(u); };
                 recentlyPlayedList.appendChild(button);
             });
         }
         
+        const statusList = document.getElementById("status-list");
+        const statusIndicator = document.getElementById("status-indicator");
+        async function fetchAndDisplayStatus() {
+          try {
+            const response = await fetch('/_a/status.json');
+            const statusData = await response.json();
+            const outages = statusData.current_outages || [];
+            statusList.innerHTML = '';
+            
+            statusIndicator.className = 'status-indicator';
+            if (outages.length === 0) {
+              statusIndicator.classList.add('ok');
+              statusList.innerHTML = `<p class="empty-list-text">No current outages!</p>`;
+            } else {
+              if (outages.length === 1) statusIndicator.classList.add('degraded');
+              if (outages.length >= 2) statusIndicator.classList.add('outage');
+              outages.forEach(outage => {
+                const item = document.createElement('div');
+                item.className = 'outage-item';
+                item.innerHTML = `<span class="name">${outage.name}</span><span class="desc">${outage.description}</span><span class="date">${outage.date}</span>`;
+                statusList.appendChild(item);
+              });
+            }
+          } catch(error) { statusList.innerHTML = `<p class="empty-list-text">Could not load status.</p>`; }
+        }
+        
         const quickActionsList = document.getElementById("quick-actions-list");
         function displayQuickActions() {
-            const actions = [
-                { name: 'Settings', icon: 'fa-solid fa-gear', url: '/page/options.html' },
-                { name: 'Tools', icon: 'fa-solid fa-screwdriver-wrench', url: '/page/tools.html' },
-                { name: 'Partners', icon: 'fa-solid fa-handshake', url: '/page/partners.html' }
-            ];
+            const actions = [{ name: 'Settings', icon: 'fa-solid fa-gear', url: '/page/options.html' },{ name: 'Tools', icon: 'fa-solid fa-screwdriver-wrench', url: '/page/tools.html' },{ name: 'Partners', icon: 'fa-solid fa-handshake', url: '/page/partners.html' }];
             quickActionsList.innerHTML = '';
             actions.forEach(action => {
                 const button = document.createElement('button');
@@ -283,6 +318,7 @@
 
         fetchAndDisplayTopGames();
         displayRecentlyPlayed();
+        fetchAndDisplayStatus();
         displayQuickActions();
       });
     </script>
