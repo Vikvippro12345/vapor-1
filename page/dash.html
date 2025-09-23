@@ -165,17 +165,25 @@
         position: absolute;
         width: 50px;
         height: 50px;
+        background-color: rgba(255, 255, 255, 0.95);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .dot-grid {
         display: grid;
-        padding: 6px;
+        width: 30px;
+        height: 30px;
         grid-template: repeat(3, 1fr) / repeat(3, 1fr);
       }
-      .dot { background-color: var(--bg); border-radius: 50%; width: 10px; height: 10px; align-self: center; justify-self: center; }
+      .dot { background-color: var(--bg); border-radius: 50%; width: 8px; height: 8px; align-self: center; justify-self: center; }
       .face-1 .dot:nth-child(1) { grid-area: 2 / 2; }
       .face-2 .dot:nth-child(1) { grid-area: 1 / 1; } .face-2 .dot:nth-child(2) { grid-area: 3 / 3; }
       .face-3 .dot:nth-child(1) { grid-area: 1 / 1; } .face-3 .dot:nth-child(2) { grid-area: 2 / 2; } .face-3 .dot:nth-child(3) { grid-area: 3 / 3; }
       .face-4 .dot:nth-child(1) { grid-area: 1 / 1; } .face-4 .dot:nth-child(2) { grid-area: 1 / 3; } .face-4 .dot:nth-child(3) { grid-area: 3 / 1; } .face-4 .dot:nth-child(4) { grid-area: 3 / 3; }
       .face-5 .dot:nth-child(1) { grid-area: 1 / 1; } .face-5 .dot:nth-child(2) { grid-area: 1 / 3; } .face-5 .dot:nth-child(3) { grid-area: 2 / 2; } .face-5 .dot:nth-child(4) { grid-area: 3 / 1; } .face-5 .dot:nth-child(5) { grid-area: 3 / 3; }
-      .face-6 .dot:nth-child(1) { grid-area: 1 / 1; } .face-6 .dot:nth-child(2) { grid-area: 1 / 3; } .face-6 .dot:nth-child(3) { grid-area: 2 / 1; } .face-6 .dot:nth-child(4) { grid-area: 2 / 3; } .face-6 .dot:nth-child(5) { grid-area: 3 / 1; } .face-6 .dot:nth-child(6) { grid-area: 3 / 3; }
+      .face-6 .dot:nth-child(1) { grid-area: 1 / 1; } .face-6 .dot:nth-child(2) { grid-area: 1 / 3; } .face-6 .dot:nth-child(3) { grid-area: 3 / 1; } .face-6 .dot:nth-child(4) { grid-area: 3 / 3; }
       
       .face-front  { transform: rotateY(0deg) translateZ(25px); }
       .face-back   { transform: rotateY(180deg) translateZ(25px); }
@@ -239,12 +247,12 @@
         <p class="card-label"><i class="fa-solid fa-shuffle"></i> Random Game</p>
         <div class="dice-container" id="dice-container">
           <div class="dice" id="dice">
-            <div class="dice-face face-1 face-front"><div class="dot"></div></div>
-            <div class="dice-face face-6 face-back"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-            <div class="dice-face face-3 face-right"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-            <div class="dice-face face-4 face-left"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-            <div class="dice-face face-5 face-top"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-            <div class="dice-face face-2 face-bottom"><div class="dot"></div><div class="dot"></div></div>
+            <div class="dice-face face-front"><div class="dot-grid face-1"><div class="dot"></div></div></div>
+            <div class="dice-face face-back"><div class="dot-grid face-6"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+            <div class="dice-face face-right"><div class="dot-grid face-3"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+            <div class="dice-face face-left"><div class="dot-grid face-4"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+            <div class="dice-face face-top"><div class="dot-grid face-5"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+            <div class="dice-face face-bottom"><div class="dot-grid face-2"><div class="dot"></div><div class="dot"></div></div></div>
           </div>
         </div>
       </div>
@@ -277,11 +285,8 @@
 
         cards.forEach((card, index) => {
             card.style.animationDelay = `${(index + 1) * 0.1}s`;
-            if (index % 2 === 0) {
-                leftCol.appendChild(card);
-            } else {
-                rightCol.appendChild(card);
-            }
+            if (index % 2 === 0) { leftCol.appendChild(card); } 
+            else { rightCol.appendChild(card); }
         });
 
         function getParentFrame() { return window.parent.document.getElementById('frame'); }
@@ -367,12 +372,8 @@
             const step = () => {
                 const increment = Math.max(1, (target - count) * 0.05);
                 count += increment;
-                if (count < target) {
-                    element.textContent = Math.ceil(count).toLocaleString();
-                    requestAnimationFrame(step);
-                } else {
-                    element.textContent = target.toLocaleString() + "+";
-                }
+                if (count < target) { element.textContent = Math.ceil(count).toLocaleString(); requestAnimationFrame(step); } 
+                else { element.textContent = target.toLocaleString() + "+"; }
             };
             requestAnimationFrame(step);
         }
