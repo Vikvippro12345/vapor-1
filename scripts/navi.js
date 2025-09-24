@@ -5,7 +5,7 @@
 const navItems = [
   { title: "Home", icon: "fa-home", url: "page/home.html", type: "item" },
   { type: "divider" },
-  { title: "Dashboard <span class='badge'>New</span>", icon: "fa-vertical-column", type: "item", url: "/page/dash.html" },
+  { title: "Dashboard <span class='badge'>New</span>", icon: "fa-table-columns", type: "item", url: "/page/dash.html" },
   { title: "Games", icon: "fa-gamepad", type: "item", nest: "games" },
   { title: "Tools", icon: "fa-hammer", type: "item", nest: "tools" },
   { type: "divider" },
