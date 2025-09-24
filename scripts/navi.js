@@ -5,16 +5,16 @@
 const navItems = [
   { title: "Home", icon: "fa-home", url: "page/home.html", type: "item" },
   { type: "divider" },
+  { title: "Dashboard <span class='badge'>New</span>", icon: "fa-vertical-column", type: "item", url: "/page/dash.html" },
   { title: "Games", icon: "fa-gamepad", type: "item", nest: "games" },
-  { title: "Apps", icon: "fa-grid", type: "item", url: "/page/dash.html" },
   { title: "Tools", icon: "fa-hammer", type: "item", nest: "tools" },
   { type: "divider" },
-  { title: "VM <span class='badge'>FIXED!</span>", icon: "fa-desktop", url: "page/vm-priv.html", type: "item" },
+  { title: "VM <span class='badge'>Offline</span>", icon: "fa-desktop", url: "page/vm-priv.html", type: "item" },
   { title: "Chat", icon: "fa-comments-alt", url: "/chat.html", type: "item" },
   { title: "Browser", icon: "fa-search", url: "/scram.html", type: "item" },
   { type: "divider" },
-  { title: "Movies", icon: "fa-film", url: "page/mov.html", type: "item" },
-  { title: "TV Shows", icon: "fa-tv", url: "page/tv.html", type: "item" },
+  { title: "AI Chat <span class='badge'>Update soon!</span>", icon: "fa-robot", url: "page/app/ai.html", type: "item" },
+  { title: "YouTube", icon: "fa-brands fa-youtube", url: "page/app/yt.html", type: "item" },
   { title: "Music", icon: "fa-music", url: "page/music.html", type: "item" },
 ];
 
@@ -26,11 +26,7 @@ const extraNavItems = [
 
 // === these are nested nav data
 var navData = {
-  
-  apps: [
-    { title: "AI Chat", icon: "fa-robot", url: "/page/app/ai.html", type: "item" },
-    { title: "YouTube", icon: "fa-brands fa-youtube", url: "/page/app/yt.html", type: "item" },
-  ],
+
 
   tools: [
     { title: "Password Gen", icon: "fa-key", url: "/page/tool/pass.html", type: "item" },
