@@ -7,7 +7,7 @@ const navItems = [
   { type: "divider" },
   { title: "Dashboard <span class='badge'>New</span>", icon: "fa-table-columns", type: "item", url: "/page/dash.html" },
   { title: "Games", icon: "fa-gamepad", type: "item", nest: "games" },
-  { title: "Tools", icon: "fa-hammer", type: "item", nest: "tools" },
+  { title: "Extras", icon: "fa-ellipsis", type: "item", nest: "extraitems" },
   { type: "divider" },
   { title: "VM <span class='badge'>Offline</span>", icon: "fa-desktop", url: "page/vm-priv.html", type: "item" },
   { title: "Chat", icon: "fa-comments-alt", url: "/chat.html", type: "item" },
@@ -28,14 +28,19 @@ const extraNavItems = [
 var navData = {
 
 
-  tools: [
-    { title: "Password Gen", icon: "fa-key", url: "/page/tool/pass.html", type: "item" },
-    { title: "Lorem Ipsum Gen", icon: "fa-paragraph", url: "/page/tool/lorem.html", type: "item" },
-    { title: "Base64 Encoder", icon: "fa-retweet", url: "/page/tool/base64.html", type: "item" },
-    { title: "URL Encoder", icon: "fa-link", url: "/page/tool/urlencdec.html", type: "item" },
-    { title: "Stopwatch", icon: "fa-stopwatch", url: "/page/tool/stopwatch.html", type: "item" },
-    { title: "Public IP", icon: "fa-network-wired", url: "/page/tool/ip.html", type: "item" },
-    { title: "QR Code", icon: "fa-qrcode", url: "/page/tool/qrcode.html", type: "item" },
+  //tools: [
+    //{ title: "Password Gen", icon: "fa-key", url: "/page/tool/pass.html", type: "item" },
+    //{ title: "Lorem Ipsum Gen", icon: "fa-paragraph", url: "/page/tool/lorem.html", type: "item" },
+    //{ title: "Base64 Encoder", icon: "fa-retweet", url: "/page/tool/base64.html", type: "item" },
+    //{ title: "URL Encoder", icon: "fa-link", url: "/page/tool/urlencdec.html", type: "item" },
+    //{ title: "Stopwatch", icon: "fa-stopwatch", url: "/page/tool/stopwatch.html", type: "item" },
+    //{ title: "Public IP", icon: "fa-network-wired", url: "/page/tool/ip.html", type: "item" },
+    //{ title: "QR Code", icon: "fa-qrcode", url: "/page/tool/qrcode.html", type: "item" },
+  //]
+
+  extraitems: [
+    { title: "Movies", icon: "fa-clapperboard", url: "/page/mov.html", type: "item" },
+    { title: "TV Shows", icon: "fa-tv", url: "/page/tv.html", type: "item" },
   ]
   
 
