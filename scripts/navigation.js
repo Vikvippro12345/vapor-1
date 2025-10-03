@@ -67,7 +67,7 @@ async function precacheZones() {
   }
 }
 
-
+// here mostly because i may need to tweak it
 const VIRTUAL_ITEM_HEIGHT = 40;
 const VIRTUAL_BUFFER = 5;      
 
@@ -316,6 +316,12 @@ function createNavItem(item, container, isInitialLoad) {
     if (item.nest) {
       showNestPanel(item.nest, navLink);
     } else if (item.url) {
+      // new- direct link opening
+      if (item.direct === true) {
+        window.open(item.url, '_blank');
+        return;
+      }
+
       frame.src = item.url;
       if (nestNavContainer.contains(container)) {
         lastSelectedNestUrl = item.url;

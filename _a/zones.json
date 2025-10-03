@@ -311,7 +311,8 @@
   {
     "name": "Monkey Mart",
     "cover": "{COVER_URL}/57.png",
-    "url": "{HTML_URL}/57.html"
+    "url": "{HTML_URL}/57.html",
+    "featured": true
   },
   {
     "name": "1v1.LoL",
@@ -376,7 +377,8 @@
   {
     "name": "BitLife",
     "cover": "{COVER_URL}/70.png",
-    "url": "{HTML_URL}/70.html"
+    "url": "{HTML_URL}/70.html",
+    "featured": true
   },
   {
     "name": "Bloons TD",
@@ -641,8 +643,7 @@
   {
     "name": "Poly Track",
     "cover": "{COVER_URL}/123.png",
-    "url": "{HTML_URL}/123.html",
-    "featured": true
+    "url": "{HTML_URL}/123.html"
   },
   {
     "name": "Moto X3M Pool Party",
@@ -932,7 +933,8 @@
   {
     "name": "Minecraft 1.8.8",
     "cover": "{COVER_URL}/181.png",
-    "url": "{HTML_URL}/181.html"
+    "url": "{HTML_URL}/181.html",
+    "featured": true
   },
   {
     "name": "Minecraft 1.12.2",
@@ -1533,8 +1535,7 @@
     "name": "Territorial.io",
     "cover": "{COVER_URL}/303.png",
     "url": "https://territorial.io",
-    "direct": true,
-    "featured": true
+    "direct": true
   },
   {
     "name": "Alien Hominid",
@@ -2354,8 +2355,7 @@
   {
     "name": "Doodle Jump",
     "cover": "{COVER_URL}/470.png",
-    "url": "{HTML_URL}/470.html",
-    "featured": true
+    "url": "{HTML_URL}/470.html"
   },
   {
     "name": "Madness Combat: Project Nexus (classic)",

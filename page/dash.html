@@ -17,7 +17,8 @@
         color: var(--text-color);
         overflow: hidden;
       }
-      #particles-js {
+      /*vanta fail too lazy to fix*/
+      #vanta-bg {
         position: fixed;
         top: 0;
         left: 0;
@@ -33,23 +34,16 @@
         overflow-y: auto;
         scrollbar-width: thin;
         scrollbar-color: var(--primary) var(--secondary-bg);
+        transform: scale(1.05);
+        transform-origin: top center;
       }
       .dashboard-container::-webkit-scrollbar { width: 8px; }
       .dashboard-container::-webkit-scrollbar-track { background: var(--secondary-bg); }
       .dashboard-container::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
-
       .sections-wrapper {
         padding: 40px 20px;
-        display: flex;
-        gap: 20px;
-        align-items: flex-start;
-      }
-
-      .column {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        width: 50%;
+        column-count: 2;
+        column-gap: 20px;
       }
 
       .card {
@@ -59,6 +53,10 @@
         height: auto;
         opacity: 0;
         animation: fadeInOnly 0.4s ease forwards;
+        margin-bottom: 20px;
+        break-inside: avoid-column;
+        width: 100%;
+        box-sizing: border-box;
       }
 
       @keyframes fadeInOnly {
@@ -118,23 +116,14 @@
       .game-button img.icon { width: 32px; height: 32px; border-radius: 6px; object-fit: cover; flex-shrink: 0; }
       .quick-actions-card .game-button i.icon { width: 32px; flex-shrink: 0; text-align: center; font-size: 16px; color: var(--primary); }
       
-      .empty-list-text {
+      .empty-list-text, .tip-text {
         color: var(--secondary-text-color);
-        text-align: center;
         font-size: 14px;
         font-style: italic;
         padding: 10px 0;
+        margin-top: 10px;
       }
 
-      .stats-container {
-        margin-top: 15px;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-      }
-      .stat-item { font-size: 15px; color: var(--secondary-text-color); }
-      .stat-item span { font-weight: 600; color: var(--text-color); font-family: "SF Mono", "Consolas", monospace; }
-      
       .online-users-card .count {
         font-family: "SF Mono", "Consolas", "Roboto Mono", monospace;
         font-size: 52px;
@@ -142,59 +131,128 @@
         color: var(--primary);
         margin: 10px 0 0 0;
         line-height: 1;
+        transition: transform 0.2s ease, color 0.2s ease;
       }
-
+      .count.user-join { animation: user-join-anim 0.4s ease-out; }
+      .count.user-leave { animation: user-leave-anim 0.4s ease-out; }
+      @keyframes user-join-anim {
+        0% { transform: scale(0.95); color: var(--text-color); }
+        50% { transform: scale(1.1); color: #4CAF50; }
+        100% { transform: scale(1); color: var(--primary); }
+      }
+      @keyframes user-leave-anim {
+        0% { transform: scale(1.05); color: var(--text-color); }
+        50% { transform: scale(0.9); color: #F44336; }
+        100% { transform: scale(1); color: var(--primary); }
+      }
+      
       .dice-container {
-        margin: 20px auto 10px;
-        width: 50px;
-        height: 50px;
-        perspective: 1000px;
-        cursor: pointer;
-      }
-      .dice {
-        width: 100%;
-        height: 100%;
-        position: relative;
-        transform-style: preserve-3d;
-        animation: drift 15s ease-in-out infinite alternate;
-        background-color: rgba(255, 255, 255, 0.95);
-        border-radius: 8px;
-      }
-      .dice.spinning { animation: spin-fast 3s ease-in-out; }
-      .dice-face {
-        position: absolute;
-        width: 50px;
-        height: 50px;
-        background-color: rgba(255, 255, 255, 0.95);
-        border-radius: 8px;
+        margin: 10px auto 0;
+        width: 100px;
+        height: 100px;
         display: flex;
         align-items: center;
         justify-content: center;
+        perspective: 1000px;
+        cursor: pointer;
       }
-      .dot-grid {
-        display: grid;
-        width: 30px;
-        height: 30px;
-        grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+      .diceWrap {
+        width: 50px;
+        height: 50px;
+        position: relative;
       }
-      .dot { background-color: var(--bg); border-radius: 50%; width: 8px; height: 8px; align-self: center; justify-self: center; }
-      .face-1 .dot:nth-child(1) { grid-area: 2 / 2; }
-      .face-2 .dot:nth-child(1) { grid-area: 1 / 1; } .face-2 .dot:nth-child(2) { grid-area: 3 / 3; }
-      .face-3 .dot:nth-child(1) { grid-area: 1 / 1; } .face-3 .dot:nth-child(2) { grid-area: 2 / 2; } .face-3 .dot:nth-child(3) { grid-area: 3 / 3; }
-      .face-4 .dot:nth-child(1) { grid-area: 1 / 1; } .face-4 .dot:nth-child(2) { grid-area: 1 / 3; } .face-4 .dot:nth-child(3) { grid-area: 3 / 1; } .face-4 .dot:nth-child(4) { grid-area: 3 / 3; }
-      .face-5 .dot:nth-child(1) { grid-area: 1 / 1; } .face-5 .dot:nth-child(2) { grid-area: 1 / 3; } .face-5 .dot:nth-child(3) { grid-area: 2 / 2; } .face-5 .dot:nth-child(4) { grid-area: 3 / 1; } .face-5 .dot:nth-child(5) { grid-area: 3 / 3; }
-      .face-6 .dot:nth-child(1) { grid-area: 1 / 1; } .face-6 .dot:nth-child(2) { grid-area: 1 / 3; } .face-6 .dot:nth-child(3) { grid-area: 3 / 1; } .face-6 .dot:nth-child(4) { grid-area: 3 / 3; }
+      .diceWrap::before {
+        position: absolute;
+        content: "";
+        width: 70%;
+        height: 10%;
+        top: 120%;
+        left: 15%;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 100%;
+        filter: blur(5px);
+      }
+      .dice {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        transform-style: preserve-3d;
+        transition: transform 0.5s cubic-bezier(0.42, 1.57, 0.62, 0.86);
+        animation: calm-drift 25s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
+      }
+      .dice.throw {
+        animation: rotateDice 0.7s ease-in, throwDice 1s linear;
+      }
+      .diceFace {
+        --dice-bg: #f6f3f0;
+        --dot-color-1: var(--bg);
+        --dot-color-2: var(--bg);
+        box-sizing: border-box;
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        background-color: var(--dice-bg);
+        border: 1px solid #fff;
+        border-radius: 8px;
+        transform-style: preserve-3d;
+      }
+      .diceFace::before {
+        position: absolute;
+        content: "";
+        width: 100%;
+        height: 100%;
+        background-color: #fff;
+        border-radius: 8px;
+        transform: translateZ(-1px);
+      }
+      .diceFace::after {
+        position: absolute;
+        content: "";
+        width: 10px;
+        height: 10px;
+        top: 50%;
+        left: 50%;
+        margin: -5px 0 0 -5px;
+        background-color: var(--dot-color-2);
+        border-radius: 100%;
+        transform: translateZ(1px);
+      }
+      .diceFace.front { transform: translateZ(25px); }
+      .diceFace.front::after { width: 20px; height: 20px; margin: -10px 0 0 -10px; background-color: var(--dot-color-1); }
+      .diceFace.up { transform: rotateX(90deg) translateZ(25px); }
+      .diceFace.up::after { margin: -15px 0 0 -15px; box-shadow: 20px 20px var(--dot-color-2); }
+      .diceFace.left { transform: rotateY(-90deg) translateZ(25px); }
+      .diceFace.left::after { margin: -20px 0 0 -20px; box-shadow: 15px 15px var(--dot-color-2), 30px 30px var(--dot-color-2); }
+      .diceFace.right { transform: rotateY(90deg) translateZ(25px); }
+      .diceFace.right::after { margin: -15px 0 0 -15px; background-color: var(--dot-color-1); box-shadow: 20px 0px var(--dot-color-1), 0px 20px var(--dot-color-1), 20px 20px var(--dot-color-1); }
+      .diceFace.bottom { transform: rotateX(-90deg) translateZ(25px); }
+      .diceFace.bottom::after { margin: -18px 0 0 -18px; box-shadow: 13px 13px var(--dot-color-2), 26px 26px var(--dot-color-2), 26px 0px var(--dot-color-2), 0px 26px var(--dot-color-2); }
+      .diceFace.back { transform: rotateX(180deg) translateZ(25px); }
+      .diceFace.back::after { margin: -20px 0 0 -15px; box-shadow: 20px 0px var(--dot-color-2), 0px 15px var(--dot-color-2), 20px 15px var(--dot-color-2), 0px 30px var(--dot-color-2), 20px 30px var(--dot-color-2); }
       
-      .face-front  { transform: rotateY(0deg) translateZ(25px); }
-      .face-back   { transform: rotateY(180deg) translateZ(25px); }
-      .face-right  { transform: rotateY(90deg) translateZ(25px); }
-      .face-left   { transform: rotateY(-90deg) translateZ(25px); }
-      .face-top    { transform: rotateX(90deg) translateZ(25px); }
-      .face-bottom { transform: rotateX(-90deg) translateZ(25px); }
+      @keyframes calm-drift {
+        0% { transform: rotateX(15deg) rotateY(-25deg) rotateZ(5deg); }
+        25% { transform: rotateX(-10deg) rotateY(20deg) rotateZ(-10deg); }
+        50% { transform: rotateX(5deg) rotateY(-15deg) rotateZ(15deg); }
+        75% { transform: rotateX(-15deg) rotateY(10deg) rotateZ(-5deg); }
+        100% { transform: rotateX(20deg) rotateY(-20deg) rotateZ(10deg); }
+      }
+      @keyframes rotateDice {
+        from { transform: rotate3d(1, 1, 1, 720deg); }
+        to { transform: rotate3d(1, 1, 1, 0deg); }
+      }
+      @keyframes throwDice {
+        0% { margin-top: 0; }
+        20% { margin-top: -50px; }
+        40% { margin-top: 0px; }
+        60% { margin-top: -15px; }
+        80% { margin-top: 0px; }
+        85% { margin-top: -5px; }
+        90% { margin-top: 0px; }
+        95% { margin-top: -1.5px; }
+        100% { margin-top: 0px; }
+      }
 
-      @keyframes drift { 0% { transform: rotateX(20deg) rotateY(-30deg); } 50% { transform: rotateX(-15deg) rotateY(40deg); } 100% { transform: rotateX(25deg) rotateY(-10deg); } }
-      @keyframes spin-fast { from { transform: rotateX(0deg) rotateY(0deg); } to { transform: rotateX(1440deg) rotateY(1080deg); } }
-      
       .status-indicator { width: 10px; height: 10px; border-radius: 50%; position: relative; }
       .status-indicator::after { content: ''; position: absolute; inset: 0; border-radius: 50%; animation: pulse 1.5s infinite; background-color: inherit; }
       .status-indicator.ok { background-color: #4CAF50; }
@@ -210,26 +268,20 @@
     </style>
   </head>
   <body>
-    <div id="particles-js"></div>
+    <div id="vanta-bg"></div>
 
     <div class="dashboard-container">
-      <div class="sections-wrapper">
-        <div class="column" id="column-left"></div>
-        <div class="column" id="column-right"></div>
+      <!-- REMOVED THE TWO COLUMN DIVS -->
+      <div class="sections-wrapper" id="sections-wrapper">
+        <!-- All cards will be appended here by JS -->
       </div>
     </div>
 
     <div id="card-templates" style="display: none;">
+      <!-- All Card Templates Live Here -->
       <div class="card online-users-card">
         <p class="card-label"><i class="fa-solid fa-users"></i> Online Users</p>
         <p class="count" id="online-users-count">...</p>
-      </div>
-      <div class="card stats-card">
-        <p class="card-label"><i class="fa-solid fa-chart-simple"></i> Stats</p>
-        <div class="stats-container">
-            <p class="stat-item">Total Games: <span id="stats-total-games">...</span></p>
-            <p class="stat-item">Total Accounts: <span id="stats-total-accounts">0</span></p>
-        </div>
       </div>
        <div class="card top-games-card">
         <p class="card-label"><i class="fa-solid fa-trophy"></i> Top Games</p>
@@ -243,16 +295,26 @@
           <p class="card-label"><i class="fa-solid fa-clock-rotate-left"></i> Recently Played</p>
           <div class="list-container" id="recently-played-list"></div>
       </div>
+       <div class="card updates-card">
+          <p class="card-label"><i class="fa-solid fa-bullhorn"></i> Updates</p>
+          <div class="list-container text-list-container" id="updates-list"></div>
+      </div>
+      <div class="card tips-card">
+        <p class="card-label"><i class="fa-solid fa-wand-magic-sparkles"></i> Tips / Facts</p>
+        <p class="tip-text" id="tip-of-the-day"></p>
+      </div>
       <div class="card random-game-card">
         <p class="card-label"><i class="fa-solid fa-shuffle"></i> Random Game</p>
         <div class="dice-container" id="dice-container">
-          <div class="dice" id="dice">
-            <div class="dice-face face-front"><div class="dot-grid face-1"><div class="dot"></div></div></div>
-            <div class="dice-face face-back"><div class="dot-grid face-6"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
-            <div class="dice-face face-right"><div class="dot-grid face-3"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
-            <div class="dice-face face-left"><div class="dot-grid face-4"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
-            <div class="dice-face face-top"><div class="dot-grid face-5"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
-            <div class="dice-face face-bottom"><div class="dot-grid face-2"><div class="dot"></div><div class="dot"></div></div></div>
+          <div class="diceWrap">
+            <div class="dice" id="dice">
+              <div class="diceFace front"></div>
+              <div class="diceFace up"></div>
+              <div class="diceFace left"></div>
+              <div class="diceFace right"></div>
+              <div class="diceFace bottom"></div>
+              <div class="diceFace back"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -260,33 +322,61 @@
         <p class="card-label"><span id="status-indicator" class="status-indicator"></span> Status</p>
         <div class="list-container text-list-container" id="status-list"></div>
       </div>
-       <div class="card updates-card">
-          <p class="card-label"><i class="fa-solid fa-bullhorn"></i> Updates</p>
-          <div class="list-container text-list-container" id="updates-list"></div>
-      </div>
       <div class="card quick-actions-card">
           <p class="card-label"><i class="fa-solid fa-bolt"></i> Quick Actions</p>
           <div class="list-container" id="quick-actions-list"></div>
       </div>
     </div>
     
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <script src="/scripts/particle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.fog.min.js"></script>
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
+        const secondaryBgColor = getComputedStyle(document.documentElement).getPropertyValue('--secondary-bg').trim();
+        VANTA.FOG({
+          el: "#vanta-bg",
+          mouseControls: false,
+          touchControls: false,
+          gyroControls: false,
+          minHeight: 200.00,
+          minWidth: 200.00,
+          highlightColor: secondaryBgColor,
+          midtoneColor: secondaryBgColor,
+          lowlightColor: secondaryBgColor,
+          baseColor: getComputedStyle(document.documentElement).getPropertyValue('--bg').trim(),
+          blurFactor: 0.4,
+          speed: 1.0,
+          zoom: 0.8
+        });
+
         const htmlURL = "https://cdn.jsdelivr.net/gh/gn-math/html@main";
         const coverURL = "https://cdn.jsdelivr.net/gh/gn-math/covers@main";
 
         const cardTemplates = document.getElementById('card-templates');
-        const leftCol = document.getElementById('column-left');
-        const rightCol = document.getElementById('column-right');
-        const cards = Array.from(cardTemplates.children);
+        const sectionsWrapper = document.getElementById('sections-wrapper');
+        
+        // TO DEVS:::
 
-        cards.forEach((card, index) => {
-            card.style.animationDelay = `${(index + 1) * 0.1}s`;
-            if (index % 2 === 0) { leftCol.appendChild(card); } 
-            else { rightCol.appendChild(card); }
+        // please take time to organize these in a clean and balanced order :)
+        const cardOrder = [
+            'online-users-card', 
+            'updates-card', 
+            'top-games-card', 
+            'favorites-card',
+            'tips-card', 
+            'recent-games-card', 
+            'random-game-card', 
+            'status-card', 
+            'quick-actions-card'
+        ];
+
+        cardOrder.forEach((cardClassName, index) => {
+            const card = cardTemplates.querySelector(`.${cardClassName}`);
+            if (card) {
+                card.style.animationDelay = `${(index + 1) * 0.1}s`;
+                sectionsWrapper.appendChild(card);
+            }
         });
 
         function getParentFrame() { return window.parent.document.getElementById('frame'); }
@@ -294,10 +384,33 @@
         function getFromStorage(key) { try { return JSON.parse(localStorage.getItem(key)) || []; } catch (e) { return []; } }
 
         const userCountElement = document.getElementById("online-users-count");
+        let currentUserCount = 0;
+
+        function handleUserCountUpdate(newCount) {
+            if (newCount > currentUserCount) {
+                userCountElement.classList.remove('user-leave');
+                userCountElement.classList.add('user-join');
+            } else if (newCount < currentUserCount) {
+                userCountElement.classList.remove('user-join');
+                userCountElement.classList.add('user-leave');
+            }
+            currentUserCount = newCount;
+            userCountElement.textContent = newCount;
+            
+            userCountElement.addEventListener('animationend', () => {
+                userCountElement.classList.remove('user-join', 'user-leave');
+            }, { once: true });
+        }
+        
         if (window.parent && window.parent.vaporsock) {
-          userCountElement.textContent = window.parent.vaporsock.onlineusers;
-          window.parent.addEventListener('vaporsock:update', (event) => { userCountElement.textContent = event.detail.onlineUsers; });
-        } else { userCountElement.textContent = "N/A"; }
+            currentUserCount = window.parent.vaporsock.onlineusers;
+            userCountElement.textContent = currentUserCount;
+            window.parent.addEventListener('vaporsock:update', (event) => {
+                handleUserCountUpdate(event.detail.onlineUsers);
+            });
+        } else {
+            userCountElement.textContent = "N/A";
+        }
 
         let allGamesCache = null;
         async function getAllGames() {
@@ -346,14 +459,25 @@
             if (recentGameInfo.length === 0) { recentlyPlayedList.innerHTML = `<p class="empty-list-text">No recently played games.</p>`; return; }
             recentGameInfo.forEach(game => recentlyPlayedList.appendChild(createGameButton(game)));
         }
+        
+        function displayTipOfTheDay() {
+          const tips = [
+            "🤍 Your favorite games are saved locally to your browser.",
+            "🔄 CTRL+SHIFT+ALT+R can refresh the gamelist.",
+            "💭 Did you know: VAPOR used to run on a potato! (500MB of RAM)",
+            `⏳ VAPOR is currently ${((d=new Date()-new Date('2025-02-14'))/864e5>=7?Math.floor(d/7)+'w '+d%7+'d':Math.floor(d)+'d')} old!`, // chatgpt was used.
+            "🤔 Check the status card for any ongoing platform issues or maintenance.",
+            "💿 Thanks so much to Evicly for the powerful server!",
+            "🎲 The dice will pick a completely random game from the entire library!",
+            "🐛 The Discord is the best place to report bugs and suggest games.",
+          ];
+            const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+            document.getElementById('tip-of-the-day').textContent = tips[dayOfYear % tips.length];
+        }
 
         const quickActionsList = document.getElementById("quick-actions-list");
         function displayQuickActions() {
-            const actions = [
-              { name: 'Settings', icon: 'fa-solid fa-gear', url: '/page/options.html' },
-              { name: 'Our Discord', icon: 'fa-brands fa-discord', url: 'https://dsc.gg/vaporr', external: true },
-              { name: 'Partners', icon: 'fa-solid fa-handshake', url: '/page/partners.html' }
-            ];
+            const actions = [ { name: 'Settings', icon: 'fa-solid fa-gear', url: '/page/options.html' }, { name: 'Our Discord', icon: 'fa-brands fa-discord', url: 'https://dsc.gg/vaporr', external: true }, { name: 'Partners', icon: 'fa-solid fa-handshake', url: '/page/partners.html' } ];
             quickActionsList.innerHTML = '';
             actions.forEach(action => {
                 const button = document.createElement('button');
@@ -366,36 +490,25 @@
                 quickActionsList.appendChild(button);
             });
         }
-        
-        function animateCountUp(element, target) {
-            let count = 0;
-            const step = () => {
-                const increment = Math.max(1, (target - count) * 0.05);
-                count += increment;
-                if (count < target) { element.textContent = Math.ceil(count).toLocaleString(); requestAnimationFrame(step); } 
-                else { element.textContent = target.toLocaleString() + "+"; }
-            };
-            requestAnimationFrame(step);
-        }
-
-        function displayStats(allGames) {
-            document.getElementById('stats-total-games').textContent = allGames.length;
-            animateCountUp(document.getElementById('stats-total-accounts'), 2400);
-        }
 
         const diceContainer = document.getElementById('dice-container');
         const dice = document.getElementById('dice');
+        
         diceContainer.addEventListener('click', async () => {
-            if (dice.classList.contains('spinning')) return;
+            if (dice.classList.contains('throw')) return;
             const allGames = await getAllGames();
             if (allGames.length === 0) return;
-            dice.classList.add('spinning');
+            dice.style.animation = 'none';
+            void dice.offsetWidth;
+            dice.classList.add('throw');
             setTimeout(() => {
                 const randomIndex = Math.floor(Math.random() * allGames.length);
                 const randomGame = allGames[randomIndex];
                 createGameButton(randomGame).click();
-                dice.classList.remove('spinning');
-            }, 3000);
+                
+                dice.classList.remove('throw');
+                dice.style.animation = '';
+            }, 1700);
         });
         
         const statusList = document.getElementById("status-list");
@@ -409,7 +522,7 @@
             statusIndicator.className = 'status-indicator';
             if (outages.length === 0) {
               statusIndicator.classList.add('ok');
-              statusList.innerHTML = `<p class="empty-list-text">No current outages!</p>`;
+              statusList.innerHTML = `<p class="empty-list-text">No outages.</p>`;
             } else {
               if (outages.length === 1) statusIndicator.classList.add('degraded');
               if (outages.length >= 2) statusIndicator.classList.add('outage');
@@ -441,7 +554,7 @@
         
         async function initializeDashboard() {
             const allGames = await getAllGames();
-            displayStats(allGames);
+            displayTipOfTheDay();
             fetchAndDisplayTopGames(allGames);
             displayFavorites(allGames);
             displayRecentlyPlayed(allGames);
