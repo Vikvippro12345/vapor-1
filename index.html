@@ -31,18 +31,22 @@ vapor v3.8/2
         "&quot;im gay&quot; - testuserforlearning",
         "bonk you, dumb bonk!",
         "&quot;im 12 🤓&quot;",
-        "👁️👄👁️ whatd you say?"
+        "👁️👄👁️ whatd you say?",
+        "v3 so far is the longest version!",
+        "What's brown and sticky? A stick.",
+        "My friend's bakery burned down. Now his business is toast.",
+        "q8j. is not a person. he is a person! not one, but is one.",
+        "why can't you trust stairs? because they're always up to something.",
+        "&quot;huh&quot; - petezah"
       ];
 
-      const randomIndex = Math.floor(Math.random() * splashTexts.length);
       window.addEventListener("DOMContentLoaded", () => {
         const textEl = document.getElementById("loader-text");
-        if (textEl) textEl.innerHTML = splashTexts[randomIndex];
+        if (textEl) textEl.innerHTML = splashTexts[Math.floor(Math.random() * splashTexts.length)];
       });
       window.addEventListener("load", () => {
         const loader = document.getElementById("loader-overlay");
         if (!loader) return;
-
         setTimeout(() => {
           loader.style.opacity = "0";
           setTimeout(() => loader.remove(), 200);
@@ -55,7 +59,7 @@ vapor v3.8/2
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>VĀPŌR v3</title>
+    <title>VAPŌR v3</title>
 
     <link href="/styles/defaults.css" rel="stylesheet" />
     <link href="/styles/index.css" rel="stylesheet" />
@@ -132,17 +136,8 @@ vapor v3.8/2
       </div>
 
       <div class="nav-bottom">
-        <!--
-        <div class="premium-container">
-          <div class="shine"></div>
-          <span class="premium-title">VAPOR PLUS</span>
-          <span class="premium-subtitle"
-            >Get access to exclusive features! (Coming Soon)</span
-          >
-        </div>
-        -->
         <div class="quick-actions">
-          <a class="quick-action-btn extras-btn"><i class="fa-solid fa-ellipsis"></i> Extras</a>
+          <a class="quick-action-btn extras-btn"><i class="fa-solid fa-ellipsis"></i> Extra</a>
           <a class="quick-action-btn settings-btn"><i class="fa-regular fa-cog"></i> Settings</a>
         </div>
 
@@ -151,8 +146,8 @@ vapor v3.8/2
             <img src="/_a/logo.new.png" style="width: 30px" />
           </div>
           <span class="nav-text" style="margin-left: 0px">
-            VAPOR v3&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;<span id="commit-id"
-              >abcdefg</span
+            VAPOR <strong>v3</strong><span id="commit-id"
+              ></span
             >
           </span>
         </a>
@@ -196,9 +191,9 @@ vapor v3.8/2
     <script>
       const mainModalConfig = {
         icon: "/_a/logo.new.png",
-        title: "VAPOR 3.8/6",
-        content: "🎚️ Updated Dashboard\nAdded Tips, better dice, etc\n🐛 Patches and bug fixes\n📊 Featured Games refreshed\n🔍 Sidebar layout changed",
-        buttonText: "Okay",
+        title: "VAPOR 3.8/7",
+        content: "🦾 AI has been fixed\nThanks to rxmper.net for the API 😀\n\n🎚️ Updated Dashboard\nAdded Tips, better dice, etc\n\n- 🐛 Patches and bug fixes\n- 📊 Featured Games refreshed\n- 🔍 Sidebar layout changed",
+        buttonText: "Nice!",
         quoted: true
       };
     </script>

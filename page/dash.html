@@ -112,7 +112,7 @@
         transition: background-color 0.2s ease, transform 0.2s ease;
       }
       .quick-actions-card .game-button { padding: 12px 8px; }
-      .game-button:hover { background-color: var(--button-hover); transform: scale(1.02); }
+      .game-button:hover { background-color: var(--button-hover); }
       .game-button img.icon { width: 32px; height: 32px; border-radius: 6px; object-fit: cover; flex-shrink: 0; }
       .quick-actions-card .game-button i.icon { width: 32px; flex-shrink: 0; text-align: center; font-size: 16px; color: var(--primary); }
       
@@ -131,19 +131,19 @@
         color: var(--primary);
         margin: 10px 0 0 0;
         line-height: 1;
-        transition: transform 0.2s ease, color 0.2s ease;
+        transition: color 0.2s ease;
       }
       .count.user-join { animation: user-join-anim 0.4s ease-out; }
       .count.user-leave { animation: user-leave-anim 0.4s ease-out; }
       @keyframes user-join-anim {
-        0% { transform: scale(0.95); color: var(--text-color); }
-        50% { transform: scale(1.1); color: #4CAF50; }
-        100% { transform: scale(1); color: var(--primary); }
+        0% { color: var(--text-color); }
+        50% { color: #4CAF50; }
+        100% { color: var(--primary); }
       }
       @keyframes user-leave-anim {
-        0% { transform: scale(1.05); color: var(--text-color); }
-        50% { transform: scale(0.9); color: #F44336; }
-        100% { transform: scale(1); color: var(--primary); }
+        0% { color: var(--text-color); }
+        50% { color: #F44336; }
+        100% { color: var(--primary); }
       }
       
       .dice-container {
@@ -178,10 +178,11 @@
         height: 50px;
         transform-style: preserve-3d;
         transition: transform 0.5s cubic-bezier(0.42, 1.57, 0.62, 0.86);
-        animation: calm-drift 25s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
+        animation: calm-drift 30s linear infinite;
       }
       .dice.throw {
-        animation: rotateDice 0.7s ease-in, throwDice 1s linear;
+        animation: throw-and-settle 1.5s cubic-bezier(0.2, 0.8, 0.5, 1);
+        transition: none;
       }
       .diceFace {
         --dice-bg: #f6f3f0;
@@ -218,7 +219,7 @@
         transform: translateZ(1px);
       }
       .diceFace.front { transform: translateZ(25px); }
-      .diceFace.front::after { width: 20px; height: 20px; margin: -10px 0 0 -10px; background-color: var(--dot-color-1); }
+      .diceFace.front::after { background-color: var(--dot-color-1); }
       .diceFace.up { transform: rotateX(90deg) translateZ(25px); }
       .diceFace.up::after { margin: -15px 0 0 -15px; box-shadow: 20px 20px var(--dot-color-2); }
       .diceFace.left { transform: rotateY(-90deg) translateZ(25px); }
@@ -231,26 +232,16 @@
       .diceFace.back::after { margin: -20px 0 0 -15px; box-shadow: 20px 0px var(--dot-color-2), 0px 15px var(--dot-color-2), 20px 15px var(--dot-color-2), 0px 30px var(--dot-color-2), 20px 30px var(--dot-color-2); }
       
       @keyframes calm-drift {
-        0% { transform: rotateX(15deg) rotateY(-25deg) rotateZ(5deg); }
-        25% { transform: rotateX(-10deg) rotateY(20deg) rotateZ(-10deg); }
-        50% { transform: rotateX(5deg) rotateY(-15deg) rotateZ(15deg); }
-        75% { transform: rotateX(-15deg) rotateY(10deg) rotateZ(-5deg); }
-        100% { transform: rotateX(20deg) rotateY(-20deg) rotateZ(10deg); }
+        from { transform: rotate3d(1, -1, 0, 0deg); }
+        to { transform: rotate3d(1, -1, 0, 360deg); }
       }
-      @keyframes rotateDice {
-        from { transform: rotate3d(1, 1, 1, 720deg); }
-        to { transform: rotate3d(1, 1, 1, 0deg); }
-      }
-      @keyframes throwDice {
-        0% { margin-top: 0; }
-        20% { margin-top: -50px; }
-        40% { margin-top: 0px; }
-        60% { margin-top: -15px; }
-        80% { margin-top: 0px; }
-        85% { margin-top: -5px; }
-        90% { margin-top: 0px; }
-        95% { margin-top: -1.5px; }
-        100% { margin-top: 0px; }
+      @keyframes throw-and-settle {
+        0% {
+          transform: rotateX(0deg) rotateY(0deg);
+        }
+        100% {
+          transform: rotateX(1080deg) rotateY(720deg) rotateX(-90deg);
+        }
       }
 
       .status-indicator { width: 10px; height: 10px; border-radius: 50%; position: relative; }
@@ -271,14 +262,11 @@
     <div id="vanta-bg"></div>
 
     <div class="dashboard-container">
-      <!-- REMOVED THE TWO COLUMN DIVS -->
       <div class="sections-wrapper" id="sections-wrapper">
-        <!-- All cards will be appended here by JS -->
       </div>
     </div>
 
     <div id="card-templates" style="display: none;">
-      <!-- All Card Templates Live Here -->
       <div class="card online-users-card">
         <p class="card-label"><i class="fa-solid fa-users"></i> Online Users</p>
         <p class="count" id="online-users-count">...</p>
@@ -460,12 +448,45 @@
             recentGameInfo.forEach(game => recentlyPlayedList.appendChild(createGameButton(game)));
         }
         
+        function getVAPORsAge() {
+            const startDate = new Date('2025-02-14');
+            const now = new Date();
+            if (now < startDate) return "not yet born!";
+
+            let years = now.getFullYear() - startDate.getFullYear();
+            let months = now.getMonth() - startDate.getMonth();
+            let days = now.getDate() - startDate.getDate();
+
+            if (days < 0) {
+                months--;
+                days += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+            }
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+
+            if (years >= 1) return `${years} year${years > 1 ? 's' : ''} old!`;
+            
+            const weeks = Math.floor(days / 7);
+            const resultParts = [];
+            if (months > 0) resultParts.push(`${months} month${months > 1 ? 's' : ''}`);
+            if (weeks > 0) resultParts.push(`${weeks} week${weeks > 1 ? 's' : ''}`);
+
+            if (resultParts.length > 0) return `${resultParts.join(' and ')} old!`;
+
+            const remainingDays = days % 7;
+            if (remainingDays > 0) return `${remainingDays} day${remainingDays > 1 ? 's' : ''} old!`;
+            
+            return "just born!";
+        }
+
         function displayTipOfTheDay() {
           const tips = [
             "🤍 Your favorite games are saved locally to your browser.",
             "🔄 CTRL+SHIFT+ALT+R can refresh the gamelist.",
             "💭 Did you know: VAPOR used to run on a potato! (500MB of RAM)",
-            `⏳ VAPOR is currently ${((d=new Date()-new Date('2025-02-14'))/864e5>=7?Math.floor(d/7)+'w '+d%7+'d':Math.floor(d)+'d')} old!`, // chatgpt was used.
+            `⏳ VAPOR is currently ${getVAPORsAge()}`,
             "🤔 Check the status card for any ongoing platform issues or maintenance.",
             "💿 Thanks so much to Evicly for the powerful server!",
             "🎲 The dice will pick a completely random game from the entire library!",
