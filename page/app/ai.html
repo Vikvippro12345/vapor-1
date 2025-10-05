@@ -136,6 +136,7 @@
         overflow-x: auto;
         white-space: pre-wrap;
         word-wrap: break-word;
+        font-family: "Courier Prime", monospace;
       }
       .assistant-message table {
         width: 100%;
@@ -396,7 +397,7 @@
         display: grid;
         grid-template-rows: 0fr;
         transition: grid-template-rows 0.12s ease-in-out;
-        margin-bottom: 0;
+        margin-bottom: 10px;
       }
       .reasoning-container.expanded {
         grid-template-rows: 1fr;
@@ -487,7 +488,7 @@
                   <i class="fa-regular fa-layer-group"></i>
                   <div class="model-option-text">
                     <span>More Models</span>
-                    <small>gemini, grok, etc</small>
+                    <small>gemini, gpt, etc</small>
                   </div>
                 </div>
                 <i class="fa-regular fa-chevron-right"></i>
@@ -513,7 +514,7 @@
         <div id="input-container">
           <textarea
             id="user-input"
-            placeholder="Type your message..."
+            placeholder="Talk to the AI..."
             rows="1"
           ></textarea>
         </div>
@@ -522,29 +523,13 @@
     </div>
 
     <script>
-      /*pointless --- document.addEventListener("DOMContentLoaded", () => {
-        const renderMath = (element) => {
-          if (window.renderMathInElement) {
-            window.renderMathInElement(element, {
-              delimiters: [
-                { left: "$$", right: "$$", display: true },
-                { left: "$", right: "$", display: false },
-                { left: "\\(", right: "\\)", display: false },
-                { left: "\\[", right: "\\]", display: true },
-              ],
-              throwOnError: false,
-            });
-          }
-        };
-        window.callRenderMath = renderMath;
-      });*/
 
       const API_URL = "/api/aiv2";
 
       const MODELS = [
         "claude-sonnet-4",
         "deepseek-r1",
-        "grok-4-fast",
+        //"grok-4-fast", does not work anymore
         "gpt-oss-120b",
         "gpt-5", // not really but whatever
         "gemini-2.5-pro",
